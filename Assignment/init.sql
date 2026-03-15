@@ -69,7 +69,7 @@ CREATE TABLE bill_details (
 -- SEED DATA: AUTHENTICATION
 -- ==========================================
 INSERT INTO users (email, password, full_name, phone, role, active) VALUES
-('admin@polycoffee.com', 'admin@2026', 'Executive Manager', '0901234567', 1, 1),
+('chez1s.dev@gmail.com', 'cz', 'Bùi Đức Trí', '0901234567', 1, 1),
 ('staff@polycoffee.com', 'staff@2026', 'Senior Barista', '0907654321', 0, 1),
 ('demo@polycoffee.com', 'password', 'Guest Assistant', '0123456789', 0, 1);
 
@@ -77,43 +77,42 @@ INSERT INTO users (email, password, full_name, phone, role, active) VALUES
 -- SEED DATA: CATEGORIES
 -- ==========================================
 INSERT INTO categories (name, active) VALUES
-('Signature Coffee', 1),
-('Premium Tea', 1),
-('Velvet Smoothies', 1),
-('Artisanal Bakery', 1),
-('Seasonal Specials', 1);
+('Cà Phê Truyền Thống', 1),
+('Trà Trái Cây', 1),
+('Bảng Đặc Biệt', 1),
+('Bánh Ngọt', 1),
+('Đá Xay', 1);
 
 -- ==========================================
 -- SEED DATA: THE DRINK COLLECTION
 -- ==========================================
 
--- Signature Coffee
+-- Cà Phê Truyền Thống
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(1, 'Obsidian Cold Brew', '24-hour slow-steeped signature blend with hints of dark chocolate.', 55000, 1, 'cold-brew.jpg'),
-(1, 'Golden Latte', 'Creamy espresso with saffron-infused milk and organic honey.', 65000, 1, 'golden-latte.jpg'),
-(1, 'Espresso Romano', 'Double shot of our finest Arabica with a twist of lemon zest.', 40000, 1, 'espresso.jpg'),
-(1, 'Nitro Velvet', 'Nitrogen-infused cold brew for a silky, Guinness-like finish.', 60000, 1, 'nitro.jpg');
+(1, 'Cà Phê Sữa Đá', 'The classic Vietnamese iced milk coffee, strong and sweet.', 35000, 1, 'ca-phe-sua-da.jpg'),
+(1, 'Cà Phê Đen Đá', 'Traditional pure black iced coffee for a bold start.', 30000, 1, 'ca-phe-den-da.jpg'),
+(1, 'Bạc Xỉu', 'Lots of milk with a touch of coffee, perfect for sweet cravings.', 35000, 1, 'bac-xiu.jpg');
 
--- Premium Tea
+-- Trà Trái Cây
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(2, 'Imperial Oolong', 'Rare high-mountain tea with a floral, long-lasting aroma.', 45000, 1, 'oolong.jpg'),
-(2, 'Moroccan Mint', 'Refreshing green tea with fresh mint leaves and honeycomb.', 42000, 1, 'mint-tea.jpg'),
-(2, 'Lavender Earl Grey', 'Classic Earl Grey with organic lavender petals and steamed milk.', 48000, 1, 'earl-grey.jpg');
+(2, 'Trà Đào Cam Sả', 'Signature peach tea with orange and lemongrass.', 45000, 1, 'tra-dao.jpg'),
+(2, 'Trà Lài Macchiato', 'Jasmine tea topped with creamy, salty macchiato foam.', 49000, 1, 'tra-lai-macchiato.jpg'),
+(2, 'Trà Vải', 'Refreshing lychee tea with whole lychee fruit.', 45000, 1, 'tra-vai.jpg');
 
--- Velvet Smoothies
+-- Bảng Đặc Biệt
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(3, 'Emerald Matcha', 'Ceremonial grade matcha blended with white chocolate and soy.', 75000, 1, 'matcha-smoothie.jpg'),
-(3, 'Berry Symphony', 'Assorted wild berries with Greek yogurt and basil infusion.', 68000, 1, 'berry-smoothie.jpg');
+(3, 'Phindi Hạnh Nhân', 'Almond flavored modern coffee with a creamy twist.', 55000, 1, 'phindi-hanh-nhan.jpg'),
+(3, 'Trà Sen Vàng', 'Golden lotus tea, lightly sweet with crunchy lotus seeds.', 49000, 1, 'tra-sen-vang.jpg');
 
--- Artisanal Bakery
+-- Bánh Ngọt
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(4, 'Truffle Croissant', 'Buttery pastry with black truffle oil and sea salt flakes.', 85000, 1, 'croissant.jpg'),
-(4, 'Dark Forest Scone', 'Cacao-infused scone with dried cherries and whipped cream.', 52000, 1, 'scone.jpg');
+(4, 'Bánh Mì Quế', 'Cinnamon stick bread, crispy and warm.', 19000, 1, 'banh-mi-que.jpg'),
+(4, 'Tiramisu', 'Classic Italian cake with a Vietnamese coffee touch.', 39000, 1, 'tiramisu.jpg');
 
--- Seasonal Specials
+-- Đá Xay
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(5, 'Sakura Blossom Latte', 'Cherry blossom syrup with white coffee and rose petals.', 70000, 1, 'sakura.jpg'),
-(5, 'Autumn Spice Brew', 'Pumpkin spice cold foam on top of a cinnamon-infused dark roast.', 72000, 1, 'autumn-spice.jpg');
+(5, 'Matcha Đá Xay', 'Blended matcha with milk and a swirl of cream.', 55000, 1, 'matcha-da-xay.jpg'),
+(5, 'Caramel Frappuccino', 'Rich caramel blended coffee topped with cream.', 59000, 1, 'caramel-frappuccino.jpg');
 
 -- ==========================================
 -- END OF INITIALIZATION

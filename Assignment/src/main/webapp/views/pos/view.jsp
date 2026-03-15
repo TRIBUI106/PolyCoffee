@@ -1,37 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 <!DOCTYPE html>
 <html class="h-full">
 <head>
-    <title>POS Hub - PolyCoffee</title>
+    <title>POS Hệ Thống - PolyCoffee</title>
 </head>
 <body class="bg-cream font-sans min-h-full h-screen overflow-hidden flex flex-col">
 
     <jsp:include page="../common/header.jsp" />
 
     <main class="flex-grow overflow-hidden px-4 md:px-8 pb-4">
+        <!-- Tablet (mobile-first) to Desktop Layout: lg:flex-row handles the docking -->
         <div class="max-w-[1600px] mx-auto h-full flex flex-col lg:flex-row gap-6">
             
             <!-- Menu Area (Left) -->
             <div class="flex-grow flex flex-col min-h-0 py-4">
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h1 class="text-3xl font-bold text-mocha">Menu</h1>
-                        <p class="text-mocha/50 text-sm">Select items to add to the order</p>
+                        <h1 class="text-3xl font-bold text-mocha">Thực Đơn</h1>
+                        <p class="text-mocha/50 text-sm">Chọn món để thêm vào hoá đơn</p>
                     </div>
-                    <div class="relative w-72">
+                    <div class="relative w-72 hidden md:block">
                         <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-mocha/30"></i>
-                        <input type="text" placeholder="Search menu..." 
+                        <input type="text" placeholder="Tìm tên đồ uống..." 
                                class="w-full glass bg-white/50 pl-11 pr-4 py-3 rounded-2xl focus:bg-white outline-none transition-all placeholder:text-mocha/20 text-sm">
                     </div>
                 </div>
 
                 <!-- Category Filter Pills (Soft Scrollable) -->
                 <div class="flex gap-2 overflow-x-auto pb-4 no-scrollbar">
-                    <button class="bg-coffee-700 text-white px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap">All Drinks</button>
+                    <button class="bg-coffee-700 text-white px-5 py-2 rounded-full text-sm font-semibold whitespace-nowrap lg:min-h-0 min-h-[48px]">Tất Cả Món</button>
                     <c:forEach var="cat" items="${categories}">
-                        <button class="glass px-5 py-2 rounded-full text-sm font-medium text-mocha hover:bg-white whitespace-nowrap transition-colors">${cat.name}</button>
+                        <button class="glass px-5 py-2 rounded-full text-sm font-medium text-mocha hover:bg-white whitespace-nowrap transition-colors lg:min-h-0 min-h-[48px]">${cat.name}</button>
                     </c:forEach>
                 </div>
 
@@ -45,7 +47,8 @@
                             <div class="aspect-square rounded-2xl overflow-hidden mb-3 relative">
                                 <c:choose>
                                     <c:when test="${not empty d.image}">
-                                        <img src="${pageContext.request.contextPath}/uploads/${d.image}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                        <c:set var="imgUrl" value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
+                                        <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                                     </c:when>
                                     <c:otherwise>
                                         <div class="w-full h-full bg-coffee-50 flex items-center justify-center text-latte text-3xl">
@@ -71,14 +74,15 @@
             </div>
 
             <!-- Receipt Sidebar (Right) -->
-            <div class="lg:w-[450px] flex flex-col py-4 h-full">
-                <div class="glass h-full rounded-coffee overflow-hidden flex flex-col bg-white">
-                    <div class="p-6 border-b border-coffee-50">
+            <!-- On mobile/tablet, this acts as an off-canvas or permanent bottom sheet if needed, but flex-col vs row naturally stacks it. -->
+            <div class="lg:w-[450px] w-full flex flex-col py-4 h-full">
+                <div class="glass h-full rounded-coffee overflow-hidden flex flex-col bg-white border-2 lg:border-none border-coffee-100 shadow-2xl lg:shadow-none">
+                    <div class="p-6 border-b border-coffee-50 bg-coffee-50/20">
                         <div class="flex items-center justify-between mb-1">
-                            <h2 class="text-xl font-bold text-mocha capitalize">Current Ticket</h2>
-                            <span class="text-[10px] font-bold bg-coffee-50 text-coffee-700 px-2 py-1 rounded">#${not empty currentBill ? currentBill.code : 'DRAFT'}</span>
+                            <h2 class="text-xl font-bold text-mocha capitalize">Hoá Đơn Bán Hàng</h2>
+                            <span class="text-[10px] font-bold bg-coffee-50 text-coffee-700 px-2 py-1 rounded">Mã HD: ${not empty currentBill ? currentBill.code : 'MỚI'}</span>
                         </div>
-                        <p class="text-mocha/40 text-xs">Serving: <span class="text-latte font-bold">${sessionScope.user.fullName}</span></p>
+                        <p class="text-mocha/40 text-xs">Phục vụ: <span class="text-latte font-bold">${sessionScope.user.fullName}</span></p>
                     </div>
 
                     <!-- Items List -->
@@ -89,7 +93,10 @@
                                     <c:forEach var="item" items="${currentBill.billDetails}">
                                         <div class="group relative flex items-center gap-4 bg-coffee-50/50 p-3 rounded-2xl hover:bg-coffee-50 transition-colors">
                                             <div class="w-12 h-12 rounded-xl overflow-hidden glass flex-shrink-0">
-                                                <c:if test="${not empty item.drink.image}"><img src="${pageContext.request.contextPath}/uploads/${item.drink.image}" class="w-full h-full object-cover"></c:if>
+                                                <c:if test="${not empty item.drink.image}">
+                                                    <c:set var="tbImgUrl" value="${fn:startsWith(item.drink.image, 'http') ? item.drink.image : pageContext.request.contextPath.concat('/uploads/').concat(item.drink.image)}" />
+                                                    <img src="${tbImgUrl}" class="w-full h-full object-cover">
+                                                </c:if>
                                             </div>
                                             <div class="flex-grow">
                                                 <h4 class="text-sm font-bold text-mocha mb-1">${item.drink.name}</h4>
@@ -97,15 +104,15 @@
                                                     <span class="text-latte font-bold text-xs"><fmt:formatNumber value="${item.price}" pattern="#,###"/> đ</span>
                                                     
                                                     <!-- Quantity Control -->
-                                                    <div class="flex items-center glass rounded-lg overflow-hidden h-7">
-                                                        <button class="px-2 text-mocha/40 hover:bg-white" 
+                                                    <div class="flex items-center glass rounded-lg overflow-hidden h-9 lg:h-7 min-w-[100px] justify-between px-1">
+                                                        <button class="px-3 py-1 text-mocha/40 hover:bg-white text-lg font-bold" 
                                                                 onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
-                                                            <i class="bi bi-dash"></i>
+                                                            -
                                                         </button>
-                                                        <span class="w-8 text-center text-xs font-bold text-mocha">${item.quantity}</span>
-                                                        <button class="px-2 text-mocha/40 hover:bg-white"
+                                                        <span class="w-8 text-center text-sm font-bold text-mocha">${item.quantity}</span>
+                                                        <button class="px-3 py-1 text-mocha/40 hover:bg-white text-lg font-bold"
                                                                 onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity + 1}'">
-                                                            <i class="bi bi-plus"></i>
+                                                            +
                                                         </button>
                                                     </div>
                                                 </div>
@@ -116,9 +123,9 @@
                             </c:when>
                             <c:otherwise>
                                 <div class="h-full flex flex-col items-center justify-center text-center opacity-20 py-20">
-                                    <i class="bi bi-cup-hot text-7xl mb-4"></i>
-                                    <p class="font-bold">Cart is empty</p>
-                                    <p class="text-sm">Start by selecting a brew</p>
+                                    <i class="bi bi-inbox text-7xl mb-4"></i>
+                                    <p class="font-bold text-lg">Giỏ hàng trống</p>
+                                    <p class="text-sm">Vui lòng chọn món để bắt đầu</p>
                                 </div>
                             </c:otherwise>
                         </c:choose>
@@ -127,21 +134,21 @@
                     <!-- Checkout Footer -->
                     <div class="p-6 bg-coffee-50/50 border-t border-coffee-100">
                         <div class="flex items-center justify-between mb-6">
-                            <span class="text-mocha/50 font-medium">Grand Total</span>
-                            <span class="text-3xl font-bold text-mocha"><fmt:formatNumber value="${currentBill.total}" pattern="#,###"/> đ</span>
+                            <span class="text-mocha/50 font-medium text-lg lg:text-base">Tổng Thanh Toán</span>
+                            <span class="text-4xl lg:text-3xl font-bold text-coffee-700"><fmt:formatNumber value="${currentBill.total}" pattern="#,###"/> đ</span>
                         </div>
 
                         <div class="flex gap-3">
-                            <button class="flex-grow btn-coffee py-4 flex items-center justify-center gap-2 group" 
+                            <button class="flex-grow btn-coffee py-5 lg:py-4 flex items-center justify-center gap-2 group text-xl lg:text-base" 
                                     ${empty currentBill.billDetails ? 'disabled' : ''}
-                                    onclick="if(confirm('Finalize order?')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
-                                <span>PRINT & PAY</span>
-                                <i class="bi bi-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                                    onclick="if(confirm('Xác nhận IN HOÁ ĐƠN và THANH TOÁN?')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
+                                <span>THANH TOÁN</span>
+                                <i class="bi bi-check-circle-fill group-hover:scale-110 transition-transform"></i>
                             </button>
                             <c:if test="${not empty currentBill.billDetails}">
-                                <button class="w-14 h-14 bg-red-100 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center shrink-0"
-                                        onclick="if(confirm('Void this ticket?')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'">
-                                    <i class="bi bi-trash3-fill"></i>
+                                <button class="w-16 h-auto lg:w-14 lg:h-14 bg-red-100 text-red-500 rounded-xl hover:bg-red-500 hover:text-white transition-all flex items-center justify-center shrink-0"
+                                        onclick="if(confirm('Bạn có chắc chắn muốn HUỶ hoá đơn này?')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'">
+                                    <i class="bi bi-trash3-fill text-xl"></i>
                                 </button>
                             </c:if>
                         </div>

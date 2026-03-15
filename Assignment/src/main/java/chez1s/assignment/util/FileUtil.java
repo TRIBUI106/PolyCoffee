@@ -1,14 +1,37 @@
 package chez1s.assignment.util;
 
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
 
 public final class FileUtil {
-    private static final String UPLOAD_DIR = "uploads";
+    private static final String BUCKET_NAME = "polycoffee";
+    private static final String MINIO_URL = "http://127.0.0.1:9000";
+    private static final String ACCESS_KEY = "minioadmin";
+    private static final String SECRET_KEY = "minioadmin";
+
+    private static MinioClient minioClient;
+
+    static {
+        try {
+            minioClient = MinioClient.builder()
+                    .endpoint(MINIO_URL)
+                    .credentials(ACCESS_KEY, SECRET_KEY)
+                    .build();
+            
+            boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(BUCKET_NAME).build());
+            if (!isExist) {
+                minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static String upload(HttpServletRequest request, String name) {
         try {
@@ -21,14 +44,19 @@ public final class FileUtil {
             String ext = fileName.substring(fileName.lastIndexOf("."));
             String uniqueName = System.currentTimeMillis() + ext;
             
-            String uploadPath = request.getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()) uploadDir.mkdir();
+            try (InputStream is = part.getInputStream()) {
+                minioClient.putObject(
+                    PutObjectArgs.builder()
+                        .bucket(BUCKET_NAME)
+                        .object(uniqueName)
+                        .stream(is, part.getSize(), -1)
+                        .contentType(part.getContentType())
+                        .build()
+                );
+            }
             
-            Path filePath = Path.of(uploadPath, uniqueName);
-            Files.copy(part.getInputStream(), filePath);
-            
-            return uniqueName;
+            // Return the full minio path
+            return MINIO_URL + "/" + BUCKET_NAME + "/" + uniqueName;
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -37,8 +65,21 @@ public final class FileUtil {
 
     public static boolean delete(HttpServletRequest request, String fileName) {
         if (fileName == null || fileName.isEmpty()) return false;
-        String uploadPath = request.getServletContext().getRealPath("") + File.separator + UPLOAD_DIR;
-        File file = new File(uploadPath, fileName);
-        return file.exists() && file.isFile() && file.delete();
+        try {
+            // If fileName is full url, extract just the object name
+            if (fileName.startsWith(MINIO_URL)) {
+                fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+            }
+            minioClient.removeObject(
+                RemoveObjectArgs.builder()
+                    .bucket(BUCKET_NAME)
+                    .object(fileName)
+                    .build()
+            );
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

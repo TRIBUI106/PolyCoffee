@@ -10,7 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({"/manager/categories", "/manager/categories/create", "/manager/categories/update", "/manager/categories/delete"})
+@WebServlet({"/manager/categories", "/manager/categories/create", "/manager/categories/update", "/manager/categories/delete", "/manager/categories/save"})
 public class CategoryController extends HttpServlet {
     private final CategoryService categoryService = new CategoryService();
 
