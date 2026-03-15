@@ -1,5 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
+<fmt:setBundle basename="messages" />
+
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -107,40 +112,40 @@
         <!-- Navigation Links -->
         <div class="hidden md:flex items-center gap-2">
             <a href="${pageContext.request.contextPath}/" class="nav-link-custom ${pageContext.request.requestURI.endsWith('/home.jsp') || pageContext.request.requestURI.endsWith('/') ? 'nav-link-active' : ''}">
-                Home
+                <fmt:message key="header.home"/>
                 <span class="nav-indicator"></span>
             </a>
             
             <c:if test="${not empty sessionScope.user}">
                 <a href="${pageContext.request.contextPath}/employee/pos" class="nav-link-custom ${pageContext.request.requestURI.contains('/pos') ? 'nav-link-active' : ''}">
-                    Smart POS
+                    <fmt:message key="header.pos"/>
                     <span class="nav-indicator"></span>
                 </a>
                 
                 <c:if test="${sessionScope.user.role}">
                     <div class="relative group">
                         <button class="nav-link-custom">
-                            Management <i class="bi bi-chevron-down text-[10px] opacity-50 group-hover:rotate-180 transition-transform duration-300"></i>
+                            <fmt:message key="header.management"/> <i class="bi bi-chevron-down text-[10px] opacity-50 group-hover:rotate-180 transition-transform duration-300"></i>
                             <span class="nav-indicator"></span>
                         </button>
                         <div class="dropdown-luxury">
-                            <div class="mb-2 px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold text-mocha/30">Catalog</div>
+                            <div class="mb-2 px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold text-mocha/30"><fmt:message key="header.catalog"/></div>
                             <a href="${pageContext.request.contextPath}/manager/categories" class="flex items-center gap-3 px-4 py-2.5 hover:bg-coffee-50 rounded-xl text-mocha text-sm transition-all group/item">
-                                <i class="bi bi-grid-1x2 text-coffee-300 group-hover/item:text-coffee-700"></i> Categories
+                                <i class="bi bi-grid-1x2 text-coffee-300 group-hover/item:text-coffee-700"></i> <fmt:message key="header.category"/>
                             </a>
                             <a href="${pageContext.request.contextPath}/manager/drinks" class="flex items-center gap-3 px-4 py-2.5 hover:bg-coffee-50 rounded-xl text-mocha text-sm transition-all group/item">
-                                <i class="bi bi-cup-straw text-coffee-300 group-hover/item:text-coffee-700"></i> Drinks
+                                <i class="bi bi-cup-straw text-coffee-300 group-hover/item:text-coffee-700"></i> <fmt:message key="header.drink"/>
                             </a>
                             <a href="${pageContext.request.contextPath}/manager/staff" class="flex items-center gap-3 px-4 py-2.5 hover:bg-coffee-50 rounded-xl text-mocha text-sm transition-all group/item">
-                                <i class="bi bi-people text-coffee-300 group-hover/item:text-coffee-700"></i> Team Staff
+                                <i class="bi bi-people text-coffee-300 group-hover/item:text-coffee-700"></i> <fmt:message key="header.staff"/>
                             </a>
                             <div class="h-px bg-coffee-100/50 my-2 mx-2"></div>
-                            <div class="mb-2 px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold text-mocha/30">Intelligence</div>
+                            <div class="mb-2 px-3 py-1 text-[10px] uppercase tracking-[0.2em] font-bold text-mocha/30"><fmt:message key="header.intelligence"/></div>
                             <a href="${pageContext.request.contextPath}/manager/bills" class="flex items-center gap-3 px-4 py-2.5 hover:bg-coffee-50 rounded-xl text-mocha text-sm transition-all group/item font-medium text-coffee-700">
-                                <i class="bi bi-receipt"></i> Sales History
+                                <i class="bi bi-receipt"></i> <fmt:message key="header.bill"/>
                             </a>
                             <a href="${pageContext.request.contextPath}/manager/statistics" class="flex items-center gap-3 px-4 py-2.5 hover:bg-coffee-50 rounded-xl text-mocha text-sm transition-all group/item font-medium text-coffee-700">
-                                <i class="bi bi-graph-up-arrow"></i> Performance Reports
+                                <i class="bi bi-graph-up-arrow"></i> <fmt:message key="header.report"/>
                             </a>
                         </div>
                     </div>
@@ -153,7 +158,7 @@
             <c:choose>
                 <c:when test="${empty sessionScope.user}">
                     <a href="${pageContext.request.contextPath}/auth/login" class="btn-coffee py-2 shadow-none">
-                        Login Experience
+                        <fmt:message key="header.login"/>
                     </a>
                 </c:when>
                 <c:otherwise>
@@ -167,15 +172,15 @@
                         </button>
                         <div class="dropdown-luxury left-auto right-0">
                             <div class="px-4 py-3 mb-2 border-b border-coffee-100/50">
-                                <p class="text-[10px] uppercase tracking-widest text-mocha/40 font-bold mb-1">Authenticating as</p>
+                                <p class="text-[10px] uppercase tracking-widest text-mocha/40 font-bold mb-1"><fmt:message key="header.authAs"/></p>
                                 <p class="text-sm font-bold text-mocha truncate">${sessionScope.user.fullName}</p>
                             </div>
                             <a href="${pageContext.request.contextPath}/auth/profile" class="flex items-center gap-3 px-4 py-2.5 hover:bg-coffee-50 rounded-xl text-mocha text-sm transition-all">
-                                <i class="bi bi-person-circle text-coffee-300"></i> My Profile
+                                <i class="bi bi-person-circle text-coffee-300"></i> <fmt:message key="header.profile"/>
                             </a>
                             <div class="h-px bg-coffee-100/50 my-2 mx-2"></div>
                             <a href="${pageContext.request.contextPath}/auth/logout" class="flex items-center gap-3 px-4 py-2.5 hover:bg-red-50 text-red-500 rounded-xl text-sm transition-all group/logout">
-                                <i class="bi bi-box-arrow-right group-hover/logout:translate-x-1 transition-transform"></i> Secure Logout
+                                <i class="bi bi-box-arrow-right group-hover/logout:translate-x-1 transition-transform"></i> <fmt:message key="header.logout"/>
                             </a>
                         </div>
                     </div>

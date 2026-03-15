@@ -70,8 +70,8 @@ CREATE TABLE bill_details (
 -- ==========================================
 INSERT INTO users (email, password, full_name, phone, role, active) VALUES
 ('chez1s.dev@gmail.com', 'cz', 'Bùi Đức Trí', '0901234567', 1, 1),
-('staff@polycoffee.com', 'staff@2026', 'Senior Barista', '0907654321', 0, 1),
-('demo@polycoffee.com', 'password', 'Guest Assistant', '0123456789', 0, 1);
+('staff@polycoffee.com', 'staff@2026', 'Pha Chế Trưởng', '0907654321', 0, 1),
+('demo@polycoffee.com', 'password', 'Trợ Lý Khách Hàng', '0123456789', 0, 1);
 
 -- ==========================================
 -- SEED DATA: CATEGORIES
@@ -89,30 +89,30 @@ INSERT INTO categories (name, active) VALUES
 
 -- Cà Phê Truyền Thống
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(1, 'Cà Phê Sữa Đá', 'The classic Vietnamese iced milk coffee, strong and sweet.', 35000, 1, 'ca-phe-sua-da.jpg'),
-(1, 'Cà Phê Đen Đá', 'Traditional pure black iced coffee for a bold start.', 30000, 1, 'ca-phe-den-da.jpg'),
-(1, 'Bạc Xỉu', 'Lots of milk with a touch of coffee, perfect for sweet cravings.', 35000, 1, 'bac-xiu.jpg');
+(1, 'Cà Phê Sữa Đá', 'Cà phê sữa đá truyền thống, đậm vị và thơm ngọt.', 35000, 1, 'ca-phe-sua-da.jpg'),
+(1, 'Cà Phê Đen Đá', 'Cà phê đen đá nguyên chất truyền thống cho một khởi đầu mạnh mẽ.', 30000, 1, 'ca-phe-den-da.jpg'),
+(1, 'Bạc Xỉu', 'Thức uống nhiều sữa hòa quyện với chút cà phê, hoàn hảo cho những tín đồ ngọt ngào.', 35000, 1, 'bac-xiu.jpg');
 
 -- Trà Trái Cây
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(2, 'Trà Đào Cam Sả', 'Signature peach tea with orange and lemongrass.', 45000, 1, 'tra-dao.jpg'),
-(2, 'Trà Lài Macchiato', 'Jasmine tea topped with creamy, salty macchiato foam.', 49000, 1, 'tra-lai-macchiato.jpg'),
-(2, 'Trà Vải', 'Refreshing lychee tea with whole lychee fruit.', 45000, 1, 'tra-vai.jpg');
+(2, 'Trà Đào Cam Sả', 'Trà đào đặc trưng hòa quyện cùng cam và sả.', 45000, 1, 'tra-dao.jpg'),
+(2, 'Trà Lài Macchiato', 'Trà lài thơm ngát kết hợp cùng lớp kem macchiato mặn béo.', 49000, 1, 'tra-lai-macchiato.jpg'),
+(2, 'Trà Vải', 'Trà vải thanh mát với quả vải tươi.', 45000, 1, 'tra-vai.jpg');
 
 -- Bảng Đặc Biệt
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(3, 'Phindi Hạnh Nhân', 'Almond flavored modern coffee with a creamy twist.', 55000, 1, 'phindi-hanh-nhan.jpg'),
-(3, 'Trà Sen Vàng', 'Golden lotus tea, lightly sweet with crunchy lotus seeds.', 49000, 1, 'tra-sen-vang.jpg');
+(3, 'Phindi Hạnh Nhân', 'Cà phê hiện đại hương hạnh nhân kết hợp vị kem độc đáo.', 55000, 1, 'phindi-hanh-nhan.jpg'),
+(3, 'Trà Sen Vàng', 'Trà sen vàng ngọt thanh trọn vị cùng hạt sen giòn rụm.', 49000, 1, 'tra-sen-vang.jpg');
 
 -- Bánh Ngọt
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(4, 'Bánh Mì Quế', 'Cinnamon stick bread, crispy and warm.', 19000, 1, 'banh-mi-que.jpg'),
-(4, 'Tiramisu', 'Classic Italian cake with a Vietnamese coffee touch.', 39000, 1, 'tiramisu.jpg');
+(4, 'Bánh Mì Quế', 'Bánh mì que quế giòn rụm và ấm nóng.', 19000, 1, 'banh-mi-que.jpg'),
+(4, 'Tiramisu', 'Bánh ngọt cổ điển Ý với điểm nhấn từ cà phê Việt Nam.', 39000, 1, 'tiramisu.jpg');
 
 -- Đá Xay
 INSERT INTO drinks (category_id, name, description, price, active, image) VALUES
-(5, 'Matcha Đá Xay', 'Blended matcha with milk and a swirl of cream.', 55000, 1, 'matcha-da-xay.jpg'),
-(5, 'Caramel Frappuccino', 'Rich caramel blended coffee topped with cream.', 59000, 1, 'caramel-frappuccino.jpg');
+(5, 'Matcha Đá Xay', 'Matcha xay nhuyễn cùng sữa sữa tươi và một lớp kem.', 55000, 1, 'matcha-da-xay.jpg'),
+(5, 'Caramel Frappuccino', 'Cà phê caramel đậm đà xay nhuyễn, phủ thêm một lớp kem.', 59000, 1, 'caramel-frappuccino.jpg');
 
 -- ==========================================
 -- END OF INITIALIZATION

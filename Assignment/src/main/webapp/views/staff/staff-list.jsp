@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html class="h-full">
 <head>
-    <title>Staff Directory - PolyCoffee</title>
+    <title>Danh Sách Nhân Viên - PolyCoffee</title>
 </head>
 <body class="bg-cream font-sans min-h-full">
     <jsp:include page="../common/header.jsp" />
@@ -12,12 +12,12 @@
     <main class="max-w-7xl mx-auto px-4 py-12">
         <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
             <div>
-                <h1 class="text-4xl font-extrabold text-mocha mb-2">Staff Directory</h1>
-                <p class="text-latte font-bold text-xs tracking-widest uppercase">Personnel Management Hub</p>
+                <h1 class="text-4xl font-extrabold text-mocha mb-2">Danh Sách Nhân Viên</h1>
+                <p class="text-latte font-bold text-xs tracking-widest uppercase">Trung Tâm Quản Lý Nhân Sự</p>
             </div>
             <a href="${pageContext.request.contextPath}/manager/staff/form" class="btn-coffee py-4 flex items-center gap-2 group">
                 <i class="bi bi-person-plus group-hover:scale-125 transition-transform"></i>
-                Register New Member
+                Tuyển Thành Viên Mới
             </a>
         </div>
 
@@ -30,7 +30,7 @@
                         </div>
                         <div class="flex flex-col items-end">
                             <span class="px-3 py-1 rounded-full text-[10px] font-black border ${s.active ? 'bg-green-50 text-green-600 border-green-100' : 'bg-red-50 text-red-600 border-red-100'}">
-                                ${s.active ? 'ACTIVE' : 'LOCKED'}
+                                ${s.active ? 'HOẠT ĐỘNG' : 'ĐÃ KHÓA'}
                             </span>
                             <span class="text-[10px] font-bold text-mocha/20 mt-2 uppercase tracking-tighter">ID: #0${s.id}</span>
                         </div>
@@ -56,13 +56,13 @@
                             <c:when test="${s.active}">
                                 <a href="${pageContext.request.contextPath}/manager/staff/status?id=${s.id}&active=0" 
                                    class="btn-soft px-4 py-2 text-xs border-red-100 text-red-600 hover:bg-red-500 hover:text-white hover:border-red-500">
-                                   Lock Account
+                                   Khóa Tài Khoản
                                 </a>
                             </c:when>
                             <c:otherwise>
                                 <a href="${pageContext.request.contextPath}/manager/staff/status?id=${s.id}&active=1" 
                                    class="btn-coffee px-4 py-2 text-xs bg-emerald-600 hover:bg-emerald-700">
-                                   Activate Access
+                                   Mở Khóa
                                 </a>
                             </c:otherwise>
                         </c:choose>
@@ -74,7 +74,7 @@
         <c:if test="${empty staffList}">
             <div class="py-40 text-center text-mocha/20">
                 <i class="bi bi-people text-6xl block mb-4"></i>
-                <p class="font-bold">No registered staff members found.</p>
+                <p class="font-bold">Không tìm thấy nhân viên nào trong hệ thống.</p>
             </div>
         </c:if>
     </main>

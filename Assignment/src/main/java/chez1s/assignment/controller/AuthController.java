@@ -41,7 +41,7 @@ public class AuthController extends HttpServlet {
             req.getSession().removeAttribute("REDIRECT_URL");
             resp.sendRedirect(redirectUrl);
         } else {
-            req.setAttribute("message", "Invalid email or password!");
+            req.setAttribute("message", "Email hoặc mật khẩu không hợp lệ!");
             req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
         }
     }

@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html class="h-full">
 <head>
-    <title>Business Analytics - PolyCoffee</title>
+    <title>Phân Tích Kinh Doanh - PolyCoffee</title>
 </head>
 <body class="bg-cream font-sans min-h-full">
     <jsp:include page="../common/header.jsp" />
@@ -12,19 +12,19 @@
     <main class="max-w-7xl mx-auto px-4 py-12">
         <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8 mb-16">
             <div>
-                <h1 class="text-4xl font-black text-mocha mb-2 italic">Performance Analytics</h1>
-                <p class="text-latte font-bold text-xs tracking-[0.3em] uppercase">Enterprise Insight Dashboard</p>
+                <h1 class="text-4xl font-black text-mocha mb-2 italic">Phân Tích Số Liệu</h1>
+                <p class="text-latte font-bold text-xs tracking-[0.3em] uppercase">Bảng Quản Trị Hệ Thống Số</p>
             </div>
             
             <form action="" method="get" class="glass p-3 rounded-[2rem] flex flex-wrap lg:flex-nowrap items-center gap-4 border-coffee-100 shadow-xl shadow-coffee-700/5">
                 <div class="flex items-center gap-2 pl-4">
                     <i class="bi bi-calendar-event text-latte"></i>
-                    <span class="text-[10px] font-black text-mocha/30 uppercase tracking-widest">Range</span>
+                    <span class="text-[10px] font-black text-mocha/30 uppercase tracking-widest">Thời Gian</span>
                 </div>
                 <input type="date" name="from" class="bg-white px-5 py-3 rounded-2xl outline-none font-bold text-sm text-mocha border border-coffee-50 focus:border-coffee-700 transition-colors" value="${param.from}">
                 <div class="text-mocha/20 font-bold">—</div>
                 <input type="date" name="to" class="bg-white px-5 py-3 rounded-2xl outline-none font-bold text-sm text-mocha border border-coffee-50 focus:border-coffee-700 transition-colors" value="${param.to}">
-                <button type="submit" class="btn-coffee py-3 px-8 text-sm">Refine Report</button>
+                <button type="submit" class="btn-coffee py-3 px-8 text-sm">Lọc Dữ Liệu</button>
             </form>
         </div>
 
@@ -35,7 +35,7 @@
                     <div class="w-10 h-10 bg-coffee-700 rounded-2xl flex items-center justify-center text-white text-lg">
                         <i class="bi bi-award"></i>
                     </div>
-                    <h2 class="text-2xl font-black text-mocha">Elite Beverages</h2>
+                    <h2 class="text-2xl font-black text-mocha">Đồ Uống Ưu Việt</h2>
                 </div>
 
                 <div class="glass p-10 rounded-[3rem] bg-white">
@@ -56,9 +56,9 @@
                                              style="width: ${status.index == 0 ? '100%' : (100 - (status.index * 15))}%;"></div>
                                     </div>
                                     <div class="mt-2 text-[10px] font-black text-mocha/30 uppercase tracking-widest flex items-center gap-4">
-                                        <span>Volume: ${item.totalQuantitySold} Serves</span>
+                                        <span>Số Lượng Bán: ${item.totalQuantitySold} Ly</span>
                                         <span class="w-1 h-1 bg-mocha/10 rounded-full"></span>
-                                        <span>Rating: Top ${status.index + 1}</span>
+                                        <span>Xếp Hạng: Top ${status.index + 1}</span>
                                     </div>
                                 </div>
                             </div>
@@ -66,7 +66,7 @@
                         <c:if test="${empty topDrinks}">
                             <div class="py-20 text-center text-mocha/20">
                                 <i class="bi bi-activity text-5xl mb-3 block"></i>
-                                <span class="font-bold">Waiting for sales data...</span>
+                                <span class="font-bold">Đang chờ dữ liệu kinh doanh...</span>
                             </div>
                         </c:if>
                     </div>
@@ -79,16 +79,16 @@
                     <div class="w-10 h-10 bg-mocha rounded-2xl flex items-center justify-center text-white text-lg">
                         <i class="bi bi-graph-up-arrow"></i>
                     </div>
-                    <h2 class="text-2xl font-black text-mocha">Financial Pulse</h2>
+                    <h2 class="text-2xl font-black text-mocha">Dòng Tiền Doanh Thu</h2>
                 </div>
 
                 <div class="glass p-0 rounded-[3rem] overflow-hidden bg-white">
                     <table class="w-full text-left order-collapse">
                         <thead>
                             <tr class="border-b border-coffee-50">
-                                <th class="px-10 py-6 text-[10px] font-black text-mocha/30 uppercase tracking-[0.2em]">Transaction Date</th>
-                                <th class="px-8 py-6 text-[10px] font-black text-mocha/30 uppercase tracking-[0.2em]">Ticket Volume</th>
-                                <th class="px-10 py-6 text-[10px] font-black text-mocha/30 uppercase tracking-[0.2em] text-right">Net Revenue</th>
+                                <th class="px-10 py-6 text-[10px] font-black text-mocha/30 uppercase tracking-[0.2em]">Ngày Giao Dịch</th>
+                                <th class="px-8 py-6 text-[10px] font-black text-mocha/30 uppercase tracking-[0.2em]">Khối Lượng Đơn</th>
+                                <th class="px-10 py-6 text-[10px] font-black text-mocha/30 uppercase tracking-[0.2em] text-right">Doanh Thu Ròng</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-coffee-50/50">
@@ -98,7 +98,7 @@
                                         <fmt:formatDate value="${row.revenueDate}" pattern="MMMM dd, yyyy"/>
                                     </td>
                                     <td class="px-8 py-8 font-black text-latte">
-                                        ${row.totalBills} <span class="text-[10px] opacity-40 font-bold ml-1">ORDERS</span>
+                                        ${row.totalBills} <span class="text-[10px] opacity-40 font-bold ml-1">ĐƠN HÀNG</span>
                                     </td>
                                     <td class="px-10 py-8 text-right font-black text-mocha text-lg">
                                         <fmt:formatNumber value="${row.totalRevenue}" pattern="#,###"/> <span class="text-[10px] text-mocha/20 ml-1">đ</span>
@@ -110,7 +110,7 @@
                     <c:if test="${empty revenueReport}">
                         <div class="py-32 text-center text-mocha/20">
                             <i class="bi bi-cloud-slash text-5xl mb-3 block"></i>
-                            <span class="font-bold">No periodic data captured.</span>
+                            <span class="font-bold">Không thu thập được dữ liệu định kỳ.</span>
                         </div>
                     </c:if>
                 </div>

@@ -18,8 +18,8 @@
                                 class="text-coffee-500">Coffee</span></span>
                     </div>
                     <p class="text-white/50 text-lg leading-relaxed max-w-md font-light">
-                        Redefining the essence of digital coffee management.
-                        Where artisanal craftsmanship meets high-performance technology.
+                        Định nghĩa lại nghệ thuật quản lý cà phê số.
+                        Nơi tay nghề thủ công hội tụ cùng công nghệ hiệu suất cao.
                     </p>
                     <div class="mt-10 flex items-center gap-6">
                         <a href="#"
@@ -38,46 +38,46 @@
                 </div>
 
                 <div>
-                    <h4 class="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs opacity-40">Ecosystem</h4>
+                    <h4 class="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs opacity-40">Hệ Sinh Thái</h4>
                     <ul class="space-y-4 text-white/60">
                         <li><a href="${pageContext.request.contextPath}/"
                                 class="hover:text-coffee-400 transition-all flex items-center gap-2 group">
                                 <span
                                     class="w-1.5 h-1.5 rounded-full bg-coffee-700 scale-0 group-hover:scale-100 transition-transform"></span>
-                                Home Experience
+                                Trải Nghiệm Tại Quán
                             </a></li>
                         <li><a href="${pageContext.request.contextPath}/employee/pos"
                                 class="hover:text-coffee-400 transition-all flex items-center gap-2 group">
                                 <span
                                     class="w-1.5 h-1.5 rounded-full bg-coffee-700 scale-0 group-hover:scale-100 transition-transform"></span>
-                                Smart POS
+                                Hệ Thống Smart POS
                             </a></li>
                         <li><a href="#" class="hover:text-coffee-400 transition-all flex items-center gap-2 group">
                                 <span
                                     class="w-1.5 h-1.5 rounded-full bg-coffee-700 scale-0 group-hover:scale-100 transition-transform"></span>
-                                Global Network
+                                Mạng Lưới Toàn Cầu
                             </a></li>
                     </ul>
                 </div>
 
                 <div>
-                    <h4 class="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs opacity-40">Intelligence
+                    <h4 class="text-white font-bold mb-8 uppercase tracking-[0.2em] text-xs opacity-40">Công Nghệ
                     </h4>
                     <ul class="space-y-4 text-white/60">
                         <li><a href="#" class="hover:text-coffee-400 transition-all flex items-center gap-2 group">
                                 <span
                                     class="w-1.5 h-1.5 rounded-full bg-coffee-700 scale-0 group-hover:scale-100 transition-transform"></span>
-                                Analytics Hub
+                                Trung Tâm Phân Tích
                             </a></li>
                         <li><a href="#" class="hover:text-coffee-400 transition-all flex items-center gap-2 group">
                                 <span
                                     class="w-1.5 h-1.5 rounded-full bg-coffee-700 scale-0 group-hover:scale-100 transition-transform"></span>
-                                Resource Management
+                                Quản Lý Tài Nguyên
                             </a></li>
                         <li><a href="#" class="hover:text-coffee-400 transition-all flex items-center gap-2 group">
                                 <span
                                     class="w-1.5 h-1.5 rounded-full bg-coffee-700 scale-0 group-hover:scale-100 transition-transform"></span>
-                                Security Protocols
+                                Bảo Mật Hệ Thống
                             </a></li>
                     </ul>
                 </div>
@@ -88,8 +88,8 @@
                     &copy; 2026 PolyCoffee &bull; YEUMEDEVS-
                 </p>
                 <div class="flex items-center gap-8 text-[10px] font-bold tracking-[0.2em] uppercase text-white/20">
-                    <a href="#" class="hover:text-white transition-colors">Privacy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms</a>
+                    <a href="#" class="hover:text-white transition-colors">Bảo Mật</a>
+                    <a href="#" class="hover:text-white transition-colors">Điều Khoản</a>
                     <a href="#" class="hover:text-white transition-colors">Cookies</a>
                 </div>
             </div>

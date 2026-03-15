@@ -1,9 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
+<fmt:setBundle basename="messages" />
+
 <!DOCTYPE html>
 <html class="h-full">
 <head>
-    <title>PolyCoffee - Premium Brews</title>
+    <title>PolyCoffee - Cà Phê Thượng Hạng</title>
 </head>
 <body class="bg-[#FCF9F3] font-sans min-h-full flex flex-col overflow-x-hidden selection:bg-coffee-200 selection:text-coffee-900">
 
@@ -21,13 +26,13 @@
         <section class="max-w-7xl mx-auto px-6 py-24 md:py-32 text-center relative">
             <div class="inline-flex items-center gap-3 bg-white/60 backdrop-blur-md px-6 py-2.5 rounded-full text-coffee-700 text-sm font-bold mb-10 shadow-lg border border-white/50 transition-all hover:scale-105 cursor-default">
                 <span class="flex h-3 w-3 rounded-full bg-coffee-600 animate-pulse"></span>
-                <span class="tracking-widest uppercase">The Art of Fine Brewing</span>
+                <span class="tracking-widest uppercase"><fmt:message key="home.hero.badge"/></span>
             </div>
             
             <h1 class="text-6xl md:text-8xl font-black text-mocha mb-10 leading-[1.1] text-display">
-                Pure Essence in <br/>
+                <fmt:message key="home.hero.title1"/> <br/> <fmt:message key="home.hero.title2"/>
                 <span class="text-coffee-700 relative inline-block">
-                    Every Sip.
+                    <fmt:message key="home.hero.title3"/>
                     <svg class="absolute -bottom-2 left-0 w-full" viewBox="0 0 100 20" preserveAspectRatio="none">
                         <path d="M0 10 Q 50 20 100 10" stroke="#6F4E37" stroke-width="2" fill="none" />
                     </svg>
@@ -35,25 +40,24 @@
             </h1>
             
             <p class="text-mocha/70 text-xl md:text-2xl max-w-3xl mx-auto mb-16 leading-relaxed font-light">
-                Discover a symphony of flavors crafted with passion. 
-                Our artisanal management system brings speed to your service and soul to your coffee.
+                <fmt:message key="home.hero.desc"/>
             </p>
 
             <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
                 <c:choose>
                     <c:when test="${empty sessionScope.user}">
                         <a href="${pageContext.request.contextPath}/auth/login" class="btn-coffee text-xl">
-                            Explore Collections <i class="bi bi-arrow-right"></i>
+                            <fmt:message key="home.btn.login"/> <i class="bi bi-arrow-right"></i>
                         </a>
                     </c:when>
                     <c:otherwise>
                         <a href="${pageContext.request.contextPath}/employee/pos" class="btn-coffee text-xl">
-                            Go to POS Dashboard <i class="bi bi-speedometer2"></i>
+                            <fmt:message key="home.btn.pos"/> <i class="bi bi-speedometer2"></i>
                         </a>
                     </c:otherwise>
                 </c:choose>
                 <a href="#features" class="btn-soft text-xl">
-                    View Experience <i class="bi bi-play-circle"></i>
+                    <fmt:message key="home.btn.demo"/> <i class="bi bi-play-circle"></i>
                 </a>
             </div>
         </section>
@@ -61,8 +65,8 @@
         <!-- Stats Section -->
         <section id="features" class="max-w-7xl mx-auto px-6 py-32">
             <div class="text-center mb-20">
-                <h2 class="text-4xl md:text-5xl font-bold text-mocha mb-4 text-display">The PolyCoffee Standard</h2>
-                <p class="text-mocha/60 max-w-xl mx-auto">Luxury performance meets intuitive design for the modern cafe.</p>
+                <h2 class="text-4xl md:text-5xl font-bold text-mocha mb-4 text-display"><fmt:message key="home.feature.title"/></h2>
+                <p class="text-mocha/60 max-w-xl mx-auto"><fmt:message key="home.feature.desc"/></p>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -72,10 +76,10 @@
                     <div class="w-20 h-20 bg-coffee-700 rounded-3xl flex items-center justify-center text-white text-3xl mb-8 shadow-2xl group-hover:rotate-[10deg] transition-transform duration-500">
                         <i class="bi bi-lightning-charge"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-mocha mb-4 text-display">Instant Flow</h3>
-                    <p class="text-mocha/70 leading-relaxed">Velocity without compromise. Process complex orders with fluid grace even during peak hours.</p>
+                    <h3 class="text-2xl font-bold text-mocha mb-4 text-display"><fmt:message key="home.feature1.title"/></h3>
+                    <p class="text-mocha/70 leading-relaxed"><fmt:message key="home.feature1.desc"/></p>
                     <div class="mt-8 flex items-center gap-2 text-coffee-700 font-bold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                        Learn more <i class="bi bi-chevron-right text-sm"></i>
+                        <fmt:message key="home.feature.more"/> <i class="bi bi-chevron-right text-sm"></i>
                     </div>
                 </div>
 
@@ -85,10 +89,10 @@
                     <div class="w-20 h-20 bg-mocha rounded-3xl flex items-center justify-center text-white text-3xl mb-8 shadow-2xl group-hover:rotate-[10deg] transition-transform duration-500">
                         <i class="bi bi-graph-up-arrow"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-mocha mb-4 text-display">Pure Insight</h3>
-                    <p class="text-mocha/70 leading-relaxed">Crystal clear analytics. Visualize your cafe's soul through elegant data storytelling and live reports.</p>
+                    <h3 class="text-2xl font-bold text-mocha mb-4 text-display"><fmt:message key="home.feature2.title"/></h3>
+                    <p class="text-mocha/70 leading-relaxed"><fmt:message key="home.feature2.desc"/></p>
                     <div class="mt-8 flex items-center gap-2 text-coffee-700 font-bold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                        Learn more <i class="bi bi-chevron-right text-sm"></i>
+                        <fmt:message key="home.feature.more"/> <i class="bi bi-chevron-right text-sm"></i>
                     </div>
                 </div>
 
@@ -98,10 +102,10 @@
                     <div class="w-20 h-20 bg-coffee-600 rounded-3xl flex items-center justify-center text-white text-3xl mb-8 shadow-2xl group-hover:rotate-[10deg] transition-transform duration-500">
                         <i class="bi bi-shield-check"></i>
                     </div>
-                    <h3 class="text-2xl font-bold text-mocha mb-4 text-display">Secure Craft</h3>
-                    <p class="text-mocha/70 leading-relaxed">Fortified management. Protect your recipes and staff data with sophisticated role-based security layers.</p>
+                    <h3 class="text-2xl font-bold text-mocha mb-4 text-display"><fmt:message key="home.feature3.title"/></h3>
+                    <p class="text-mocha/70 leading-relaxed"><fmt:message key="home.feature3.desc"/></p>
                     <div class="mt-8 flex items-center gap-2 text-coffee-700 font-bold opacity-0 group-hover:opacity-100 transition-all translate-x-[-10px] group-hover:translate-x-0">
-                        Learn more <i class="bi bi-chevron-right text-sm"></i>
+                        <fmt:message key="home.feature.more"/> <i class="bi bi-chevron-right text-sm"></i>
                     </div>
                 </div>
             </div>
