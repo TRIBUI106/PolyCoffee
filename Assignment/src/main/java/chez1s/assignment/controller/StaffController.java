@@ -49,7 +49,7 @@ public class StaffController extends HttpServlet {
             staff.setPassword(ParamUtil.getString(req, "password"));
             
             if (staffService.getStaffByEmail(staff.getEmail()) != null) {
-                req.setAttribute("error", "Email already exists!");
+                req.setAttribute("error", "Email đã tồn tại!");
                 req.setAttribute("staff", staff);
                 req.getRequestDispatcher("/views/staff/staff-form.jsp").forward(req, resp);
                 return;
