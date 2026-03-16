@@ -19,7 +19,7 @@ public class CategoryController extends HttpServlet {
         String uri = req.getRequestURI();
         if (uri.contains("/delete")) {
             categoryService.deleteCategory(ParamUtil.getInt(req, "id"));
-            resp.sendRedirect(req.getContextPath() + "/manager/categories");
+            resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=categories");
             return;
         }
         
@@ -41,6 +41,6 @@ public class CategoryController extends HttpServlet {
         } else {
             categoryService.createCategory(name);
         }
-        resp.sendRedirect(req.getContextPath() + "/manager/categories");
+        resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=categories");
     }
 }

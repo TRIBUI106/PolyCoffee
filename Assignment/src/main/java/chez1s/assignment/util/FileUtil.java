@@ -27,27 +27,28 @@ public final class FileUtil {
             boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(BUCKET_NAME).build());
             if (!isExist) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
-                // Set bucket policy to public for read-only access
-                String policy = "{\n" +
-                        "  \"Version\": \"2012-10-17\",\n" +
-                        "  \"Statement\": [\n" +
-                        "    {\n" +
-                        "      \"Effect\": \"Allow\",\n" +
-                        "      \"Principal\": { \"AWS\": [ \"*\" ] },\n" +
-                        "      \"Action\": [ \"s3:GetBucketLocation\", \"s3:ListBucket\" ],\n" +
-                        "      \"Resource\": [ \"arn:aws:s3:::" + BUCKET_NAME + "\" ]\n" +
-                        "    },\n" +
-                        "    {\n" +
-                        "      \"Effect\": \"Allow\",\n" +
-                        "      \"Principal\": { \"AWS\": [ \"*\" ] },\n" +
-                        "      \"Action\": [ \"s3:GetObject\" ],\n" +
-                        "      \"Resource\": [ \"arn:aws:s3:::" + BUCKET_NAME + "/*\" ]\n" +
-                        "    }\n" +
-                        "  ]\n" +
-                        "}";
-                minioClient.setBucketPolicy(
-                    io.minio.SetBucketPolicyArgs.builder().bucket(BUCKET_NAME).config(policy).build());
             }
+            
+            // Always set bucket policy to public for read-only access to ensure images are visible
+            String policy = "{\n" +
+                    "  \"Version\": \"2012-10-17\",\n" +
+                    "  \"Statement\": [\n" +
+                    "    {\n" +
+                    "      \"Effect\": \"Allow\",\n" +
+                    "      \"Principal\": { \"AWS\": [ \"*\" ] },\n" +
+                    "      \"Action\": [ \"s3:GetBucketLocation\", \"s3:ListBucket\" ],\n" +
+                    "      \"Resource\": [ \"arn:aws:s3:::" + BUCKET_NAME + "\" ]\n" +
+                    "    },\n" +
+                    "    {\n" +
+                    "      \"Effect\": \"Allow\",\n" +
+                    "      \"Principal\": { \"AWS\": [ \"*\" ] },\n" +
+                    "      \"Action\": [ \"s3:GetObject\" ],\n" +
+                    "      \"Resource\": [ \"arn:aws:s3:::" + BUCKET_NAME + "/*\" ]\n" +
+                    "    }\n" +
+                    "  ]\n" +
+                    "}";
+            minioClient.setBucketPolicy(
+                io.minio.SetBucketPolicyArgs.builder().bucket(BUCKET_NAME).config(policy).build());
         } catch (Exception e) {
             System.err.println("Error initializing MinIO: " + e.getMessage());
             e.printStackTrace();
@@ -68,8 +69,17 @@ public final class FileUtil {
             if (fileName == null || fileName.isEmpty())
                 return "";
 
-            String ext = fileName.substring(fileName.lastIndexOf("."));
-            String uniqueName = System.currentTimeMillis() + ext;
+            String ext = "";
+            int dotIdx = fileName.lastIndexOf(".");
+            if (dotIdx >= 0) {
+                ext = fileName.substring(dotIdx);
+            }
+            
+            // Sanitize filename to be alphanumeric
+            String safeBaseName = fileName.substring(0, dotIdx >= 0 ? dotIdx : fileName.length())
+                                         .replaceAll("[^a-zA-Z0-9]", "_");
+            
+            String uniqueName = System.currentTimeMillis() + "_" + safeBaseName + ext;
 
             try (InputStream is = part.getInputStream()) {
                 minioClient.putObject(
@@ -81,8 +91,8 @@ public final class FileUtil {
                                 .build());
             }
 
-            // Return the full minio path
-            return MINIO_URL + "/" + BUCKET_NAME + "/" + uniqueName;
+            // Return only the object name, the ImageServlet will handle proxying
+            return uniqueName;
         } catch (Exception e) {
             e.printStackTrace();
             return "";
@@ -106,6 +116,24 @@ public final class FileUtil {
         } catch (Exception e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    public static InputStream getFile(String fileName) {
+        if (minioClient == null || fileName == null || fileName.isEmpty())
+            return null;
+        try {
+            // If fileName is full url, extract just the object name
+            if (fileName.startsWith(MINIO_URL)) {
+                fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+            }
+            return minioClient.getObject(
+                    io.minio.GetObjectArgs.builder()
+                            .bucket(BUCKET_NAME)
+                            .object(fileName)
+                            .build());
+        } catch (Exception e) {
+            return null;
         }
     }
 }

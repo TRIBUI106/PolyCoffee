@@ -1,7 +1,6 @@
 package chez1s.assignment.controller;
 
 import chez1s.assignment.entity.Bill;
-import chez1s.assignment.entity.Drink;
 import chez1s.assignment.entity.User;
 import chez1s.assignment.service.BillService;
 import chez1s.assignment.service.CategoryService;
@@ -14,7 +13,6 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
 
 @WebServlet({"/employee/pos", "/employee/pos/add", "/employee/pos/update", "/employee/pos/note", "/employee/pos/checkout", "/employee/pos/cancel"})
 public class PosController extends HttpServlet {
@@ -77,8 +75,41 @@ public class PosController extends HttpServlet {
         }
 
         // Default: View POS
+        String tab = ParamUtil.getString(req, "tab");
+        if (tab.isEmpty()) tab = "pos";
+        req.setAttribute("activeTab", tab);
+        
         req.setAttribute("drinks", drinkService.getActiveDrinks());
         req.setAttribute("categories", categoryService.getAllCategories());
+        
+        // Populate specific data for management tabs if User is Manager
+        if (user.isRole()) { // Role == true (Manager)
+            switch (tab) {
+                case "drinks":
+                    req.setAttribute("allDrinks", drinkService.getAllDrinks());
+                    break;
+                case "categories":
+                    // categories already fetched
+                    break;
+                case "users":
+                    req.setAttribute("staffList", new chez1s.assignment.service.StaffService().getAllStaff());
+                    break;
+                case "bills":
+                    req.setAttribute("billHistory", billService.getAllBills());
+                    break;
+                case "stats":
+                    chez1s.assignment.service.StatisticService statService = new chez1s.assignment.service.StatisticService();
+                    req.setAttribute("topDrinks", statService.getTopSellingDrinks(null, null));
+                    req.setAttribute("revenueReport", statService.getRevenueReport(null, null));
+                    break;
+            }
+        } else {
+            // Force non-managers to stay on pos tab
+            if (!tab.equals("pos")) {
+                resp.sendRedirect(req.getContextPath() + "/employee/pos");
+                return;
+            }
+        }
         
         if (billId > 0) {
             Bill currentBill = billService.getBill(billId, user.getId());

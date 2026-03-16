@@ -28,7 +28,7 @@ public class DrinkController extends HttpServlet {
         String uri = req.getRequestURI();
         if (uri.contains("/delete")) {
             drinkService.deleteDrink(ParamUtil.getInt(req, "id"));
-            resp.sendRedirect(req.getContextPath() + "/manager/drinks");
+            resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=drinks");
             return;
         }
         
@@ -72,6 +72,6 @@ public class DrinkController extends HttpServlet {
             req.getSession().setAttribute("error", "Error saving product: " + e.getMessage());
         }
         
-        resp.sendRedirect(req.getContextPath() + "/manager/drinks");
+        resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=drinks");
     }
 }

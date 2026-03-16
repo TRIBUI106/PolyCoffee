@@ -1,324 +1,800 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
-<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+    <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+        <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+            <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
-<c:if test="${not empty param.lang}">
-    <c:set var="lang" value="${param.lang}" scope="session"/>
-</c:if>
-<fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
-<fmt:setBundle basename="messages" />
+                <c:if test="${not empty param.lang}">
+                    <c:set var="lang" value="${param.lang}" scope="session" />
+                </c:if>
+                <fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
+                <fmt:setBundle basename="messages" />
 
-<!DOCTYPE html>
-<html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
-<head>
-    <title><fmt:message key="pos.title"/></title>
-    <jsp:include page="/views/common/head.jsp" />
-    <script>
-        // Extend existing config for POS specific needs
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        coffee: {
-                            50: '#fdf8f6',
-                            100: '#f2e8e5',
-                            500: '#c67f63',
-                            700: '#6F4E37', 
-                        },
-                        pos: {
-                            bg: '#f0f2f5', 
-                            panel: '#ffffff',
-                            border: '#e1e4e8',
-                            text: '#1f2937',
-                            muted: '#6b7280',
-                            accent: '#0088ff', 
-                            success: '#10b981', 
-                            danger: '#ef4444',
+                <!DOCTYPE html>
+                <html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
+
+                <head>
+                    <title>
+                        <fmt:message key="pos.title" />
+                    </title>
+                    <jsp:include page="/views/common/head.jsp" />
+                    <script>
+                        // Extend existing config for POS specific needs
+                        tailwind.config = {
+                            theme: {
+                                extend: {
+                                    colors: {
+                                        coffee: {
+                                            50: '#fdf8f6',
+                                            100: '#f2e8e5',
+                                            500: '#c67f63',
+                                            700: '#6F4E37',
+                                        },
+                                        pos: {
+                                            bg: '#f0f2f5',
+                                            panel: '#ffffff',
+                                            border: '#e1e4e8',
+                                            text: '#1f2937',
+                                            muted: '#6b7280',
+                                            accent: '#0088ff',
+                                            success: '#10b981',
+                                            danger: '#ef4444',
+                                        }
+                                    },
+                                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                                    boxShadow: { 'pos': '0 0 10px rgba(0,0,0,0.05)' }
+                                }
+                            }
                         }
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                    boxShadow: { 'pos': '0 0 10px rgba(0,0,0,0.05)' }
-                }
-            }
-        }
-    </script>
-    <style>
-        body { background-color: #f0f2f5; font-family: 'Inter', sans-serif; overflow: hidden; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        .pos-grid-scroll::-webkit-scrollbar { width: 6px; }
-        .pos-grid-scroll::-webkit-scrollbar-track { background: transparent; }
-        .pos-grid-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-    </style>
-</head>
-<body class="h-screen w-screen flex flex-col text-pos-text select-none">
+                    </script>
+                    <style>
+                        body {
+                            background-color: #f0f2f5;
+                            font-family: 'Inter', sans-serif;
+                            overflow: hidden;
+                        }
 
-    <!-- POS Top Bar -->
-    <header class="h-14 bg-white border-b border-pos-border px-4 flex items-center justify-between shrink-0 z-10 shadow-sm relative">
-        <div class="flex items-center gap-4">
-            <a href="${pageContext.request.contextPath}/" title="<fmt:message key='header.home'/>" 
-               class="w-10 h-10 flex items-center justify-center bg-coffee-50 text-coffee-700 rounded-lg hover:bg-coffee-100 transition-colors">
-                <i class="bi bi-house-door-fill text-xl"></i>
-            </a>
-            <div class="h-6 w-px bg-pos-border"></div>
-            <h1 class="font-bold text-lg flex items-center gap-2">
-                <i class="bi bi-display text-coffee-700"></i>
-                <span>Smart POS</span>
-                <span class="text-xs bg-coffee-100 text-coffee-700 px-2 py-0.5 rounded-full ml-2">v1.2</span>
-            </h1>
-        </div>
-        <div class="flex items-center gap-6">
-            <div class="relative w-80 hidden md:block">
-                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                <input type="text" placeholder="<fmt:message key='pos.search.placeholder'/>" 
-                       class="w-full bg-pos-bg border border-pos-border rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-500 transition-all">
-            </div>
-            
-            <!-- Language Switcher -->
-            <div class="flex items-center bg-pos-bg border border-pos-border rounded-md p-1">
-                <a href="?lang=vi" class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">VI</a>
-                <a href="?lang=en" class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">EN</a>
-            </div>
+                        .hide-scroll::-webkit-scrollbar {
+                            display: none;
+                        }
 
-            <div class="flex items-center gap-3 border-l border-pos-border pl-6">
-                <div class="text-right hidden sm:block">
-                    <p class="text-sm font-bold leading-tight">${sessionScope.user.fullName}</p>
-                    <p class="text-[11px] text-pos-muted uppercase tracking-wider"><fmt:message key='pos.bill.serve'/></p>
-                </div>
-                <div class="w-9 h-9 bg-coffee-700 text-white rounded-full flex items-center justify-center font-bold shadow-sm">
-                    ${fn:substring(sessionScope.user.fullName, 0, 1)}
-                </div>
-            </div>
-        </div>
-    </header>
+                        .hide-scroll {
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }
 
-    <!-- Main Workspace -->
-    <main class="flex-grow flex overflow-hidden">
-        
-        <!-- Center/Left: Categories & Grid -->
-        <div class="flex-grow flex flex-col min-w-0">
-            <!-- Categories Bar -->
-            <div class="h-14 bg-white border-b border-pos-border px-4 flex items-center shrink-0 shadow-sm z-0">
-                <div class="flex gap-2 overflow-x-auto hide-scroll pb-1 items-center h-full">
-                    <button class="bg-coffee-700 text-white px-5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-sm"><fmt:message key="pos.category.all"/></button>
-                    <c:forEach var="cat" items="${categories}">
-                        <button class="bg-pos-bg hover:bg-coffee-50 text-pos-text hover:text-coffee-700 border border-transparent hover:border-coffee-200 px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors">${cat.name}</button>
-                    </c:forEach>
-                </div>
-            </div>
+                        .pos-grid-scroll::-webkit-scrollbar {
+                            width: 6px;
+                        }
 
-            <!-- Products Grid -->
-            <div class="flex-grow p-4 overflow-y-auto pos-grid-scroll bg-pos-bg">
-                <div class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 pb-8">
-                    <c:forEach var="d" items="${drinks}">
-                        <c:set var="urlParams" value="drinkId=${d.id}" />
-                        <c:if test="${not empty currentBill}">
-                            <c:set var="urlParams" value="${urlParams}&billId=${currentBill.id}" />
-                        </c:if>
-                        <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group"
-                             onclick="location.href='${pageContext.request.contextPath}/employee/pos/add?${urlParams}'">
-                            <div class="aspect-[4/3] bg-pos-bg relative overflow-hidden">
-                                <c:choose>
-                                    <c:when test="${not empty d.image}">
-                                        <c:set var="imgUrl" value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
-                                        <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                                    </c:when>
-                                    <c:otherwise>
-                                        <div class="w-full h-full flex items-center justify-center text-pos-muted text-4xl group-hover:scale-110 transition-transform duration-500">
-                                            <i class="bi bi-cup-hot"></i>
-                                        </div>
-                                    </c:otherwise>
-                                </c:choose>
-                                <!-- Price overlay -->
-                                <div class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
-                                    <fmt:formatNumber value="${d.price}" pattern="#,###"/>
+                        .pos-grid-scroll::-webkit-scrollbar-track {
+                            background: transparent;
+                        }
+
+                        .pos-grid-scroll::-webkit-scrollbar-thumb {
+                            background: #cbd5e1;
+                            border-radius: 4px;
+                        }
+                    </style>
+                </head>
+
+                <body class="h-screen w-screen flex flex-col text-pos-text select-none">
+
+                    <!-- POS Top Bar -->
+                    <header
+                        class="h-14 bg-white border-b border-pos-border px-4 flex items-center justify-between shrink-0 z-10 shadow-sm relative">
+                        <div class="flex items-center gap-4">
+                            <a href="${pageContext.request.contextPath}/" title="<fmt:message key='header.home'/>"
+                                class="w-10 h-10 flex items-center justify-center bg-coffee-50 text-coffee-700 rounded-lg hover:bg-coffee-100 transition-colors">
+                                <i class="bi bi-house-door-fill text-xl"></i>
+                            </a>
+                            <div class="h-6 w-px bg-pos-border"></div>
+                            <h1 class="font-bold text-lg flex items-center gap-2">
+                                <i class="bi bi-display text-coffee-700"></i>
+                                <span>Smart POS</span>
+                                <span
+                                    class="text-xs bg-coffee-100 text-coffee-700 px-2 py-0.5 rounded-full ml-2">v1.2</span>
+                            </h1>
+                        </div>
+                        <div class="flex items-center gap-6">
+                            <div class="relative w-80 hidden md:block">
+                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                <input type="text" placeholder="<fmt:message key='pos.search.placeholder'/>"
+                                    class="w-full bg-pos-bg border border-pos-border rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-500 transition-all">
+                            </div>
+
+                            <!-- Language Switcher -->
+                            <div class="flex items-center bg-pos-bg border border-pos-border rounded-md p-1">
+                                <a href="?lang=vi"
+                                    class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">VI</a>
+                                <a href="?lang=en"
+                                    class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">EN</a>
+                            </div>
+
+                            <div class="flex items-center gap-3 border-l border-pos-border pl-6">
+                                <div class="text-right hidden sm:block">
+                                    <p class="text-sm font-bold leading-tight">${sessionScope.user.fullName}</p>
+                                    <p class="text-[11px] text-pos-muted uppercase tracking-wider">
+                                        <fmt:message key='pos.bill.serve' />
+                                    </p>
+                                </div>
+                                <div
+                                    class="w-9 h-9 bg-coffee-700 text-white rounded-full flex items-center justify-center font-bold shadow-sm">
+                                    ${fn:substring(sessionScope.user.fullName, 0, 1)}
                                 </div>
                             </div>
-                            <div class="p-2.5 flex-grow flex flex-col justify-between">
-                                <h3 class="text-sm font-semibold text-pos-text line-clamp-2 leading-tight">${d.name}</h3>
+                        </div>
+                    </header>
+
+                    <!-- Notifications -->
+                    <c:if test="${not empty sessionScope.message}">
+                        <div
+                            class="fixed top-20 right-4 z-[100] bg-green-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-bounce font-bold flex items-center gap-3">
+                            <i class="bi bi-check-circle-fill"></i> ${sessionScope.message}
+                            <c:remove var="message" scope="session" />
+                        </div>
+                    </c:if>
+                    <c:if test="${not empty sessionScope.error}">
+                        <div
+                            class="fixed top-20 right-4 z-[100] bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-pulse font-bold flex items-center gap-3">
+                            <i class="bi bi-exclamation-triangle-fill"></i> ${sessionScope.error}
+                            <c:remove var="error" scope="session" />
+                        </div>
+                    </c:if>
+
+                    <!-- Main Workspace -->
+                    <main class="flex-grow flex overflow-hidden">
+
+                        <!-- Admin Sidebar (Pro Mode) -->
+                        <c:if test="${sessionScope.user.role}">
+                            <div
+                                class="w-16 bg-white border-r border-pos-border flex flex-col items-center py-4 gap-4 shrink-0 shadow-sm z-30">
+                                <a href="?tab=pos"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'pos' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="POS System">
+                                    <i class="bi bi-display text-xl"></i>
+                                </a>
+                                <div class="w-8 h-px bg-pos-border"></div>
+                                <a href="?tab=drinks"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'drinks' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Drink Management">
+                                    <i class="bi bi-cup-hot text-xl"></i>
+                                </a>
+                                <a href="?tab=categories"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'categories' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Categories">
+                                    <i class="bi bi-tags text-xl"></i>
+                                </a>
+                                <a href="?tab=users"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'users' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Staff Management">
+                                    <i class="bi bi-people text-xl"></i>
+                                </a>
+                                <a href="?tab=bills"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'bills' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Bill History">
+                                    <i class="bi bi-receipt text-xl"></i>
+                                </a>
+                                <div class="flex-grow"></div>
+                                <a href="?tab=stats"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'stats' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Analytics">
+                                    <i class="bi bi-graph-up-arrow text-lg"></i>
+                                </a>
                             </div>
-                        </div>
-                    </c:forEach>
-                </div>
-            </div>
-        </div>
+                        </c:if>
 
-        <!-- Right Side: Order/Cart -->
-        <div class="w-[380px] xl:w-[420px] bg-white border-l border-pos-border flex flex-col shrink-0 relative z-20 shadow-[-5px_0_15px_-5px_rgba(0,0,0,0.05)]">
-            
-            <!-- Cart Header -->
-            <div class="h-14 border-b border-pos-border px-4 flex items-center justify-between shrink-0 bg-white">
-                <div class="flex-grow flex items-center gap-2">
-                    <button class="text-pos-text hover:text-coffee-700 bg-pos-bg p-2 rounded-lg transition-colors border border-pos-border shadow-sm">
-                        <i class="bi bi-person-plus-fill text-lg"></i>
-                    </button>
-                    <div class="flex-grow">
-                        <p class="text-center font-bold text-sm bg-pos-bg py-2 rounded-lg border border-pos-border text-pos-text cursor-pointer hover:bg-gray-200 transition-colors shadow-sm">
-                            <i class="bi bi-search mr-1 text-pos-muted"></i>
-                            <fmt:message key="pos.customer.retail"/>
-                        </p>
-                    </div>
-                </div>
-            </div>
+                        <!-- Dynamic Content Area -->
+                        <div class="flex-grow flex flex-col min-w-0">
+                            <c:choose>
+                                <c:when test="${activeTab == 'pos'}">
+                                    <!-- Categories Bar -->
+                                    <div
+                                        class="h-14 bg-white border-b border-pos-border px-4 flex items-center shrink-0 shadow-sm z-0">
+                                        <div class="flex gap-2 overflow-x-auto hide-scroll pb-1 items-center h-full">
+                                            <button
+                                                class="bg-coffee-700 text-white px-5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-sm">
+                                                <fmt:message key="pos.category.all" />
+                                            </button>
+                                            <c:forEach var="cat" items="${categories}">
+                                                <button
+                                                    class="bg-pos-bg hover:bg-coffee-50 text-pos-text hover:text-coffee-700 border border-transparent hover:border-coffee-200 px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors">${cat.name}</button>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
 
-            <!-- Context Info -->
-            <div class="flex items-center px-4 py-2.5 border-b border-pos-border bg-gray-50 text-xs font-semibold text-pos-muted uppercase tracking-wider">
-                <span class="w-10"><fmt:message key="pos.table"/></span>
-                <span class="ml-2 px-2.5 py-0.5 bg-coffee-100 text-coffee-700 rounded mr-auto"><fmt:message key="pos.takeaway"/></span>
-                <span class="">
-                    <fmt:message key="pos.bill.code"/>: 
-                    <c:choose>
-                        <c:when test="${not empty currentBill}">${currentBill.code}</c:when>
-                        <c:otherwise><fmt:message key="pos.bill.new"/></c:otherwise>
-                    </c:choose>
-                </span>
-            </div>
-
-            <!-- Cart Items -->
-            <div class="flex-grow overflow-y-auto pos-grid-scroll bg-white">
-                <c:choose>
-                    <c:when test="${not empty currentBill.billDetails}">
-                        <table class="w-full text-sm">
-                            <c:forEach var="item" items="${currentBill.billDetails}" varStatus="status">
-                                <tr class="border-b border-pos-border hover:bg-pos-bg group transition-colors">
-                                    <td class="p-3 w-8 text-center text-pos-muted text-xs align-top pt-4 font-medium">${status.index + 1}</td>
-                                    <td class="py-3 pr-2 align-top">
-                                        <div class="font-bold text-pos-text leading-tight mb-1">${item.drink.name}</div>
-                                        <div class="text-[13px] text-pos-muted"><fmt:formatNumber value="${item.price}" pattern="#,###"/></div>
-                                        
-                                        <!-- Note Field with Quick Dropdown -->
-                                        <div class="relative mt-2">
-                                            <div onclick="toggleNoteDropdown(${not empty item.drink.id ? item.drink.id : 0})" 
-                                                 class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
-                                                <i class="bi bi-pencil-square"></i> 
-                                                <span class="truncate max-w-[120px]">${not empty item.note ? item.note : '<fmt:message key="pos.item.note"/>'}</span>
-                                            </div>
-                                            
-                                            <!-- Dropdown for notes -->
-                                            <div id="note-dropdown-${item.drink.id}" class="note-dropdown hidden absolute top-full left-0 mt-1 w-48 bg-white border border-pos-border rounded-lg shadow-xl z-50 py-2">
-                                                <div class="px-3 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 mb-1">
-                                                    <fmt:message key="pos.item.note.select"/>
+                                    <!-- Products Grid -->
+                                    <div class="flex-grow p-4 overflow-y-auto pos-grid-scroll bg-pos-bg">
+                                        <div
+                                            class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 pb-8">
+                                            <c:forEach var="d" items="${drinks}">
+                                                <c:set var="urlParams" value="drinkId=${d.id}" />
+                                                <c:if test="${not empty currentBill}">
+                                                    <c:set var="urlParams"
+                                                        value="${urlParams}&billId=${currentBill.id}" />
+                                                </c:if>
+                                                <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group"
+                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/add?${urlParams}'">
+                                                    <div class="aspect-[4/3] bg-pos-bg relative overflow-hidden">
+                                                        <c:choose>
+                                                            <c:when test="${not empty d.image}">
+                                                                <c:set var="imgUrl"
+                                                                    value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
+                                                                <img src="${imgUrl}"
+                                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                                            </c:when>
+                                                            <c:otherwise>
+                                                                <div
+                                                                    class="w-full h-full flex items-center justify-center text-pos-muted text-4xl group-hover:scale-110 transition-transform duration-500">
+                                                                    <i class="bi bi-cup-hot"></i>
+                                                                </div>
+                                                            </c:otherwise>
+                                                        </c:choose>
+                                                        <!-- Price overlay -->
+                                                        <div
+                                                            class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                                                            <fmt:formatNumber value="${d.price}" pattern="#,###" />
+                                                        </div>
+                                                    </div>
+                                                    <div class="p-2.5 flex-grow flex flex-col justify-between">
+                                                        <h3
+                                                            class="text-sm font-semibold text-pos-text line-clamp-2 leading-tight">
+                                                            ${d.name}</h3>
+                                                    </div>
                                                 </div>
-                                                <c:forEach var="n" items="${['50% Sugar', '70% Sugar', '100% Sugar', 'No Ice', 'No Sugar']}">
-                                                    <a href="${pageContext.request.contextPath}/employee/pos/note?billId=${currentBill.id}&drinkId=${item.drink.id}&note=${n}" 
-                                                       class="block px-4 py-1.5 text-xs hover:bg-coffee-50 hover:text-coffee-700 text-pos-text transition-all">
-                                                        ${n}
-                                                    </a>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${activeTab == 'drinks'}">
+                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                        <div class="flex justify-between items-center mb-6">
+                                            <h2 class="text-2xl font-black text-gray-900">
+                                                <fmt:message key="admin.drink.subtitle" />
+                                            </h2>
+                                            <a href="${pageContext.request.contextPath}/manager/drinks/form"
+                                                class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
+                                                <i class="bi bi-plus-lg"></i>
+                                                <fmt:message key="admin.drink.btn.add" />
+                                            </a>
+                                        </div>
+                                        <div
+                                            class="bg-white rounded-2xl border border-pos-border shadow-sm flex-grow overflow-hidden flex flex-col">
+                                            <div class="overflow-y-auto">
+                                                <table class="w-full text-left">
+                                                    <thead
+                                                        class="bg-gray-50 border-b border-pos-border sticky top-0 z-10">
+                                                        <tr>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                <fmt:message key="admin.drink.name" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                <fmt:message key="admin.drink.category" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                                <fmt:message key="admin.drink.price" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
+                                                                <fmt:message key="admin.drink.status" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                                <fmt:message key="admin.drink.action" />
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="divide-y divide-pos-border">
+                                                        <c:forEach var="item" items="${allDrinks}">
+                                                            <tr class="hover:bg-pos-bg transition-colors">
+                                                                <td class="px-6 py-4">
+                                                                    <div class="flex items-center gap-3">
+                                                                        <div
+                                                                            class="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-pos-border flex items-center justify-center">
+                                                                            <c:choose>
+                                                                                <c:when test="${not empty item.image}">
+                                                                                    <c:set var="imgUrl"
+                                                                                        value="${fn:startsWith(item.image, 'http') ? item.image : pageContext.request.contextPath.concat('/uploads/').concat(item.image)}" />
+                                                                                    <img src="${imgUrl}"
+                                                                                        class="w-full h-full object-cover">
+                                                                                </c:when>
+                                                                                <c:otherwise>
+                                                                                    <i
+                                                                                        class="bi bi-cup-hot text-gray-400"></i>
+                                                                                </c:otherwise>
+                                                                            </c:choose>
+                                                                        </div>
+                                                                        <div class="font-bold text-pos-text text-sm">
+                                                                            ${item.name}</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="px-6 py-4 text-sm text-pos-muted">
+                                                                    ${item.category.name}</td>
+                                                                <td class="px-6 py-4 text-sm font-bold text-right">
+                                                                    <fmt:formatNumber value="${item.price}"
+                                                                        pattern="#,###" />
+                                                                </td>
+                                                                <td class="px-6 py-4 text-center">
+                                                                    <span
+                                                                        class="px-3 py-1 rounded-full text-[11px] font-bold ${item.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                                                        ${item.active ? 'ACTIVE' : 'INACTIVE'}
+                                                                    </span>
+                                                                </td>
+                                                                <td class="px-6 py-4 text-right space-x-2">
+                                                                    <a href="${pageContext.request.contextPath}/manager/drinks/form?id=${item.id}"
+                                                                        class="text-pos-accent hover:text-blue-700 bg-blue-50 p-2 rounded-lg transition-colors"><i
+                                                                            class="bi bi-pencil-square"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${activeTab == 'categories'}">
+                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                        <div class="flex justify-between items-center mb-6">
+                                            <h2 class="text-2xl font-black text-gray-900">
+                                                <fmt:message key="admin.category.title" />
+                                            </h2>
+                                            <a href="${pageContext.request.contextPath}/manager/categories/form"
+                                                class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100">
+                                                <i class="bi bi-plus-lg"></i>
+                                                <fmt:message key="admin.category.btn.add" />
+                                            </a>
+                                        </div>
+                                        <div
+                                            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2">
+                                            <c:forEach var="item" items="${categories}">
+                                                <div
+                                                    class="bg-white p-5 rounded-2xl border border-pos-border shadow-sm flex items-center justify-between group hover:border-coffee-300 transition-all">
+                                                    <div class="flex items-center gap-4">
+                                                        <div
+                                                            class="w-12 h-12 bg-coffee-50 rounded-xl flex items-center justify-center text-coffee-700 text-xl font-black">
+                                                            ${fn:substring(item.name, 0, 1)}
+                                                        </div>
+                                                        <div>
+                                                            <div class="font-bold text-pos-text">${item.name}</div>
+                                                            <div class="text-xs text-pos-muted">Active: ${item.active ?
+                                                                'Yes' : 'No'}</div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex gap-2">
+                                                        <a href="${pageContext.request.contextPath}/manager/categories/form?id=${item.id}"
+                                                            class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg"><i
+                                                                class="bi bi-pencil"></i></a>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${activeTab == 'users'}">
+                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                        <div class="flex justify-between items-center mb-6">
+                                            <h2 class="text-2xl font-black text-gray-900">
+                                                <fmt:message key="admin.staff.title" />
+                                            </h2>
+                                            <a href="${pageContext.request.contextPath}/manager/staff/form"
+                                                class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-coffee-100 flex items-center gap-2">
+                                                <i class="bi bi-person-plus"></i>
+                                                <fmt:message key="admin.staff.btn.add" />
+                                            </a>
+                                        </div>
+                                        <div
+                                            class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
+                                            <div class="overflow-y-auto">
+                                                <table class="w-full text-left">
+                                                    <thead class="bg-gray-50 border-b border-pos-border sticky top-0">
+                                                        <tr>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                <fmt:message key="admin.staff.name" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                <fmt:message key="admin.staff.email" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                <fmt:message key="admin.staff.role" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
+                                                                <fmt:message key="admin.staff.status" />
+                                                            </th>
+                                                            <th
+                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                                <fmt:message key="admin.staff.action" />
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="divide-y divide-pos-border">
+                                                        <c:forEach var="item" items="${staffList}">
+                                                            <tr class="hover:bg-pos-bg">
+                                                                <td class="px-6 py-4 font-bold text-sm">${item.fullName}
+                                                                </td>
+                                                                <td class="px-6 py-4 text-sm text-pos-muted">
+                                                                    ${item.email}</td>
+                                                                <td class="px-6 py-4">
+                                                                    <span
+                                                                        class="px-2.5 py-1 rounded text-[10px] font-black tracking-widest ${item.role ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700'}">
+                                                                        ${item.role ? 'MANAGER' : 'STAFF'}
+                                                                    </span>
+                                                                </td>
+                                                                <td class="px-6 py-4 text-center">
+                                                                    <div class="flex justify-center">
+                                                                        <span
+                                                                            class="w-2 h-2 rounded-full ${item.active ? 'bg-green-500' : 'bg-red-500'}"></span>
+                                                                    </div>
+                                                                </td>
+                                                                <td class="px-6 py-4 text-right">
+                                                                    <a href="${pageContext.request.contextPath}/manager/staff/form?id=${item.id}"
+                                                                        class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors"><i
+                                                                            class="bi bi-pencil-square"></i></a>
+                                                                </td>
+                                                            </tr>
+                                                        </c:forEach>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${activeTab == 'bills'}">
+                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                        <h2 class="text-2xl font-black text-gray-900 mb-6">
+                                            <fmt:message key="admin.bill.title" />
+                                        </h2>
+                                        <div
+                                            class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
+                                            <table class="w-full text-left">
+                                                <thead class="bg-gray-50 border-b border-pos-border sticky top-0">
+                                                    <tr>
+                                                        <th
+                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                            <fmt:message key="admin.bill.code" />
+                                                        </th>
+                                                        <th
+                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                            <fmt:message key="admin.bill.date" />
+                                                        </th>
+                                                        <th
+                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                            <fmt:message key="admin.bill.total" />
+                                                        </th>
+                                                        <th
+                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
+                                                            <fmt:message key="admin.bill.status" />
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="divide-y divide-pos-border">
+                                                    <c:forEach var="item" items="${billHistory}">
+                                                        <tr class="hover:bg-pos-bg transition-colors">
+                                                            <td class="px-6 py-4 font-mono text-xs font-bold">
+                                                                ${item.code}</td>
+                                                            <td class="px-6 py-4 text-sm text-pos-muted">
+                                                                <fmt:formatDate value="${item.createdAt}"
+                                                                    pattern="yyyy-MM-dd HH:mm" />
+                                                            </td>
+                                                            <td
+                                                                class="px-6 py-4 text-sm font-bold text-right text-coffee-700">
+                                                                <fmt:formatNumber value="${item.total}"
+                                                                    pattern="#,###" />
+                                                            </td>
+                                                            <td class="px-6 py-4 text-center text-xs">
+                                                                <span
+                                                                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">PAID</span>
+                                                            </td>
+                                                        </tr>
+                                                    </c:forEach>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:when test="${activeTab == 'stats'}">
+                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-y-auto p-6">
+                                        <h2 class="text-2xl font-black text-gray-900 mb-6">Business Dashboard</h2>
+
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                                            <!-- Revenue Snapshot -->
+                                            <div class="bg-white p-6 rounded-2xl border border-pos-border shadow-sm">
+                                                <h3
+                                                    class="text-sm font-black text-pos-muted uppercase tracking-widest mb-4">
+                                                    Daily Revenue (Last 5 days)</h3>
+                                                <div class="space-y-4">
+                                                    <c:forEach var="r" items="${revenueReport}" varStatus="st">
+                                                        <c:if test="${st.index < 5}">
+                                                            <div class="flex items-center gap-4">
+                                                                <div class="text-xs font-bold w-16 text-pos-muted">
+                                                                    <fmt:formatDate value="${r.revenueDate}"
+                                                                        pattern="MM-dd" />
+                                                                </div>
+                                                                <div class="flex-grow bg-gray-100 rounded-full h-2">
+                                                                    <div class="bg-coffee-500 h-full rounded-full"
+                                                                        style="width: 70%"></div>
+                                                                </div>
+                                                                <div
+                                                                    class="text-xs font-black text-pos-text w-20 text-right">
+                                                                    <fmt:formatNumber value="${r.totalRevenue}"
+                                                                        pattern="#,###" />
+                                                                </div>
+                                                            </div>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+
+                                            <!-- Top Drinks -->
+                                            <div class="bg-white p-6 rounded-2xl border border-pos-border shadow-sm">
+                                                <h3
+                                                    class="text-sm font-black text-pos-muted uppercase tracking-widest mb-4">
+                                                    Popular Drinks</h3>
+                                                <div class="space-y-3">
+                                                    <c:forEach var="d" items="${topDrinks}" varStatus="st">
+                                                        <c:if test="${st.index < 5}">
+                                                            <div
+                                                                class="flex justify-between items-center text-sm group">
+                                                                <div class="flex items-center gap-3">
+                                                                    <span
+                                                                        class="w-6 h-6 flex items-center justify-center bg-coffee-50 text-coffee-700 rounded-lg text-[10px] font-black">${st.index
+                                                                        + 1}</span>
+                                                                    <span
+                                                                        class="font-bold group-hover:text-coffee-700 transition-colors">${d.drinkName}</span>
+                                                                </div>
+                                                                <span
+                                                                    class="bg-gray-50 px-2 py-0.5 rounded text-[11px] font-bold text-pos-muted italic">${d.totalQuantitySold}
+                                                                    cups</span>
+                                                            </div>
+                                                        </c:if>
+                                                    </c:forEach>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                        </div>
+
+                        <!-- Right Side: Order/Cart (Visible only on POS tab) -->
+                        <c:if test="${activeTab == 'pos'}">
+                            <div
+                                class="w-[380px] xl:w-[420px] bg-white border-l border-pos-border flex flex-col shrink-0 relative z-20 shadow-[-5px_0_15px_-5px_rgba(0,0,0,0.05)]">
+
+                                <!-- Cart Header -->
+                                <div
+                                    class="h-14 border-b border-pos-border px-4 flex items-center justify-between shrink-0 bg-white">
+                                    <div class="flex-grow flex items-center gap-2">
+                                        <button
+                                            class="text-pos-text hover:text-coffee-700 bg-pos-bg p-2 rounded-lg transition-colors border border-pos-border shadow-sm">
+                                            <i class="bi bi-person-plus-fill text-lg"></i>
+                                        </button>
+                                        <div class="flex-grow">
+                                            <p
+                                                class="text-center font-bold text-sm bg-pos-bg py-2 rounded-lg border border-pos-border text-pos-text cursor-pointer hover:bg-gray-200 transition-colors shadow-sm">
+                                                <i class="bi bi-search mr-1 text-pos-muted"></i>
+                                                <fmt:message key="pos.customer.retail" />
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Context Info -->
+                                <div
+                                    class="flex items-center px-4 py-2.5 border-b border-pos-border bg-gray-50 text-xs font-semibold text-pos-muted uppercase tracking-wider">
+                                    <span class="w-10">
+                                        <fmt:message key="pos.table" />
+                                    </span>
+                                    <span class="ml-2 px-2.5 py-0.5 bg-coffee-100 text-coffee-700 rounded mr-auto">
+                                        <fmt:message key="pos.takeaway" />
+                                    </span>
+                                    <span class="">
+                                        <fmt:message key="pos.bill.code" />:
+                                        <c:choose>
+                                            <c:when test="${not empty currentBill}">${currentBill.code}</c:when>
+                                            <c:otherwise>
+                                                <fmt:message key="pos.bill.new" />
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </span>
+                                </div>
+
+                                <!-- Cart Items -->
+                                <div class="flex-grow overflow-y-auto pos-grid-scroll bg-white">
+                                    <c:choose>
+                                        <c:when test="${not empty currentBill.billDetails}">
+                                            <table class="w-full text-sm">
+                                                <c:forEach var="item" items="${currentBill.billDetails}"
+                                                    varStatus="status">
+                                                    <tr
+                                                        class="border-b border-pos-border hover:bg-pos-bg group transition-colors">
+                                                        <td
+                                                            class="p-3 w-8 text-center text-pos-muted text-xs align-top pt-4 font-medium">
+                                                            ${status.index + 1}</td>
+                                                        <td class="py-3 pr-2 align-top">
+                                                            <div class="font-bold text-pos-text leading-tight mb-1">
+                                                                ${item.drink.name}</div>
+                                                            <div class="text-[13px] text-pos-muted">
+                                                                <fmt:formatNumber value="${item.price}"
+                                                                    pattern="#,###" />
+                                                            </div>
+
+                                                            <!-- Note Field with Quick Dropdown -->
+                                                            <div class="relative mt-2">
+                                                                <div onclick="toggleNoteDropdown(${not empty item.drink.id ? item.drink.id : 0})"
+                                                                    class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
+                                                                    <i class="bi bi-pencil-square"></i>
+                                                                    <span class="truncate max-w-[120px]">${not empty
+                                                                        item.note ? item.note : '
+                                                                        <fmt:message key="pos.item.note" />'}
+                                                                    </span>
+                                                                </div>
+
+                                                                <!-- Dropdown for notes -->
+                                                                <div id="note-dropdown-${item.drink.id}"
+                                                                    class="note-dropdown hidden absolute top-full left-0 mt-1 w-48 bg-white border border-pos-border rounded-lg shadow-xl z-50 py-2">
+                                                                    <div
+                                                                        class="px-3 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 mb-1">
+                                                                        <fmt:message key="pos.item.note.select" />
+                                                                    </div>
+                                                                    <c:forEach var="n"
+                                                                        items="${['50% Sugar', '70% Sugar', '100% Sugar', 'No Ice', 'No Sugar']}">
+                                                                        <a href="${pageContext.request.contextPath}/employee/pos/note?billId=${currentBill.id}&drinkId=${item.drink.id}&note=${n}"
+                                                                            class="block px-4 py-1.5 text-xs hover:bg-coffee-50 hover:text-coffee-700 text-pos-text transition-all">
+                                                                            ${n}
+                                                                        </a>
+                                                                    </c:forEach>
+                                                                    <div
+                                                                        class="border-t border-pos-border mt-2 pt-2 px-2">
+                                                                        <input type="text"
+                                                                            onkeyup="if(event.key === 'Enter') handleCustomNote(${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0}, this.value)"
+                                                                            placeholder="<fmt:message key="
+                                                                            pos.item.note.placeholder" />"
+                                                                        value="${item.note}"
+                                                                        class="w-full text-xs p-2 bg-gray-50 border
+                                                                        border-pos-border rounded-md focus:outline-none
+                                                                        focus:border-coffee-500 focus:ring-1
+                                                                        focus:ring-coffee-200 transition-all">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                        <td class="py-3 px-1 w-[110px] align-top">
+                                                            <div
+                                                                class="flex items-center bg-white border border-pos-border rounded-md shrink-0 overflow-hidden shadow-sm h-8 mt-1">
+                                                                <button
+                                                                    class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-r border-pos-border shrink-0 active:bg-gray-200"
+                                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
+                                                                    <i class="bi bi-dash"></i>
+                                                                </button>
+                                                                <input type="text" value="${item.quantity}" readonly
+                                                                    class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
+                                                                <button
+                                                                    class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
+                                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity + 1}'">
+                                                                    <i class="bi bi-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                        <td
+                                                            class="py-3 pl-2 pr-4 text-right font-bold text-pos-text w-24 align-top pt-4">
+                                                            <fmt:formatNumber value="${item.price * item.quantity}"
+                                                                pattern="#,###" />
+                                                        </td>
+                                                    </tr>
                                                 </c:forEach>
-                                                <div class="border-t border-pos-border mt-2 pt-2 px-2">
-                                                    <input type="text" 
-                                                           onkeyup="if(event.key === 'Enter') handleCustomNote(${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0}, this.value)"
-                                                           placeholder="<fmt:message key="pos.item.note.placeholder"/>"
-                                                           value="${item.note}"
-                                                           class="w-full text-xs p-2 bg-gray-50 border border-pos-border rounded-md focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-200 transition-all">
-                                                </div>
+                                            </table>
+                                        </c:when>
+                                        <c:otherwise>
+                                            <div
+                                                class="h-full flex flex-col items-center justify-center text-pos-muted opacity-40">
+                                                <i class="bi bi-cart-x text-6xl mb-4 text-coffee-300"></i>
+                                                <p class="font-medium text-lg">
+                                                    <fmt:message key="pos.bill.empty" />
+                                                </p>
                                             </div>
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+
+                                <!-- Cart Footer (Checkout) -->
+                                <div
+                                    class="border-t border-pos-border bg-white shrink-0 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
+                                    <!-- Summary -->
+                                    <div class="px-4 py-3 space-y-2 text-sm border-b border-pos-border bg-gray-50/30">
+                                        <div class="flex justify-between items-center text-pos-text">
+                                            <span>
+                                                <fmt:message key="pos.bill.total" /> (
+                                                <c:out value="${fn:length(currentBill.billDetails)}" />
+                                                <fmt:message key="pos.bill.items" />)
+                                            </span>
+                                            <span class="font-bold text-base">
+                                                <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
+                                            </span>
                                         </div>
-                                    </td>
-                                    <td class="py-3 px-1 w-[110px] align-top">
-                                        <div class="flex items-center bg-white border border-pos-border rounded-md shrink-0 overflow-hidden shadow-sm h-8 mt-1">
-                                            <button class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-r border-pos-border shrink-0 active:bg-gray-200"
-                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
-                                                <i class="bi bi-dash"></i>
+                                        <div class="flex justify-between items-center text-pos-muted">
+                                            <span>
+                                                <fmt:message key="pos.bill.discount" /> (F4)
+                                            </span>
+                                            <span
+                                                class="cursor-pointer border-b border-dashed border-pos-muted">0</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Total & Big Buttons -->
+                                    <div class="p-4 bg-white">
+                                        <div class="flex justify-between items-center mb-4">
+                                            <span class="font-bold text-pos-text text-sm">
+                                                <fmt:message key="pos.bill.payable" />
+                                            </span>
+                                            <span class="text-3xl font-extrabold text-coffee-700 tracking-tight">
+                                                <fmt:formatNumber
+                                                    value="${currentBill.total != null ? currentBill.total : 0}"
+                                                    pattern="#,###" />
+                                            </span>
+                                        </div>
+
+                                        <fmt:message key="pos.bill.confirm.cancel" var="msgCancel" />
+                                        <fmt:message key="pos.bill.confirm.checkout" var="msgCheckout" />
+
+                                        <div class="grid grid-cols-5 gap-3">
+                                            <!-- Extra Actions (Cancel) -->
+                                            <button
+                                                class="col-span-1 border-2 border-pos-border text-pos-danger rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                ${empty currentBill.billDetails ? 'disabled' : '' }
+                                                onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
+                                                title="Huỷ đơn">
+                                                <i class="bi bi-trash3"></i>
                                             </button>
-                                            <input type="text" value="${item.quantity}" readonly class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
-                                            <button class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
-                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity + 1}'">
-                                                <i class="bi bi-plus"></i>
+
+                                            <!-- Pay Button -->
+                                            <button
+                                                class="col-span-4 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
+                                                ${empty currentBill.billDetails ? 'disabled' : '' }
+                                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
+                                                <i class="bi bi-cash-stack text-xl"></i>
+                                                <span class="tracking-wide">
+                                                    <fmt:message key="pos.bill.checkout" /> (F9)
+                                                </span>
                                             </button>
                                         </div>
-                                    </td>
-                                    <td class="py-3 pl-2 pr-4 text-right font-bold text-pos-text w-24 align-top pt-4">
-                                        <fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###"/>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </table>
-                    </c:when>
-                    <c:otherwise>
-                        <div class="h-full flex flex-col items-center justify-center text-pos-muted opacity-40">
-                            <i class="bi bi-cart-x text-6xl mb-4 text-coffee-300"></i>
-                            <p class="font-medium text-lg"><fmt:message key="pos.bill.empty"/></p>
-                        </div>
-                    </c:otherwise>
-                </c:choose>
-            </div>
+                                    </div>
+                                </div>
+                        </c:if>
+                    </main>
 
-            <!-- Cart Footer (Checkout) -->
-            <div class="border-t border-pos-border bg-white shrink-0 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
-                <!-- Summary -->
-                <div class="px-4 py-3 space-y-2 text-sm border-b border-pos-border bg-gray-50/30">
-                    <div class="flex justify-between items-center text-pos-text">
-                        <span><fmt:message key="pos.bill.total"/> (<c:out value="${fn:length(currentBill.billDetails)}"/> <fmt:message key="pos.bill.items"/>)</span>
-                        <span class="font-bold text-base"><fmt:formatNumber value="${currentBill.total}" pattern="#,###"/></span>
-                    </div>
-                    <div class="flex justify-between items-center text-pos-muted">
-                        <span><fmt:message key="pos.bill.discount"/> (F4)</span>
-                        <span class="cursor-pointer border-b border-dashed border-pos-muted">0</span>
-                    </div>
-                </div>
-                
-                <!-- Total & Big Buttons -->
-                <div class="p-4 bg-white">
-                    <div class="flex justify-between items-center mb-4">
-                        <span class="font-bold text-pos-text text-sm"><fmt:message key="pos.bill.payable"/></span>
-                        <span class="text-3xl font-extrabold text-coffee-700 tracking-tight">
-                            <fmt:formatNumber value="${currentBill.total != null ? currentBill.total : 0}" pattern="#,###"/>
-                        </span>
-                    </div>
-                    
-                    <fmt:message key="pos.bill.confirm.cancel" var="msgCancel" />
-                    <fmt:message key="pos.bill.confirm.checkout" var="msgCheckout" />
-                    
-                    <div class="grid grid-cols-5 gap-3">
-                        <!-- Extra Actions (Cancel) -->
-                        <button class="col-span-1 border-2 border-pos-border text-pos-danger rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
-                                ${empty currentBill.billDetails ? 'disabled' : ''}
-                                onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
-                                title="Huỷ đơn">
-                            <i class="bi bi-trash3"></i>
-                        </button>
-                        
-                        <!-- Pay Button -->
-                        <button class="col-span-4 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
-                                ${empty currentBill.billDetails ? 'disabled' : ''}
-                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
-                            <i class="bi bi-cash-stack text-xl"></i>
-                            <span class="tracking-wide"><fmt:message key="pos.bill.checkout"/> (F9)</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            
-        </div>
-    </main>
+                    <script>
+                        function toggleNoteDropdown(id) {
+                            const el = document.getElementById('note-dropdown-' + id);
+                            const isHidden = el.classList.contains('hidden');
 
-    <script>
-        function toggleNoteDropdown(id) {
-            const el = document.getElementById('note-dropdown-' + id);
-            const isHidden = el.classList.contains('hidden');
-            
-            // Close all other dropdowns
-            document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
-            
-            if (isHidden) {
-                el.classList.remove('hidden');
-                // Auto focus input
-                setTimeout(() => el.querySelector('input').focus(), 100);
-            }
-        }
+                            // Close all other dropdowns
+                            document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
 
-        function handleCustomNote(billId, drinkId, note) {
-            location.href = '${pageContext.request.contextPath}/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note);
-        }
+                            if (isHidden) {
+                                el.classList.remove('hidden');
+                                // Auto focus input
+                                setTimeout(() => el.querySelector('input').focus(), 100);
+                            }
+                        }
 
-        // Close on click outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.relative')) {
-                document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
-            }
-        });
-    </script>
-</body>
-</html>
+                        function handleCustomNote(billId, drinkId, note) {
+                            location.href = '${pageContext.request.contextPath}/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note);
+                        }
+
+                        // Close on click outside
+                        document.addEventListener('click', function (e) {
+                            if (!e.target.closest('.relative')) {
+                                document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
+                            }
+                        });
+                    </script>
+                </body>
+
+                </html>
