@@ -1,14 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isErrorPage="true" %>
 <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+
+<fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
+<fmt:setBundle basename="messages" />
+
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html class="h-full bg-gray-50">
 <head>
     <meta charset="UTF-8">
-    <title>Critical Error | PolyCoffee</title>
+    <title><fmt:message key="error.gen.title"/> - PolyCoffee</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    
     <script>
         tailwind.config = {
             theme: {
@@ -25,100 +28,57 @@
                             700: '#6F4E37',
                             800: '#5c402d',
                             900: '#4a3424',
-                        },
-                        cream: '#FDF7E4',
-                        latte: '#A67B5B',
-                        caramel: '#ECB176',
-                        mocha: '#2D2424',
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Playfair Display', 'serif'],
-                    },
-                    animation: {
-                        'morph': 'morph 8s ease-in-out infinite',
-                    },
-                    keyframes: {
-                        morph: {
-                            '0%, 100%': { borderRadius: '40% 60% 70% 30% / 40% 40% 60% 50%' },
-                            '50%': { borderRadius: '70% 30% 50% 50% / 30% 30% 70% 70%' },
                         }
                     }
                 }
             }
         }
     </script>
-    <style type="text/tailwindcss">
-        @layer components {
-            .glass {
-                @apply bg-white/40 backdrop-blur-xl border border-white/30 shadow-[0_8px_32px_0_rgba(111,78,55,0.1)];
-            }
-            .btn-coffee {
-                @apply bg-coffee-700 text-white px-8 py-3.5 rounded-full font-semibold transition-all duration-500 hover:bg-coffee-800 hover:scale-105 active:scale-95 shadow-xl shadow-coffee-700/30 flex items-center gap-2;
-            }
-            .btn-soft {
-                @apply bg-white/50 backdrop-blur-md text-coffee-800 border border-coffee-200/50 px-8 py-3.5 rounded-full font-semibold transition-all duration-500 hover:bg-cream/80 hover:border-coffee-300 shadow-lg flex items-center gap-2;
-            }
-        }
-        .text-display { font-family: 'Playfair Display', serif; }
-        .blob { @apply absolute blur-[100px] opacity-20 animate-morph; }
-    </style>
 </head>
-<body class="bg-[#FCF9F3] text-mocha font-sans h-full flex flex-col items-center justify-center overflow-hidden">
+<body class="bg-gray-50 font-sans h-full flex flex-col items-center justify-center">
     
-    <!-- Background Decoration -->
-    <div class="fixed inset-0 -z-10">
-        <div class="blob w-[600px] h-[600px] bg-coffee-200 -top-20 -left-20"></div>
-        <div class="blob w-[500px] h-[500px] bg-caramel/40 bottom-0 -right-20" style="animation-delay: -2s"></div>
-    </div>
-
-    <div class="max-w-3xl text-center px-6 relative">
-        <div class="mb-12 relative inline-flex items-center justify-center">
-            <span class="text-[180px] md:text-[240px] font-black opacity-[0.05] tracking-tighter text-display selection:bg-transparent -z-10 select-none">Err</span>
-            <div class="absolute inset-0 flex items-center justify-center">
-                <div class="bg-mocha p-8 rounded-[2.5rem] shadow-2xl skew-y-6">
-                    <i class="bi bi-exclamation-triangle-fill text-yellow-500 text-6xl"></i>
-                </div>
-            </div>
+    <div class="max-w-3xl text-center px-6">
+        <div class="mb-10 text-yellow-500">
+            <i class="bi bi-exclamation-triangle-fill text-8xl"></i>
         </div>
 
-        <h1 class="text-4xl md:text-5xl font-black mb-6 text-display tracking-tight">System Refinement Required.</h1>
-        <p class="text-mocha/60 text-lg md:text-xl mb-12 font-light leading-relaxed">
-            A specialized event has occurred in the brewing core. 
-            We've logged the signature for our technical curators to review.
+        <h1 class="text-4xl font-bold text-gray-900 mb-6"><fmt:message key="error.gen.h1"/></h1>
+        <p class="text-gray-500 text-lg mb-12 max-w-md mx-auto">
+            <fmt:message key="error.gen.desc"/>
         </p>
 
-        <div class="flex flex-col sm:flex-row gap-6 justify-center">
-            <a href="${pageContext.request.contextPath}/" class="btn-coffee text-xl">
-                Safe Return <i class="bi bi-shield-check"></i>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="${pageContext.request.contextPath}/" class="bg-coffee-700 hover:bg-coffee-800 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-sm flex items-center justify-center gap-2">
+                <fmt:message key="error.404.home"/> <i class="bi bi-house"></i>
             </a>
-            <button onclick="history.back()" class="btn-soft text-xl">
-                Restore Previous State <i class="bi bi-arrow-counterclockwise"></i>
+            <button onclick="history.back()" class="bg-white hover:bg-gray-50 text-gray-700 border border-gray-200 px-8 py-3.5 rounded-xl font-bold transition-all shadow-sm flex items-center justify-center gap-2">
+                <fmt:message key="error.404.back"/> <i class="bi bi-arrow-left"></i>
             </button>
         </div>
 
-        <div class="mt-20 glass rounded-coffee p-8 text-left max-h-[300px] overflow-auto">
-            <div class="flex items-center justify-between mb-4 pb-4 border-b border-mocha/5">
-                <p class="text-[10px] uppercase tracking-widest text-mocha/40 font-bold">Exception Journal</p>
-                <span class="text-[10px] bg-mocha/5 px-2 py-1 rounded text-mocha/40 font-mono">${pageContext.errorPage}</span>
+        <div class="mt-12 text-left bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
+            <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Exception Journal</span>
+                <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-500 font-mono">${pageContext.errorPage}</span>
             </div>
-            
-            <c:if test="${not empty exception}">
-                <p class="font-bold text-sm mb-2 text-red-800">${exception.getClass().name}: ${exception.message}</p>
-                <pre class="text-[10px] text-mocha/50 font-mono whitespace-pre-wrap leading-relaxed opacity-60">
-                    <c:forEach var="trace" items="${exception.stackTrace}">
-                        at ${trace}
-                    </c:forEach>
-                </pre>
-            </c:if>
-            <c:if test="${empty exception}">
-                <p class="text-mocha/40 italic text-sm">No explicit stack traces were captured for this event.</p>
-            </c:if>
+            <div class="p-6 max-h-[240px] overflow-auto">
+                <c:if test="${not empty exception}">
+                    <p class="font-bold text-sm mb-3 text-red-700">${exception.getClass().name}: ${exception.message}</p>
+                    <pre class="text-[10px] text-gray-500 font-mono whitespace-pre-wrap leading-relaxed">
+                        <c:forEach var="trace" items="${exception.stackTrace}">
+                            at ${trace}
+                        </c:forEach>
+                    </pre>
+                </c:if>
+                <c:if test="${empty exception}">
+                    <p class="text-gray-400 italic text-sm">No explicit stack traces were captured for this event.</p>
+                </c:if>
+            </div>
         </div>
     </div>
 
-    <div class="fixed bottom-12 text-[10px] font-bold tracking-[0.4em] uppercase text-mocha/20">
-        PolyCoffee &bull; Liquid Glass Architecture
+    <div class="fixed bottom-10 text-[10px] font-bold tracking-widest uppercase text-gray-400">
+        &copy; 2026 PolyCoffee
     </div>
 
 </body>
