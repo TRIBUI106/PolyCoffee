@@ -28,26 +28,40 @@ public class PosController extends HttpServlet {
         Integer billId = ParamUtil.getInt(req, "billId");
         User user = AuthUtil.getUser(req);
 
+        if (user == null) {
+            resp.sendRedirect(req.getContextPath() + "/auth/login");
+            return;
+        }
+
         if (uri.contains("/add")) {
-            Integer newBillId = billService.addDrinkToBill(billId, user.getId(), ParamUtil.getInt(req, "drinkId"), user);
-            resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + (newBillId > 0 ? newBillId : ""));
+            Integer drinkId = ParamUtil.getInt(req, "drinkId");
+            if (drinkId > 0) {
+                Integer newBillId = billService.addDrinkToBill(billId, user.getId(), drinkId, user);
+                resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + (newBillId > 0 ? newBillId : ""));
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + (billId > 0 ? billId : ""));
+            }
             return;
         }
 
         if (uri.contains("/update")) {
-            billService.updateQuantity(billId, ParamUtil.getInt(req, "drinkId"), ParamUtil.getInt(req, "quantity"));
-            resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + billId);
+            Integer drinkId = ParamUtil.getInt(req, "drinkId");
+            int quantity = ParamUtil.getInt(req, "quantity");
+            if (billId > 0 && drinkId > 0) {
+                billService.updateQuantity(billId, drinkId, quantity);
+            }
+            resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + (billId > 0 ? billId : ""));
             return;
         }
 
         if (uri.contains("/checkout")) {
-            billService.checkout(billId);
+            if (billId > 0) billService.checkout(billId);
             resp.sendRedirect(req.getContextPath() + "/employee/pos");
             return;
         }
 
         if (uri.contains("/cancel")) {
-            billService.cancel(billId);
+            if (billId > 0) billService.cancel(billId);
             resp.sendRedirect(req.getContextPath() + "/employee/pos");
             return;
         }
@@ -56,9 +70,11 @@ public class PosController extends HttpServlet {
         req.setAttribute("drinks", drinkService.getActiveDrinks());
         req.setAttribute("categories", categoryService.getAllCategories());
         
-        if (user != null && billId > 0) {
+        if (billId > 0) {
             Bill currentBill = billService.getBill(billId, user.getId());
-            req.setAttribute("currentBill", currentBill);
+            if (currentBill != null) {
+                req.setAttribute("currentBill", currentBill);
+            }
         }
         
         req.getRequestDispatcher("/views/pos/view.jsp").forward(req, resp);

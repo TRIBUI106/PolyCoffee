@@ -47,7 +47,7 @@
                                             <div class="text-xs font-medium text-gray-500"><fmt:formatDate value="${b.createdAt}" pattern="hh:mm a"/></div>
                                         </td>
                                         <td class="px-6 py-5">
-                                            <div class="font-bold text-gray-900 text-base"><fmt:formatNumber value="${b.total}" pattern="#,###"/> <span class="text-[10px] text-gray-400">VNĐ</span></div>
+                                            <div class="font-bold text-gray-900 text-base"><fmt:formatNumber value="${b.total}" pattern="#,###"/> <span class="text-[10px] text-gray-400"><fmt:message key="common.currency"/></span></div>
                                         </td>
                                         <td class="px-6 py-5 text-center">
                                             <span class="inline-flex py-1 px-3 rounded-md text-xs font-bold border 
@@ -95,7 +95,7 @@
                                         </div>
                                     </div>
                                     <div class="text-gray-900 font-bold text-sm sm:w-auto w-full text-right">
-                                        <fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###"/> <span class="text-[10px] text-gray-400">VNĐ</span>
+                                        <fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###"/> <span class="text-[10px] text-gray-400"><fmt:message key="common.currency"/></span>
                                     </div>
                                 </div>
                             </c:forEach>
@@ -123,7 +123,7 @@
                             
                             <div class="flex flex-wrap lg:flex-nowrap justify-between items-end gap-2">
                                 <span class="text-base font-bold text-gray-900"><fmt:message key="admin.bill.detail.total"/></span>
-                                <span class="text-xl md:text-2xl font-black text-coffee-700 tracking-tight"><fmt:formatNumber value="${bill.total}" pattern="#,###"/> <span class="text-sm text-gray-500 font-bold text-opacity-80">VNĐ</span></span>
+                                <span class="text-xl md:text-2xl font-black text-coffee-700 tracking-tight"><fmt:formatNumber value="${bill.total}" pattern="#,###"/> <span class="text-sm text-gray-500 font-bold text-opacity-80"><fmt:message key="common.currency"/></span></span>
                             </div>
                         </div>
 

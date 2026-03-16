@@ -52,7 +52,7 @@
                                 <div class="flex-grow">
                                     <div class="flex items-center justify-between mb-1.5">
                                         <h4 class="font-bold text-gray-900">${item.drinkName}</h4>
-                                        <span class="text-gray-900 font-bold"><fmt:formatNumber value="${item.totalRevenue}" pattern="#,###"/> <span class="text-[10px] text-gray-400">VNĐ</span></span>
+                                        <span class="text-gray-900 font-bold"><fmt:formatNumber value="${item.totalRevenue}" pattern="#,###"/> <span class="text-[10px] text-gray-400"><fmt:message key="common.currency"/></span></span>
                                     </div>
                                     <!-- Simple Progress Bar -->
                                     <div class="h-1.5 w-full bg-gray-100 rounded-full overflow-hidden">
@@ -105,7 +105,7 @@
                                         ${row.totalBills} <span class="text-[10px] text-gray-400 ml-1"><fmt:message key="admin.report.rev.bills"/></span>
                                     </td>
                                     <td class="px-8 py-5 text-right font-black text-gray-900">
-                                        <fmt:formatNumber value="${row.totalRevenue}" pattern="#,###"/> <span class="text-[10px] text-gray-400 ml-0.5">VNĐ</span>
+                                        <fmt:formatNumber value="${row.totalRevenue}" pattern="#,###"/> <span class="text-[10px] text-gray-400 ml-0.5"><fmt:message key="common.currency"/></span>
                                     </td>
                                 </tr>
                             </c:forEach>

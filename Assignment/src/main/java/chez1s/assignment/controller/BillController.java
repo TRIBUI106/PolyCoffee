@@ -1,5 +1,6 @@
 package chez1s.assignment.controller;
 
+import chez1s.assignment.entity.User;
 import chez1s.assignment.service.BillService;
 import chez1s.assignment.util.AuthUtil;
 import chez1s.assignment.util.ParamUtil;
@@ -16,12 +17,22 @@ public class BillController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Integer userId = AuthUtil.getUser(req).getId();
-        req.setAttribute("bills", billService.getUserBills(userId));
+        User user = AuthUtil.getUser(req);
+        Integer userId = user.getId();
+        
+        if (user.isRole()) {
+            req.setAttribute("bills", billService.getAllBills());
+        } else {
+            req.setAttribute("bills", billService.getUserBills(userId));
+        }
         
         Integer detailId = ParamUtil.getInt(req, "id");
         if (detailId > 0) {
-            req.setAttribute("bill", billService.getBill(detailId, userId));
+            if (user.isRole()) {
+                req.setAttribute("bill", billService.getBillById(detailId));
+            } else {
+                req.setAttribute("bill", billService.getBill(detailId, userId));
+            }
         }
         
         req.getRequestDispatcher("/views/bills/list.jsp").forward(req, resp);
