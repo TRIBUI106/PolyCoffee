@@ -192,7 +192,7 @@
                                         
                                         <!-- Note Field (Visual only for real feel) -->
                                         <div class="mt-2 flex items-center gap-1 text-[11px] text-pos-muted hover:text-coffee-700 cursor-pointer w-max pl-1 border-l-2 border-transparent hover:border-coffee-500">
-                                            <i class="bi bi-pencil-square"></i> Ghi chú
+                                            <i class="bi bi-pencil-square"></i> <fmt:message key="pos.item.note"/>
                                         </div>
                                     </td>
                                     <td class="py-3 px-1 w-[110px] align-top">

@@ -105,8 +105,9 @@
                                                 <a href="?id=${cat.id}" class="w-8 h-8 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm">
                                                     <i class="bi bi-pencil-square"></i>
                                                 </a>
+                                                <fmt:message key="admin.category.confirm.delete" var="confirmCatDeleteMsg"/>
                                                 <a href="${pageContext.request.contextPath}/manager/categories/delete?id=${cat.id}" 
-                                                   onclick="return confirm('<fmt:message key="admin.category.confirm.delete"/>')"
+                                                   onclick="return confirm('${confirmCatDeleteMsg}')"
                                                    class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all shadow-sm">
                                                     <i class="bi bi-trash3"></i>
                                                 </a>
@@ -137,8 +138,9 @@
                                 <a href="?id=${cat.id}" class="w-9 h-9 flex items-center justify-center rounded-lg bg-blue-50 text-blue-600 active:bg-blue-600 active:text-white transition-all">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
+                                <fmt:message key="admin.category.confirm.delete" var="confirmCatDeleteMsg"/>
                                 <a href="${pageContext.request.contextPath}/manager/categories/delete?id=${cat.id}" 
-                                   onclick="return confirm('<fmt:message key="admin.category.confirm.delete"/>')"
+                                   onclick="return confirm('${confirmCatDeleteMsg}')"
                                    class="w-9 h-9 flex items-center justify-center rounded-lg bg-red-50 text-red-600 active:bg-red-600 active:text-white transition-all">
                                     <i class="bi bi-trash3"></i>
                                 </a>

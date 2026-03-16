@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <html class="h-full">
 <head>
-    <title>PolyCoffee - Cà Phê Thượng Hạng</title>
+    <title><fmt:message key="app.name"/> - <fmt:message key="app.subtitle"/></title>
 </head>
 <body class="bg-gray-50 font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-coffee-200 selection:text-coffee-900">
     <jsp:include page="common/header.jsp" />

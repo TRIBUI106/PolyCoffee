@@ -68,7 +68,7 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-5 align-middle">
-                                    <div class="font-black text-gray-900"><fmt:formatNumber value="${d.price}" pattern="#,###"/> <span class="text-[10px] text-gray-500 ml-0.5">VNĐ</span></div>
+                                    <div class="font-black text-gray-900"><fmt:formatNumber value="${d.price}" pattern="#,###"/> <span class="text-[10px] text-gray-500 ml-0.5"><fmt:message key="common.currency"/></span></div>
                                 </td>
                                 <td class="px-6 py-5 align-middle text-center">
                                     <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold ${d.active ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-gray-50 text-gray-500 border border-gray-200'}">
@@ -82,8 +82,9 @@
                                            class="w-9 h-9 flex items-center justify-center rounded-lg bg-white text-gray-600 hover:bg-blue-500 hover:text-white shadow-sm border border-gray-200 hover:border-blue-500 transition-all">
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
+                                        <fmt:message key="admin.drink.confirm.delete" var="confirmDeleteMsg"/>
                                         <a href="${pageContext.request.contextPath}/manager/drinks/delete?id=${d.id}" 
-                                           onclick="return confirm('<fmt:message key="admin.drink.confirm.delete"/>')"
+                                           onclick="return confirm('${confirmDeleteMsg}')"
                                            class="w-9 h-9 flex items-center justify-center rounded-lg bg-white text-red-500 hover:bg-red-500 hover:text-white shadow-sm border border-gray-200 hover:border-red-500 transition-all">
                                             <i class="bi bi-trash3"></i>
                                         </a>
