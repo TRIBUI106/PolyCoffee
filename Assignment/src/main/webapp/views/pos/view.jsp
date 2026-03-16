@@ -3,6 +3,9 @@
 <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
+<c:if test="${not empty param.lang}">
+    <c:set var="lang" value="${param.lang}" scope="session"/>
+</c:if>
 <fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
 <fmt:setBundle basename="messages" />
 
@@ -74,6 +77,13 @@
                 <input type="text" placeholder="<fmt:message key='pos.search.placeholder'/>" 
                        class="w-full bg-pos-bg border border-pos-border rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-500 transition-all">
             </div>
+            
+            <!-- Language Switcher -->
+            <div class="flex items-center bg-pos-bg border border-pos-border rounded-md p-1">
+                <a href="?lang=vi" class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">VI</a>
+                <a href="?lang=en" class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">EN</a>
+            </div>
+
             <div class="flex items-center gap-3 border-l border-pos-border pl-6">
                 <div class="text-right hidden sm:block">
                     <p class="text-sm font-bold leading-tight">${sessionScope.user.fullName}</p>
@@ -159,7 +169,13 @@
             <div class="flex items-center px-4 py-2.5 border-b border-pos-border bg-gray-50 text-xs font-semibold text-pos-muted uppercase tracking-wider">
                 <span class="w-10"><fmt:message key="pos.table"/></span>
                 <span class="ml-2 px-2.5 py-0.5 bg-coffee-100 text-coffee-700 rounded mr-auto"><fmt:message key="pos.takeaway"/></span>
-                <span class=""><fmt:message key="pos.bill.code"/>: ${not empty currentBill ? currentBill.code : '<fmt:message key="pos.bill.new"/>'}</span>
+                <span class="">
+                    <fmt:message key="pos.bill.code"/>: 
+                    <c:choose>
+                        <c:when test="${not empty currentBill}">${currentBill.code}</c:when>
+                        <c:otherwise><fmt:message key="pos.bill.new"/></c:otherwise>
+                    </c:choose>
+                </span>
             </div>
 
             <!-- Cart Items -->
