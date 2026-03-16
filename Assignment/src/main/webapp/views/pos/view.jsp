@@ -189,7 +189,7 @@
                                         
                                         <!-- Note Field with Quick Dropdown -->
                                         <div class="relative mt-2">
-                                            <div onclick="toggleNoteDropdown(${item.drink.id})" 
+                                            <div onclick="toggleNoteDropdown(${not empty item.drink.id ? item.drink.id : 0})" 
                                                  class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
                                                 <i class="bi bi-pencil-square"></i> 
                                                 <span class="truncate max-w-[120px]">${not empty item.note ? item.note : '<fmt:message key="pos.item.note"/>'}</span>
@@ -208,7 +208,7 @@
                                                 </c:forEach>
                                                 <div class="border-t border-pos-border mt-2 pt-2 px-2">
                                                     <input type="text" 
-                                                           onkeyup="if(event.key === 'Enter') handleCustomNote(${currentBill.id}, ${item.drink.id}, this.value)"
+                                                           onkeyup="if(event.key === 'Enter') handleCustomNote(${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0}, this.value)"
                                                            placeholder="<fmt:message key="pos.item.note.placeholder"/>"
                                                            value="${item.note}"
                                                            class="w-full text-xs p-2 bg-gray-50 border border-pos-border rounded-md focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-200 transition-all">

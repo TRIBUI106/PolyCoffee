@@ -1,9 +1,7 @@
 package chez1s.assignment.service;
 
 import chez1s.assignment.entity.*;
-import chez1s.assignment.repository.BillDetailRepository;
 import chez1s.assignment.repository.BillRepository;
-import chez1s.assignment.repository.DrinkRepository;
 import chez1s.assignment.util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -14,8 +12,6 @@ import java.util.List;
 
 public class BillService {
     private final BillRepository billRepo = new BillRepository();
-    private final BillDetailRepository detailRepo = new BillDetailRepository();
-    private final DrinkRepository drinkRepo = new DrinkRepository();
 
     public List<Bill> getUserBills(Integer userId) {
         return billRepo.findByUserId(userId);

@@ -55,6 +55,10 @@ public final class FileUtil {
     }
 
     public static String upload(HttpServletRequest request, String name) {
+        if (minioClient == null) {
+            System.err.println("MinIO Client not initialized!");
+            return "";
+        }
         try {
             Part part = request.getPart(name);
             if (part == null || part.getSize() <= 0)
