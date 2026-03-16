@@ -26,7 +26,6 @@ public class DrinkDAO {
                 d.setId(rs.getInt("id"));
                 d.setName(rs.getString("name"));
                 d.setPrice(rs.getDouble("price"));
-                d.setImage(rs.getString("image"));
                 d.setCategoryId(rs.getInt("category_id"));
 
                 list.add(d);
