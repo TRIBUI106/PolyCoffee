@@ -7,7 +7,7 @@ services:
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: '123456789'
-      MYSQL_DATABASE: 'polycoffee'
+      MYSQL_DATABASE: 'jav202_assignment'
     ports:
       - '3306:3306'
     volumes:
@@ -23,7 +23,7 @@ services:
       - '9001:9001'
     environment:
       MINIO_ROOT_USER: 'admin'
-      MINIO_ROOT_PASSWORD: 'password'
+      MINIO_ROOT_PASSWORD: '123456789'
     command: server /data --console-address ":9001"
     volumes:
       - minio_data:/data

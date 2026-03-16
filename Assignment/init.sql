@@ -4,8 +4,8 @@
 -- ==========================================
 
 -- Create Database
-CREATE DATABASE IF NOT EXISTS polycoffee CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE polycoffee;
+CREATE DATABASE IF NOT EXISTS jav202_assignment CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE jav202_assignment;
 
 -- 1. Users Table (Core Personnel)
 DROP TABLE IF EXISTS bill_details;
@@ -70,8 +70,8 @@ CREATE TABLE bill_details (
 -- ==========================================
 INSERT INTO users (email, password, full_name, phone, role, active) VALUES
 ('chez1s.dev@gmail.com', 'cz', 'Bùi Đức Trí', '0901234567', 1, 1),
-('staff@polycoffee.com', 'staff@2026', 'Pha Chế Trưởng', '0907654321', 0, 1),
-('demo@polycoffee.com', 'password', 'Trợ Lý Khách Hàng', '0123456789', 0, 1);
+('haunvtv00054@fpt.edu.vn', '123', 'Pha Chế Trưởng', '0907654321', 0, 1),
+('demo@polycoffee.com', '123', 'Trợ Lý Khách Hàng', '0123456789', 0, 1);
 
 -- ==========================================
 -- SEED DATA: CATEGORIES

@@ -14,15 +14,20 @@ public class AuthFilter implements Filter {
             throws IOException, ServletException {
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
-        String uri = req.getRequestURI();
+        String path = req.getServletPath();
 
         if (!AuthUtil.isAuthenticated(req)) {
+            // Store the full URI (including query string if needed) for post-login redirect
+            String uri = req.getRequestURI();
+            String query = req.getQueryString();
+            if (query != null) uri += "?" + query;
+            
             req.getSession().setAttribute("REDIRECT_URL", uri);
             res.sendRedirect(req.getContextPath() + "/auth/login");
             return;
         }
 
-        if (uri.contains("/manager/") && !AuthUtil.isManager(req)) {
+        if (path.startsWith("/manager/") && !AuthUtil.isManager(req)) {
             res.sendError(HttpServletResponse.SC_FORBIDDEN, "Access Denied: Managers Only");
             return;
         }
