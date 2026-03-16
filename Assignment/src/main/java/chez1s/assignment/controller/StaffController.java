@@ -20,7 +20,7 @@ public class StaffController extends HttpServlet {
         
         if (uri.contains("/status")) {
             staffService.updateStatus(ParamUtil.getInt(req, "id"), ParamUtil.getInt(req, "active") == 1);
-            resp.sendRedirect(req.getContextPath() + "/manager/staff");
+            resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=users");
             return;
         }
 
@@ -59,6 +59,6 @@ public class StaffController extends HttpServlet {
             staffService.updateStaff(staff);
         }
         
-        resp.sendRedirect(req.getContextPath() + "/manager/staff");
+        resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=users");
     }
 }

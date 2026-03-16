@@ -70,7 +70,7 @@ CREATE TABLE bill_details (
 -- ==========================================
 INSERT INTO users (email, password, full_name, phone, role, active) VALUES
 ('chez1s.dev@gmail.com', 'cz', 'Bùi Đức Trí', '0901234567', 1, 1),
-('haunvtv00054@fpt.edu.vn', '123', 'Pha Chế Trưởng', '0907654321', 0, 1),
+('haunvtv00054@fpt.edu.vn', '123', 'Nguyễn Vủ Hậu', '0907654321', 0, 1),
 ('demo@polycoffee.com', '123', 'Trợ Lý Khách Hàng', '0123456789', 0, 1);
 
 -- ==========================================
