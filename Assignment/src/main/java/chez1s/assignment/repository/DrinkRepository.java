@@ -10,6 +10,17 @@ public class DrinkRepository extends BaseRepository<Drink, Integer> {
         super(Drink.class);
     }
 
+    @Override
+    public List<Drink> findAll() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.createQuery("SELECT d FROM Drink d JOIN FETCH d.category", Drink.class)
+                     .getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
     public List<Drink> findByActive(boolean active) {
         EntityManager em = JpaUtil.getEntityManager();
         try {

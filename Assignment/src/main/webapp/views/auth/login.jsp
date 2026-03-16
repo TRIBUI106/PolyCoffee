@@ -8,18 +8,7 @@
 <html class="h-full">
 <head>
     <title><fmt:message key="login.title"/></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: { cream: '#FDF7E4', coffee: { 700: '#6F4E37' }, mocha: '#2D2424' },
-                    fontFamily: { sans: ['Outfit', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
+    <jsp:include page="/views/common/head.jsp" />
 </head>
 <body class="bg-cream font-sans h-full flex items-center justify-center px-4 relative overflow-hidden">
     

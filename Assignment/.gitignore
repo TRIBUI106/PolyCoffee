@@ -3,13 +3,14 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 .kotlin
-persistence.xml
 
 ### IntelliJ IDEA ###
 .idea/modules.xml
 .idea/jarRepositories.xml
 .idea/compiler.xml
 .idea/libraries/
+.idea/data_source_mapping.xml
+persistence.xml
 *.iws
 *.iml
 *.ipr

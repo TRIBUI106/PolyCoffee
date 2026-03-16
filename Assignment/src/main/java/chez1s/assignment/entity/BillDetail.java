@@ -24,4 +24,6 @@ public class BillDetail {
     private int quantity;
 
     private int price;
+
+    private String note;
 }

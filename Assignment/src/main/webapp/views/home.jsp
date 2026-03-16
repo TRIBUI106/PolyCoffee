@@ -6,12 +6,19 @@
 <fmt:setBundle basename="messages" />
 
 <!DOCTYPE html>
-<html class="h-full">
+<html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" class="h-full">
 <head>
     <title><fmt:message key="app.name"/> - <fmt:message key="app.subtitle"/></title>
+    <jsp:include page="/views/common/head.jsp" />
 </head>
 <body class="bg-gray-50 font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-coffee-200 selection:text-coffee-900">
-    <jsp:include page="common/header.jsp" />
+    <!-- Background Glows -->
+    <div class="fixed inset-0 pointer-events-none overflow-hidden z-0">
+        <div class="absolute -top-[10%] -left-[10%] w-[40%] h-[40%] bg-coffee-100/30 rounded-full blur-[120px]"></div>
+        <div class="absolute top-[20%] -right-[5%] w-[30%] h-[30%] bg-coffee-200/20 rounded-full blur-[100px]"></div>
+    </div>
+
+    <jsp:include page="/views/common/header.jsp" />
 
     <main class="flex-grow">
         <!-- Hero Section -->
@@ -98,7 +105,7 @@
         </section>
     </main>
 
-    <jsp:include page="common/footer.jsp" />
+    <jsp:include page="/views/common/footer.jsp" />
 
 </body>
 </html>

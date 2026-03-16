@@ -12,13 +12,10 @@
 <!DOCTYPE html>
 <html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><fmt:message key="pos.title"/></title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <jsp:include page="/views/common/head.jsp" />
     <script>
+        // Extend existing config for POS specific needs
         tailwind.config = {
             theme: {
                 extend: {
@@ -190,9 +187,33 @@
                                         <div class="font-bold text-pos-text leading-tight mb-1">${item.drink.name}</div>
                                         <div class="text-[13px] text-pos-muted"><fmt:formatNumber value="${item.price}" pattern="#,###"/></div>
                                         
-                                        <!-- Note Field (Visual only for real feel) -->
-                                        <div class="mt-2 flex items-center gap-1 text-[11px] text-pos-muted hover:text-coffee-700 cursor-pointer w-max pl-1 border-l-2 border-transparent hover:border-coffee-500">
-                                            <i class="bi bi-pencil-square"></i> <fmt:message key="pos.item.note"/>
+                                        <!-- Note Field with Quick Dropdown -->
+                                        <div class="relative mt-2">
+                                            <div onclick="toggleNoteDropdown(${not empty item.drink.id ? item.drink.id : 0})" 
+                                                 class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
+                                                <i class="bi bi-pencil-square"></i> 
+                                                <span class="truncate max-w-[120px]">${not empty item.note ? item.note : '<fmt:message key="pos.item.note"/>'}</span>
+                                            </div>
+                                            
+                                            <!-- Dropdown for notes -->
+                                            <div id="note-dropdown-${item.drink.id}" class="note-dropdown hidden absolute top-full left-0 mt-1 w-48 bg-white border border-pos-border rounded-lg shadow-xl z-50 py-2">
+                                                <div class="px-3 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 mb-1">
+                                                    <fmt:message key="pos.item.note.select"/>
+                                                </div>
+                                                <c:forEach var="n" items="${['50% Sugar', '70% Sugar', '100% Sugar', 'No Ice', 'No Sugar']}">
+                                                    <a href="${pageContext.request.contextPath}/employee/pos/note?billId=${currentBill.id}&drinkId=${item.drink.id}&note=${n}" 
+                                                       class="block px-4 py-1.5 text-xs hover:bg-coffee-50 hover:text-coffee-700 text-pos-text transition-all">
+                                                        ${n}
+                                                    </a>
+                                                </c:forEach>
+                                                <div class="border-t border-pos-border mt-2 pt-2 px-2">
+                                                    <input type="text" 
+                                                           onkeyup="if(event.key === 'Enter') handleCustomNote(${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0}, this.value)"
+                                                           placeholder="<fmt:message key="pos.item.note.placeholder"/>"
+                                                           value="${item.note}"
+                                                           class="w-full text-xs p-2 bg-gray-50 border border-pos-border rounded-md focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-200 transition-all">
+                                                </div>
+                                            </div>
                                         </div>
                                     </td>
                                     <td class="py-3 px-1 w-[110px] align-top">
@@ -247,11 +268,14 @@
                         </span>
                     </div>
                     
+                    <fmt:message key="pos.bill.confirm.cancel" var="msgCancel" />
+                    <fmt:message key="pos.bill.confirm.checkout" var="msgCheckout" />
+                    
                     <div class="grid grid-cols-5 gap-3">
                         <!-- Extra Actions (Cancel) -->
                         <button class="col-span-1 border-2 border-pos-border text-pos-danger rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
                                 ${empty currentBill.billDetails ? 'disabled' : ''}
-                                onclick='if(confirm("<fmt:message key=\"pos.bill.confirm.cancel\"/>")) location.href="${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}"'
+                                onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
                                 title="Huỷ đơn">
                             <i class="bi bi-trash3"></i>
                         </button>
@@ -259,7 +283,7 @@
                         <!-- Pay Button -->
                         <button class="col-span-4 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
                                 ${empty currentBill.billDetails ? 'disabled' : ''}
-                                onclick='if(confirm("<fmt:message key=\"pos.bill.confirm.checkout\"/>")) location.href="${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}"'>
+                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
                             <i class="bi bi-cash-stack text-xl"></i>
                             <span class="tracking-wide"><fmt:message key="pos.bill.checkout"/> (F9)</span>
                         </button>
@@ -270,5 +294,31 @@
         </div>
     </main>
 
+    <script>
+        function toggleNoteDropdown(id) {
+            const el = document.getElementById('note-dropdown-' + id);
+            const isHidden = el.classList.contains('hidden');
+            
+            // Close all other dropdowns
+            document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
+            
+            if (isHidden) {
+                el.classList.remove('hidden');
+                // Auto focus input
+                setTimeout(() => el.querySelector('input').focus(), 100);
+            }
+        }
+
+        function handleCustomNote(billId, drinkId, note) {
+            location.href = '${pageContext.request.contextPath}/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note);
+        }
+
+        // Close on click outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.relative')) {
+                document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
+            }
+        });
+    </script>
 </body>
 </html>

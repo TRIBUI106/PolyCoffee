@@ -8,32 +8,8 @@
 <!DOCTYPE html>
 <html class="h-full bg-gray-50">
 <head>
-    <meta charset="UTF-8">
     <title><fmt:message key="error.gen.title"/> - PolyCoffee</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        coffee: {
-                            50: '#fdf8f6',
-                            100: '#f2e8e5',
-                            200: '#eaddd7',
-                            300: '#e0c1b3',
-                            400: '#d3a08b',
-                            500: '#c67f63',
-                            600: '#b95d3b',
-                            700: '#6F4E37',
-                            800: '#5c402d',
-                            900: '#4a3424',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <jsp:include page="/views/common/head.jsp" />
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col items-center justify-center">
     
@@ -59,7 +35,7 @@
         <div class="mt-12 text-left bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
             <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
                 <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Exception Journal</span>
-                <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-500 font-mono">${pageContext.errorPage}</span>
+                <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-500 font-mono">PolyCoffee Core</span>
             </div>
             <div class="p-6 max-h-[240px] overflow-auto">
                 <c:if test="${not empty exception}">

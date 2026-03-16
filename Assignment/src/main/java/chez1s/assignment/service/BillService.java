@@ -1,9 +1,7 @@
 package chez1s.assignment.service;
 
 import chez1s.assignment.entity.*;
-import chez1s.assignment.repository.BillDetailRepository;
 import chez1s.assignment.repository.BillRepository;
-import chez1s.assignment.repository.DrinkRepository;
 import chez1s.assignment.util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
@@ -14,8 +12,6 @@ import java.util.List;
 
 public class BillService {
     private final BillRepository billRepo = new BillRepository();
-    private final BillDetailRepository detailRepo = new BillDetailRepository();
-    private final DrinkRepository drinkRepo = new DrinkRepository();
 
     public List<Bill> getUserBills(Integer userId) {
         return billRepo.findByUserId(userId);
@@ -120,6 +116,31 @@ public class BillService {
                     detail.setQuantity(quantity);
                 }
                 updateTotal(bill);
+                em.merge(bill);
+            }
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void updateNote(Integer billId, Integer drinkId, String note) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            Bill bill = em.find(Bill.class, billId);
+            if (bill == null || bill.getStatus() != BillStatus.WAITING) return;
+
+            BillDetail detail = bill.getBillDetails().stream()
+                    .filter(d -> d.getDrink().getId().equals(drinkId))
+                    .findFirst().orElse(null);
+
+            if (detail != null) {
+                detail.setNote(note);
                 em.merge(bill);
             }
             trans.commit();

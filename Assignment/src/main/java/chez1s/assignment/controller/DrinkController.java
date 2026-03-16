@@ -14,7 +14,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet({"/manager/drinks", "/manager/drinks/form", "/manager/drinks/save", "/manager/drinks/delete"})
-@MultipartConfig
+@MultipartConfig(
+    fileSizeThreshold = 1024 * 1024 * 1, // 1 MB
+    maxFileSize = 1024 * 1024 * 10,      // 10 MB
+    maxRequestSize = 1024 * 1024 * 15    // 15 MB
+)
 public class DrinkController extends HttpServlet {
     private final DrinkService drinkService = new DrinkService();
     private final CategoryService categoryService = new CategoryService();
@@ -52,10 +56,21 @@ public class DrinkController extends HttpServlet {
         drink.setCategory(categoryService.getCategoryById(ParamUtil.getInt(req, "categoryId")));
         
         String image = FileUtil.upload(req, "image");
-        if (!image.isEmpty()) drink.setImage(image);
+        if (!image.isEmpty()) {
+            // Delete old image if updating
+            if (id > 0 && drink.getImage() != null && !drink.getImage().isEmpty()) {
+                FileUtil.delete(req, drink.getImage());
+            }
+            drink.setImage(image);
+        }
 
-        if (id > 0) drinkService.updateDrink(drink);
-        else drinkService.createDrink(drink);
+        try {
+            if (id > 0) drinkService.updateDrink(drink);
+            else drinkService.createDrink(drink);
+            req.getSession().setAttribute("message", "Product saved successfully!");
+        } catch (Exception e) {
+            req.getSession().setAttribute("error", "Error saving product: " + e.getMessage());
+        }
         
         resp.sendRedirect(req.getContextPath() + "/manager/drinks");
     }

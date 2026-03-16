@@ -10,9 +10,41 @@
 <html class="h-full bg-gray-50">
 <head>
     <title><fmt:message key="${drink == null ? 'admin.drink.form.title.add' : 'admin.drink.form.title.edit'}"/> - PolyCoffee</title>
+    <jsp:include page="/views/common/head.jsp" />
+    <style>
+        .upload-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .progress-bar-fill {
+            animation: progress 3s ease-in-out infinite;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans min-h-screen text-gray-800">
     <jsp:include page="../common/header.jsp" />
+
+    <div id="uploadOverlay" class="upload-overlay">
+        <div class="w-64 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-coffee-200 border-t-coffee-600 rounded-full animate-spin mb-4"></div>
+            <p class="font-bold text-gray-900 mb-1">Đang xử lý...</p>
+            <p class="text-xs text-gray-500 mb-4 text-center">Vui lòng đợi trong khi chúng tôi tối ưu hóa hình ảnh</p>
+            <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-coffee-600 rounded-full progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
 
     <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div class="flex items-center justify-between mb-8">
@@ -27,7 +59,8 @@
         </div>
 
         <div class="bg-white p-8 sm:p-10 rounded-2xl shadow-sm border border-gray-200">
-            <form action="${pageContext.request.contextPath}/manager/drinks/save" method="post" enctype="multipart/form-data" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <form id="drinkForm" action="${pageContext.request.contextPath}/manager/drinks/save" method="post" enctype="multipart/form-data" 
+                  onsubmit="showUploadProgress()" class="grid grid-cols-1 md:grid-cols-2 gap-10">
                 <input type="hidden" name="id" value="${drink.id}">
                 
                 <!-- Left: Info -->
@@ -67,27 +100,25 @@
                 <div class="space-y-6">
                     <div>
                         <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2"><fmt:message key="admin.drink.form.img"/></label>
-                        <div class="relative border-2 border-dashed border-gray-300 rounded-xl p-2 flex flex-col items-center justify-center min-h-[260px] bg-gray-50 group hover:border-coffee-500 hover:bg-white transition-all">
-                            <input type="file" name="image" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
+                        <div id="imageDropzone" class="relative border-2 border-dashed border-gray-300 rounded-xl p-2 flex flex-col items-center justify-center min-h-[260px] bg-gray-50 group hover:border-coffee-500 hover:bg-white transition-all overflow-hidden">
+                            <input type="file" name="image" id="imageInput" onchange="previewImage(this)"
+                                   class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" accept="image/*">
                             
-                            <c:choose>
-                                <c:when test="${not empty drink.image}">
-                                    <c:set var="imgUrl" value="${fn:startsWith(drink.image, 'http') ? drink.image : pageContext.request.contextPath.concat('/uploads/').concat(drink.image)}" />
-                                    <img src="${imgUrl}" class="w-full h-[240px] object-cover rounded-lg">
-                                    <div class="absolute inset-x-0 bottom-4 px-4 pointer-events-none">
-                                        <div class="bg-gray-900/80 backdrop-blur text-white py-2.5 px-4 rounded-lg text-center text-xs font-semibold shadow-sm tracking-wider"><fmt:message key="admin.drink.form.img.change"/></div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="text-center p-6">
-                                        <div class="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl mb-4 mx-auto shadow-sm group-hover:scale-110 group-hover:text-coffee-600 transition-all">
-                                            <i class="bi bi-cloud-arrow-up"></i>
-                                        </div>
-                                        <p class="font-semibold text-gray-700"><fmt:message key="admin.drink.form.img.drop"/></p>
-                                        <p class="text-[10px] font-bold text-gray-400 tracking-widest mt-1.5 uppercase"><fmt:message key="admin.drink.form.img.click"/></p>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
+                            <div id="previewContainer" class="${not empty drink.image ? '' : 'hidden'} w-full h-full absolute inset-0">
+                                <c:set var="imgUrl" value="${fn:startsWith(drink.image, 'http') ? drink.image : pageContext.request.contextPath.concat('/uploads/').concat(drink.image)}" />
+                                <img id="imagePreview" src="${imgUrl}" class="w-full h-[260px] object-cover">
+                                <div class="absolute inset-x-0 bottom-4 px-4 pointer-events-none">
+                                    <div class="bg-gray-900/80 backdrop-blur text-white py-2.5 px-4 rounded-lg text-center text-xs font-semibold shadow-sm tracking-wider"><fmt:message key="admin.drink.form.img.change"/></div>
+                                </div>
+                            </div>
+
+                            <div id="placeholderContainer" class="${not empty drink.image ? 'hidden' : ''} text-center p-6">
+                                <div class="w-14 h-14 bg-white border border-gray-200 rounded-full flex items-center justify-center text-gray-400 text-xl mb-4 mx-auto shadow-sm group-hover:scale-110 group-hover:text-coffee-600 transition-all">
+                                    <i class="bi bi-cloud-arrow-up"></i>
+                                </div>
+                                <p class="font-semibold text-gray-700"><fmt:message key="admin.drink.form.img.drop"/></p>
+                                <p class="text-[10px] font-bold text-gray-400 tracking-widest mt-1.5 uppercase"><fmt:message key="admin.drink.form.img.click"/></p>
+                            </div>
                         </div>
                         <p class="text-center text-xs mt-2 text-gray-500"><fmt:message key="admin.drink.form.img.note"/></p>
                     </div>
@@ -118,5 +149,23 @@
     </main>
 
     <jsp:include page="../common/footer.jsp" />
+
+    <script>
+        function previewImage(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('imagePreview').src = e.target.result;
+                    document.getElementById('previewContainer').classList.remove('hidden');
+                    document.getElementById('placeholderContainer').classList.add('hidden');
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function showUploadProgress() {
+            document.getElementById('uploadOverlay').style.display = 'flex';
+        }
+    </script>
 </body>
 </html>

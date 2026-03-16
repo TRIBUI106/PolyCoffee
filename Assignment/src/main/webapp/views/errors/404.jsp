@@ -8,32 +8,8 @@
 <!DOCTYPE html>
 <html class="h-full bg-gray-50">
 <head>
-    <meta charset="UTF-8">
     <title><fmt:message key="error.404.title"/> - PolyCoffee</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        coffee: {
-                            50: '#fdf8f6',
-                            100: '#f2e8e5',
-                            200: '#eaddd7',
-                            300: '#e0c1b3',
-                            400: '#d3a08b',
-                            500: '#c67f63',
-                            600: '#b95d3b',
-                            700: '#6F4E37',
-                            800: '#5c402d',
-                            900: '#4a3424',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <jsp:include page="/views/common/head.jsp" />
 </head>
 <body class="bg-gray-50 font-sans h-full flex flex-col items-center justify-center">
     
