@@ -220,24 +220,7 @@
         <%= drink != null ? "Cập nhật" : "Thêm mới" %>
     </button>
 </form>
-<div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
-    <%
-        // Sử dụng Object để kiểm tra null trước khi ép kiểu int
-        Object totalPagesObj = request.getAttribute("totalPages");
-        Object currentPageObj = request.getAttribute("currentPage");
 
-        int totalPages = (totalPagesObj != null) ? (int) totalPagesObj : 1;
-        int curr = (currentPageObj != null) ? (int) currentPageObj : 1;
-
-        for(int i = 1; i <= totalPages; i++) {
-    %>
-        <a href="drink?page=<%= i %>"
-           class="<%= (i == curr) ? "active" : "" %>"
-           style="padding: 8px 12px; border: 1px solid #5c8aff; text-decoration: none;">
-            <%= i %>
-        </a>
-    <% } %>
-</div>
 
 <hr>
 
@@ -284,6 +267,23 @@
     %>
     </tbody>
 </table>
+<div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+    <%
+        // Sử dụng Object để kiểm tra null trước khi ép kiểu int
+        Object totalPagesObj = request.getAttribute("totalPages");
+        Object currentPageObj = request.getAttribute("currentPage");
 
+        int totalPages = (totalPagesObj != null) ? (int) totalPagesObj : 1;
+        int curr = (currentPageObj != null) ? (int) currentPageObj : 1;
+
+        for(int i = 1; i <= totalPages; i++) {
+    %>
+        <a href="drink?page=<%= i %>"
+           class="<%= (i == curr) ? "active" : "" %>"
+           style="padding: 8px 12px; border: 1px solid #5c8aff; text-decoration: none;">
+            <%= i %>
+        </a>
+    <% } %>
+</div>
 </body>
 </html>
