@@ -479,7 +479,7 @@
                                                             <td class="px-6 py-4 font-mono text-xs font-bold">
                                                                 ${item.code}</td>
                                                             <td class="px-6 py-4 text-sm text-pos-muted">
-                                                                <fmt:formatDate value="${item.billDate}"
+                                                                <fmt:formatDate value="${item.createdAt}"
                                                                     pattern="yyyy-MM-dd HH:mm" />
                                                             </td>
                                                             <td
