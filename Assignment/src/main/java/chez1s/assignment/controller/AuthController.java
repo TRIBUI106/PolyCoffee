@@ -36,12 +36,12 @@ public class AuthController extends HttpServlet {
             AuthUtil.setUser(req, user);
             String redirectUrl = (String) req.getSession().getAttribute("REDIRECT_URL");
             if (redirectUrl == null) {
-                redirectUrl = req.getContextPath() + (user.isRole() ? "/manager/dashboard" : "/employee/pos");
+                redirectUrl = req.getContextPath() + (user.isRole() ? "/manager/statistics" : "/employee/pos");
             }
             req.getSession().removeAttribute("REDIRECT_URL");
             resp.sendRedirect(redirectUrl);
         } else {
-            req.setAttribute("message", "Email hoặc mật khẩu không hợp lệ!");
+            req.setAttribute("errorKey", "login.error");
             req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
         }
     }

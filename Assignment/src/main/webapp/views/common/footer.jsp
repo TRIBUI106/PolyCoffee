@@ -73,8 +73,4 @@
             </div>
         </div>
     </div>
-</footer>ookies</a>
-                </div>
-            </div>
-        </div>
-    </footer>
+</footer>

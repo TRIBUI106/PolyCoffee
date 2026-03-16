@@ -21,8 +21,16 @@ public class BillService {
         return billRepo.findByUserId(userId);
     }
 
+    public List<Bill> getAllBills() {
+        return billRepo.findAll();
+    }
+
     public Bill getBill(Integer id, Integer userId) {
         return billRepo.findByIdAndUserId(id, userId);
+    }
+
+    public Bill getBillById(Integer id) {
+        return billRepo.findById(id);
     }
 
     /**

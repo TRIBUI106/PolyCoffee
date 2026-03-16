@@ -17,7 +17,7 @@
         theme: {
             extend: {
                 colors: {
-                    coffee: { 50: '#fdf8f6', 100: '#f2e8e5', 500: '#c67f63', 700: '#6F4E37' },
+                    coffee: { 50: '#fdf8f6', 100: '#f2e8e5', 200: '#EADBC8', 500: '#c67f63', 700: '#6F4E37', 800: '#5D4037', 900: '#3E2723' },
                     mocha: '#2D2424',
                 },
                 fontFamily: {
@@ -125,7 +125,7 @@
                     <div class="relative group">
                         <button class="flex items-center gap-2 hover:bg-gray-50 px-2 py-1.5 rounded-lg transition-colors">
                             <div class="w-8 h-8 rounded-full bg-coffee-100 text-coffee-700 flex items-center justify-center font-bold text-sm">
-                                ${sessionScope.user.fullName.substring(0,1)}
+                                ${fn:substring(sessionScope.user.fullName, 0, 1)}
                             </div>
                             <span class="hidden sm:block font-medium text-gray-700 text-sm">${sessionScope.user.fullName}</span>
                             <i class="bi bi-chevron-down text-[10px] text-gray-400"></i>
