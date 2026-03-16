@@ -1,8 +1,8 @@
-package com.poly.lab4.dao;
+package com.poly.lab5.dao;
 
 
-import com.poly.lab4.entity.User;
-import com.poly.lab4.util.JdbcUtil;
+import com.poly.lab5.entity.User;
+import com.poly.lab5.util.JdbcUtil;
 
 import java.sql.ResultSet;
 import java.util.ArrayList;

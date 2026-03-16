@@ -1,8 +1,8 @@
-package com.poly.lab4.controller;
+package com.poly.lab5.controller;
 
 
-import com.poly.lab4.dao.CategoryDAO;
-import com.poly.lab4.entity.Category;
+import com.poly.lab5.dao.CategoryDAO;
+import com.poly.lab5.entity.Category;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;

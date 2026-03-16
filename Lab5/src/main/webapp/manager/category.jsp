@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.*,com.poly.lab4.entity.Category" %>
+<%@ page import="java.util.*,com.poly.lab5.entity.Category" %>
 <%
     Category category = (Category) request.getAttribute("category");
 %>

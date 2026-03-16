@@ -1,4 +1,4 @@
-package com.poly.lab4.entity;
+package com.poly.lab5.entity;
 
 public class Drink {
 
@@ -62,4 +62,8 @@ public class Drink {
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
+    private boolean status; // true: Còn hàng, false: Hết hàng
+
+    public boolean isStatus() { return status; }
+    public void setStatus(boolean status) { this.status = status; }
 }

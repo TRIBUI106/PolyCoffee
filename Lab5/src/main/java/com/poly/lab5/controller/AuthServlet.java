@@ -1,9 +1,8 @@
-package com.poly.lab4.controller;
+package com.poly.lab5.controller;
 
-import com.poly.lab4.dao.AuthDAO;
-import com.poly.lab4.dao.UserDAO;
-import com.poly.lab4.entity.User;
-import com.poly.lab4.util.AuthUtil;
+import com.poly.lab5.dao.AuthDAO;
+import com.poly.lab5.entity.User;
+import com.poly.lab5.util.AuthUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

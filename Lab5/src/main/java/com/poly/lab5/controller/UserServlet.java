@@ -1,8 +1,7 @@
-package com.poly.lab4.controller;
+package com.poly.lab5.controller;
 
-
-import com.poly.lab4.dao.DrinkDAO;
-import com.poly.lab4.entity.Drink;
+import com.poly.lab5.dao.UserDAO;
+import com.poly.lab5.entity.User;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -11,10 +10,10 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/manager/drink")
-public class DrinkServlet extends HttpServlet {
+@WebServlet("/manager/user")
+public class UserServlet extends HttpServlet {
 
-    DrinkDAO dao = new DrinkDAO();
+    UserDAO dao = new UserDAO();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -36,8 +35,8 @@ public class DrinkServlet extends HttpServlet {
             default:
                 list(req,resp);
         }
-    }
 
+    }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -56,46 +55,32 @@ public class DrinkServlet extends HttpServlet {
         }
     }
 
+
     private void list(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Drink> list = dao.findAll();
+        List<User> list = dao.findAll();
 
         req.setAttribute("list", list);
 
-        req.getRequestDispatcher("/manager/drink.jsp")
+        req.getRequestDispatcher("/manager/user.jsp")
                 .forward(req,resp);
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        Drink d = new Drink();
+        User u = new User();
 
-        d.setName(req.getParameter("name"));
-        d.setPrice(Double.parseDouble(req.getParameter("price")));
-        d.setImage(req.getParameter("image"));
-        d.setCategoryId(Integer.parseInt(req.getParameter("category")));
+        u.setUsername(req.getParameter("username"));
+        u.setPassword(req.getParameter("password"));
+        u.setFullname(req.getParameter("fullname"));
+        u.setRole(req.getParameter("role"));
+        u.setEmail(req.getParameter("email"));
 
-        dao.insert(d);
+        dao.insert(u);
 
-        resp.sendRedirect("drink");
-    }
-
-    private void update(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
-
-        Drink d = new Drink();
-
-        d.setId(Integer.parseInt(req.getParameter("id")));
-        d.setName(req.getParameter("name"));
-        d.setPrice(Double.parseDouble(req.getParameter("price")));
-        d.setImage(req.getParameter("image"));
-        d.setCategoryId(Integer.parseInt(req.getParameter("category")));
-
-        dao.update(d);
-
-        resp.sendRedirect("drink");
+        resp.sendRedirect("user");
     }
 
     private void delete(HttpServletRequest req, HttpServletResponse resp)
@@ -105,18 +90,37 @@ public class DrinkServlet extends HttpServlet {
 
         dao.delete(id);
 
-        resp.sendRedirect("drink");
+        resp.sendRedirect("user");
     }
     private void edit(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
-        Drink d = dao.findById(id);
+        User u = dao.findById(id);
 
-        req.setAttribute("drink", d);
+        req.setAttribute("user", u);
 
-        list(req, resp);
+        list(req,resp);
+    }
+
+
+    private void update(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        User u = new User();
+
+        u.setId(Integer.parseInt(req.getParameter("id")));
+        u.setUsername(req.getParameter("username"));
+        u.setPassword(req.getParameter("password"));
+        u.setFullname(req.getParameter("fullname"));
+        u.setRole(req.getParameter("role"));
+        u.setEmail(req.getParameter("email"));
+
+        dao.update(u);
+
+        resp.sendRedirect("user");
     }
 
 }
+

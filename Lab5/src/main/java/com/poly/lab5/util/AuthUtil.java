@@ -1,6 +1,6 @@
-package com.poly.lab4.util;
+package com.poly.lab5.util;
 
-import com.poly.lab4.entity.User;
+import com.poly.lab5.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 

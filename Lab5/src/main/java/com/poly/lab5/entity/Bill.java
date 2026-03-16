@@ -1,4 +1,4 @@
-package com.poly.lab4.entity;
+package com.poly.lab5.entity;
 
 import java.util.Date;
 
