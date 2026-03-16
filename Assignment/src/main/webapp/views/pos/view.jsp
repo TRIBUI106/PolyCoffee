@@ -295,7 +295,9 @@
                                                                             class="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-pos-border flex items-center justify-center">
                                                                             <c:choose>
                                                                                 <c:when test="${not empty item.image}">
-                                                                                    <img src="${pageContext.request.contextPath}/uploads/${item.image}"
+                                                                                    <c:set var="imgUrl"
+                                                                                        value="${fn:startsWith(item.image, 'http') ? item.image : pageContext.request.contextPath.concat('/uploads/').concat(item.image)}" />
+                                                                                    <img src="${imgUrl}"
                                                                                         class="w-full h-full object-cover">
                                                                                 </c:when>
                                                                                 <c:otherwise>
