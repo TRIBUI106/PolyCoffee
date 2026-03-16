@@ -10,6 +10,7 @@
 <html class="h-full bg-gray-50">
 <head>
     <title><fmt:message key="${drink == null ? 'admin.drink.form.title.add' : 'admin.drink.form.title.edit'}"/> - PolyCoffee</title>
+    <jsp:include page="/views/common/head.jsp" />
 </head>
 <body class="bg-gray-50 font-sans min-h-screen text-gray-800">
     <jsp:include page="../common/header.jsp" />

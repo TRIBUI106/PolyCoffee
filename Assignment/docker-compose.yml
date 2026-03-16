@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: polycoffee-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: '123456789'
+      MYSQL_DATABASE: 'polycoffee'
+    ports:
+      - '3306:3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  minio:
+    image: minio/minio
+    container_name: polycoffee-minio
+    restart: always
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: 'admin'
+      MINIO_ROOT_PASSWORD: 'password'
+    command: server /data --console-address ":9001"
+    volumes:
+      - minio_data:/data
+
+volumes:
+  mysql_data:
+  minio_data:
