@@ -244,11 +244,14 @@
                         </span>
                     </div>
                     
+                    <fmt:message key="pos.bill.confirm.cancel" var="msgCancel" />
+                    <fmt:message key="pos.bill.confirm.checkout" var="msgCheckout" />
+                    
                     <div class="grid grid-cols-5 gap-3">
                         <!-- Extra Actions (Cancel) -->
                         <button class="col-span-1 border-2 border-pos-border text-pos-danger rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
                                 ${empty currentBill.billDetails ? 'disabled' : ''}
-                                onclick='if(confirm("<fmt:message key=\"pos.bill.confirm.cancel\"/>")) location.href="${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}"'
+                                onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
                                 title="Huỷ đơn">
                             <i class="bi bi-trash3"></i>
                         </button>
@@ -256,7 +259,7 @@
                         <!-- Pay Button -->
                         <button class="col-span-4 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
                                 ${empty currentBill.billDetails ? 'disabled' : ''}
-                                onclick='if(confirm("<fmt:message key=\"pos.bill.confirm.checkout\"/>")) location.href="${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}"'>
+                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
                             <i class="bi bi-cash-stack text-xl"></i>
                             <span class="tracking-wide"><fmt:message key="pos.bill.checkout"/> (F9)</span>
                         </button>

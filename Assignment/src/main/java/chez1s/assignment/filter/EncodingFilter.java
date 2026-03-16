@@ -16,6 +16,7 @@ public class EncodingFilter implements Filter {
 
         req.setCharacterEncoding("UTF-8");
         res.setCharacterEncoding("UTF-8");
+        res.setContentType("text/html; charset=UTF-8");
 
         // Handle Language Switching
         String lang = req.getParameter("lang");
