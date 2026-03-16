@@ -16,7 +16,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet({"/employee/pos", "/employee/pos/add", "/employee/pos/update", "/employee/pos/checkout", "/employee/pos/cancel"})
+@WebServlet({"/employee/pos", "/employee/pos/add", "/employee/pos/update", "/employee/pos/note", "/employee/pos/checkout", "/employee/pos/cancel"})
 public class PosController extends HttpServlet {
     private final BillService billService = new BillService();
     private final DrinkService drinkService = new DrinkService();
@@ -49,6 +49,16 @@ public class PosController extends HttpServlet {
             int quantity = ParamUtil.getInt(req, "quantity");
             if (billId > 0 && drinkId > 0) {
                 billService.updateQuantity(billId, drinkId, quantity);
+            }
+            resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + (billId > 0 ? billId : ""));
+            return;
+        }
+
+        if (uri.contains("/note")) {
+            Integer drinkId = ParamUtil.getInt(req, "drinkId");
+            String note = ParamUtil.getString(req, "note");
+            if (billId > 0 && drinkId > 0) {
+                billService.updateNote(billId, drinkId, note);
             }
             resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + (billId > 0 ? billId : ""));
             return;

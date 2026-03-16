@@ -27,8 +27,29 @@ public final class FileUtil {
             boolean isExist = minioClient.bucketExists(BucketExistsArgs.builder().bucket(BUCKET_NAME).build());
             if (!isExist) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(BUCKET_NAME).build());
+                // Set bucket policy to public for read-only access
+                String policy = "{\n" +
+                        "  \"Version\": \"2012-10-17\",\n" +
+                        "  \"Statement\": [\n" +
+                        "    {\n" +
+                        "      \"Effect\": \"Allow\",\n" +
+                        "      \"Principal\": { \"AWS\": [ \"*\" ] },\n" +
+                        "      \"Action\": [ \"s3:GetBucketLocation\", \"s3:ListBucket\" ],\n" +
+                        "      \"Resource\": [ \"arn:aws:s3:::" + BUCKET_NAME + "\" ]\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "      \"Effect\": \"Allow\",\n" +
+                        "      \"Principal\": { \"AWS\": [ \"*\" ] },\n" +
+                        "      \"Action\": [ \"s3:GetObject\" ],\n" +
+                        "      \"Resource\": [ \"arn:aws:s3:::" + BUCKET_NAME + "/*\" ]\n" +
+                        "    }\n" +
+                        "  ]\n" +
+                        "}";
+                minioClient.setBucketPolicy(
+                    io.minio.SetBucketPolicyArgs.builder().bucket(BUCKET_NAME).config(policy).build());
             }
         } catch (Exception e) {
+            System.err.println("Error initializing MinIO: " + e.getMessage());
             e.printStackTrace();
         }
     }

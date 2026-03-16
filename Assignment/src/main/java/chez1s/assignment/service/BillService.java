@@ -131,6 +131,31 @@ public class BillService {
         }
     }
 
+    public void updateNote(Integer billId, Integer drinkId, String note) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            Bill bill = em.find(Bill.class, billId);
+            if (bill == null || bill.getStatus() != BillStatus.WAITING) return;
+
+            BillDetail detail = bill.getBillDetails().stream()
+                    .filter(d -> d.getDrink().getId().equals(drinkId))
+                    .findFirst().orElse(null);
+
+            if (detail != null) {
+                detail.setNote(note);
+                em.merge(bill);
+            }
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
     public void checkout(Integer billId) {
         Bill bill = billRepo.findById(billId);
         if (bill != null && bill.getStatus() == BillStatus.WAITING) {
