@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.*,com.poly.lab4.entity.User" %>
+<%@ page import="java.util.*,com.poly.lab5.entity.User" %>
 
 <%
     User user = (User) request.getAttribute("user");
@@ -159,6 +159,19 @@
 
 <h2>Quản lý người dùng</h2>
 
+<form action="user" method="get" style="display: flex; gap: 10px; margin-bottom: 20px; background: #f0f2f5; padding: 15px; border-radius: 8px;">
+    <input type="text" name="searchFullname" value="${searchFullname}" placeholder="Tên nhân viên...">
+    <input type="text" name="searchEmail" value="${searchEmail}" placeholder="Email...">
+
+    <select name="searchStatus">
+        <option value="">-- Trạng thái --</option>
+        <option value="true" ${searchStatus == 'true' ? 'selected' : ''}>Hoạt động</option>
+        <option value="false" ${searchStatus == 'false' ? 'selected' : ''}>Ngưng hoạt động</option>
+    </select>
+
+    <button type="submit">Tìm kiếm</button>
+</form>
+
 <form action="user" method="post">
     <input type="hidden" name="id"    value="<%= user != null ? user.getId() : "" %>">
     <input type="hidden" name="action" value="<%= user != null ? "update" : "add" %>">
@@ -203,6 +216,7 @@
     </button>
 </form>
 
+
 <hr>
 
 <table>
@@ -245,6 +259,20 @@
     %>
     </tbody>
 </table>
+<div class="pagination" style="display: flex; justify-content: center; gap: 5px; margin-top: 20px;">
+    <%
+        Object totalPagesObj = request.getAttribute("totalPages");
+        Object currentPageObj = request.getAttribute("currentPage");
+        int totalPages = (totalPagesObj != null) ? (int) totalPagesObj : 1;
+        int curr = (currentPageObj != null) ? (int) currentPageObj : 1;
 
+        for(int i = 1; i <= totalPages; i++) {
+    %>
+        <a href="user?page=<%=i%>&searchFullname=${searchFullname}&searchEmail=${searchEmail}&searchStatus=${searchStatus}"
+           style="padding: 8px 12px; border: 1px solid #5c8aff; text-decoration: none; <%= (i==curr) ? "background:#5c8aff; color:white;" : "" %>">
+            <%= i %>
+        </a>
+    <% } %>
+</div>
 </body>
 </html>

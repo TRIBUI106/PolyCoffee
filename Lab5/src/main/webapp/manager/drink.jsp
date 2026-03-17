@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.*,com.poly.lab4.entity.Drink" %>
+<%@ page import="java.util.*,com.poly.lab5.entity.Drink" %>
 
 <%
     Drink drink = (Drink) request.getAttribute("drink");
@@ -161,6 +161,23 @@
 <body>
 
 <h2>Quản lý đồ uống</h2>
+<form action="drink" method="get" style="display: flex; gap: 10px; margin-bottom: 20px; background: #eee; padding: 15px; border-radius: 8px;">
+    <input type="text" name="searchName" value="${searchName}" placeholder="Tên đồ uống...">
+
+    <select name="searchCategory">
+        <option value="0">-- Chọn loại --</option>
+        <option value="1" ${searchCategory == 1 ? 'selected' : ''}>Cà phê</option>
+        <option value="2" ${searchCategory == 2 ? 'selected' : ''}>Trà sữa</option>
+    </select>
+
+    <select name="searchStatus">
+        <option value="">-- Trạng thái --</option>
+        <option value="true" ${searchStatus == 'true' ? 'selected' : ''}>Còn hàng</option>
+        <option value="false" ${searchStatus == 'false' ? 'selected' : ''}>Hết hàng</option>
+    </select>
+
+    <button type="submit">Tìm kiếm</button>
+</form>
 
 <form action="drink" method="post">
     <input type="hidden" name="id"    value="<%= drink != null ? drink.getId() : "" %>">
@@ -203,6 +220,7 @@
         <%= drink != null ? "Cập nhật" : "Thêm mới" %>
     </button>
 </form>
+
 
 <hr>
 
@@ -249,6 +267,23 @@
     %>
     </tbody>
 </table>
+<div class="pagination" style="margin-top: 20px; display: flex; justify-content: center; gap: 5px;">
+    <%
+        // Sử dụng Object để kiểm tra null trước khi ép kiểu int
+        Object totalPagesObj = request.getAttribute("totalPages");
+        Object currentPageObj = request.getAttribute("currentPage");
 
+        int totalPages = (totalPagesObj != null) ? (int) totalPagesObj : 1;
+        int curr = (currentPageObj != null) ? (int) currentPageObj : 1;
+
+        for(int i = 1; i <= totalPages; i++) {
+    %>
+        <a href="drink?page=<%= i %>"
+           class="<%= (i == curr) ? "active" : "" %>"
+           style="padding: 8px 12px; border: 1px solid #5c8aff; text-decoration: none;">
+            <%= i %>
+        </a>
+    <% } %>
+</div>
 </body>
 </html>
