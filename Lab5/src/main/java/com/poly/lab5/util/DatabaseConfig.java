@@ -1,4 +1,4 @@
-package com.poly.lab4.util;
+package com.poly.lab5.util;
 
 public class DatabaseConfig {
 
@@ -21,10 +21,10 @@ public class DatabaseConfig {
     public static String getUrl() {
         switch (DB_TYPE) {
             case "MYSQL":
-                return "jdbc:mysql://localhost:3306/PolyCoffee?useSSL=false&serverTimezone=UTC";
+                return "jdbc:mysql://localhost:3306/polycoffee?allowPublicKeyRetrieval=true&useSSL=false";
 
             case "SQLSERVER":
-                return "jdbc:sqlserver://localhost:1433;databaseName=PolyCoffee";
+                return "jdbc:sqlserver://localhost:1433;databaseName=polycoffee";
 
             default:
                 throw new RuntimeException("Database không hỗ trợ!");
@@ -36,6 +36,6 @@ public class DatabaseConfig {
     }
 
     public static String getPassword() {
-        return "123";
+        return "123456";
     }
 }

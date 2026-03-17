@@ -1,7 +1,7 @@
-package com.poly.lab4.controller;
+package com.poly.lab5.controller;
 
-import com.poly.lab4.dao.UserDAO;
-import com.poly.lab4.entity.User;
+import com.poly.lab5.dao.UserDAO;
+import com.poly.lab5.entity.User;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -120,6 +120,37 @@ public class UserServlet extends HttpServlet {
         dao.update(u);
 
         resp.sendRedirect("user");
+    }
+    // Cập nhật phương thức list trong UserServlet.java
+    private void List(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        // 1. Lấy tham số tìm kiếm và trang hiện tại
+        String fullname = req.getParameter("searchFullname");
+        String email = req.getParameter("searchEmail");
+        String statusStr = req.getParameter("searchStatus");
+        String pageStr = req.getParameter("page");
+
+        Boolean status = (statusStr != null && !statusStr.isEmpty()) ? Boolean.parseBoolean(statusStr) : null;
+        int currentPage = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+        int pageSize = 10;
+
+        // 2. Gọi DAO lấy dữ liệu lọc và phân trang
+        List<User> list = dao.search(fullname, email, status, currentPage, pageSize);
+        int totalItems = dao.count(fullname, email, status);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        // 3. Đẩy dữ liệu sang JSP
+        req.setAttribute("list", list);
+        req.setAttribute("totalPages", totalPages > 0 ? totalPages : 1);
+        req.setAttribute("currentPage", currentPage);
+
+        // Giữ lại giá trị để hiển thị trên Form sau khi load trang
+        req.setAttribute("searchFullname", fullname);
+        req.setAttribute("searchEmail", email);
+        req.setAttribute("searchStatus", statusStr);
+
+        req.getRequestDispatcher("/manager/user.jsp").forward(req, resp);
     }
 
 }

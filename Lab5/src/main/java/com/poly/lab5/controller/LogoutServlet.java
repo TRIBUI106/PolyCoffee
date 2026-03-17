@@ -1,6 +1,6 @@
-package com.poly.lab4.controller;
+package com.poly.lab5.controller;
 
-import com.poly.lab4.util.AuthUtil;
+import com.poly.lab5.util.AuthUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;

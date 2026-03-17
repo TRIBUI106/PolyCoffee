@@ -1,4 +1,4 @@
-package com.poly.lab4.entity;
+package com.poly.lab5.entity;
 public class User {
 
     private int id;
@@ -80,4 +80,9 @@ public class User {
     public void setRole(String role) {
         this.role = role;
     }
+    // Bổ sung vào User.java
+    private boolean status; // true: Hoạt động, false: Ngưng hoạt động
+
+    public boolean isStatus() { return status; }
+    public void setStatus(boolean status) { this.status = status; }
 }

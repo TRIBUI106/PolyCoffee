@@ -1,12 +1,12 @@
-package com.poly.lab4.filter;
+package com.poly.lab5.filter;
 
-import com.poly.lab4.util.AuthUtil;
+import com.poly.lab5.util.AuthUtil;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
-@WebFilter("/manager/*")
+@WebFilter("")
 public class AuthFilter implements Filter {
 
     @Override

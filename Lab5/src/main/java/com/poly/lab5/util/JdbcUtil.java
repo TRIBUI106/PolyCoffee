@@ -1,9 +1,6 @@
-package com.poly.lab4.util;
+package com.poly.lab5.util;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class JdbcUtil {
 
@@ -27,29 +24,33 @@ public class JdbcUtil {
         }
     }
 
-    public static Connection getConnection() {
+    public static Connection getConnection() throws SQLException, ClassNotFoundException {
+        if (conn == null || conn.isClosed()) {
+            Class.forName(DatabaseConfig.getDriver());
+            conn = DriverManager.getConnection(
+                    DatabaseConfig.getUrl(),
+                    DatabaseConfig.getUsername(),
+                    DatabaseConfig.getPassword()
+            );
+        }
         return conn;
     }
 
+    // Sửa lại các hàm executeQuery và executeUpdate để dùng getConnection() mới
     public static ResultSet executeQuery(String sql, Object... args) throws Exception {
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
+        // Luôn gọi getConnection() thay vì dùng trực tiếp biến conn
+        PreparedStatement ps = getConnection().prepareStatement(sql);
         for (int i = 0; i < args.length; i++) {
             ps.setObject(i + 1, args[i]);
         }
-
         return ps.executeQuery();
     }
 
     public static int executeUpdate(String sql, Object... args) throws Exception {
-
-        PreparedStatement ps = conn.prepareStatement(sql);
-
+        PreparedStatement ps = getConnection().prepareStatement(sql);
         for (int i = 0; i < args.length; i++) {
             ps.setObject(i + 1, args[i]);
         }
-
         return ps.executeUpdate();
     }
 }

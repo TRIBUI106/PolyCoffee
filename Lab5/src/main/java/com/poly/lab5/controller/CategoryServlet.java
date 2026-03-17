@@ -1,8 +1,8 @@
-package com.poly.lab4.controller;
+package com.poly.lab5.controller;
 
 
-import com.poly.lab4.dao.DrinkDAO;
-import com.poly.lab4.entity.Drink;
+import com.poly.lab5.dao.CategoryDAO;
+import com.poly.lab5.entity.Category;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
@@ -11,10 +11,10 @@ import jakarta.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/manager/drink")
-public class DrinkServlet extends HttpServlet {
+@WebServlet("/manager/category")
+public class CategoryServlet extends HttpServlet {
 
-    DrinkDAO dao = new DrinkDAO();
+    CategoryDAO dao = new CategoryDAO();
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
@@ -59,43 +59,37 @@ public class DrinkServlet extends HttpServlet {
     private void list(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        List<Drink> list = dao.findAll();
+        List<Category> list = dao.findAll();
 
         req.setAttribute("list", list);
 
-        req.getRequestDispatcher("/manager/drink.jsp")
+        req.getRequestDispatcher("/manager/category.jsp")
                 .forward(req,resp);
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        Drink d = new Drink();
+        Category c = new Category();
 
-        d.setName(req.getParameter("name"));
-        d.setPrice(Double.parseDouble(req.getParameter("price")));
-        d.setImage(req.getParameter("image"));
-        d.setCategoryId(Integer.parseInt(req.getParameter("category")));
+        c.setName(req.getParameter("name"));
 
-        dao.insert(d);
+        dao.insert(c);
 
-        resp.sendRedirect("drink");
+        resp.sendRedirect("category");
     }
 
     private void update(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        Drink d = new Drink();
+        Category c = new Category();
 
-        d.setId(Integer.parseInt(req.getParameter("id")));
-        d.setName(req.getParameter("name"));
-        d.setPrice(Double.parseDouble(req.getParameter("price")));
-        d.setImage(req.getParameter("image"));
-        d.setCategoryId(Integer.parseInt(req.getParameter("category")));
+        c.setId(Integer.parseInt(req.getParameter("id")));
+        c.setName(req.getParameter("name"));
 
-        dao.update(d);
+        dao.update(c);
 
-        resp.sendRedirect("drink");
+        resp.sendRedirect("category");
     }
 
     private void delete(HttpServletRequest req, HttpServletResponse resp)
@@ -105,18 +99,20 @@ public class DrinkServlet extends HttpServlet {
 
         dao.delete(id);
 
-        resp.sendRedirect("drink");
+        resp.sendRedirect("category");
     }
+
     private void edit(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
         int id = Integer.parseInt(req.getParameter("id"));
 
-        Drink d = dao.findById(id);
+        Category c = dao.findById(id);
 
-        req.setAttribute("drink", d);
+        req.setAttribute("category", c);
 
         list(req, resp);
     }
 
 }
+
