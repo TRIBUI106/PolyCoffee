@@ -85,7 +85,7 @@
                             <div class="relative">
                                 <input type="number" name="price" value="${drink.price}" required placeholder="0"
                                        class="w-full bg-gray-50 border border-gray-200 px-5 py-3.5 rounded-xl outline-none focus:border-coffee-500 focus:bg-white transition-colors font-bold text-coffee-700 text-lg">
-                                <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 font-bold">VNĐ</span>
+                                <span class="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 font-bold"><fmt:message key="common.currency"/></span>
                             </div>
                         </div>
                     </div>
@@ -149,6 +149,17 @@
     </main>
 
     <jsp:include page="../common/footer.jsp" />
+
+    <div id="uploadOverlay" class="upload-overlay">
+        <div class="w-64 bg-white p-6 rounded-2xl shadow-xl border border-gray-100 flex flex-col items-center">
+            <div class="w-12 h-12 border-4 border-coffee-200 border-t-coffee-600 rounded-full animate-spin mb-4"></div>
+            <p class="font-bold text-gray-900 mb-1"><fmt:message key="common.processing"/></p>
+            <p class="text-xs text-gray-500 mb-4 text-center"><fmt:message key="common.wait_optimize"/></p>
+            <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                <div class="h-full bg-coffee-600 rounded-full progress-bar-fill"></div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function previewImage(input) {

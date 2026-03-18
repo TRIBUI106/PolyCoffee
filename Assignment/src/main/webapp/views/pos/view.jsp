@@ -150,34 +150,34 @@
                                 class="w-16 bg-white border-r border-pos-border flex flex-col items-center py-4 gap-4 shrink-0 shadow-sm z-30">
                                 <a href="?tab=pos"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'pos' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="POS System">
+                                    title="<fmt:message key='admin.sidebar.pos'/>">
                                     <i class="bi bi-display text-xl"></i>
                                 </a>
                                 <div class="w-8 h-px bg-pos-border"></div>
                                 <a href="?tab=drinks"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'drinks' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="Drink Management">
+                                    title="<fmt:message key='admin.sidebar.drinks'/>">
                                     <i class="bi bi-cup-hot text-xl"></i>
                                 </a>
                                 <a href="?tab=categories"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'categories' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="Categories">
+                                    title="<fmt:message key='admin.sidebar.categories'/>">
                                     <i class="bi bi-tags text-xl"></i>
                                 </a>
                                 <a href="?tab=users"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'users' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="Staff Management">
+                                    title="<fmt:message key='admin.sidebar.staff'/>">
                                     <i class="bi bi-people text-xl"></i>
                                 </a>
                                 <a href="?tab=bills"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'bills' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="Bill History">
+                                    title="<fmt:message key='admin.sidebar.bills'/>">
                                     <i class="bi bi-receipt text-xl"></i>
                                 </a>
                                 <div class="flex-grow"></div>
                                 <a href="?tab=stats"
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'stats' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="Analytics">
+                                    title="<fmt:message key='admin.sidebar.stats'/>">
                                     <i class="bi bi-graph-up-arrow text-lg"></i>
                                 </a>
                             </div>
@@ -319,7 +319,9 @@
                                                                 <td class="px-6 py-4 text-center">
                                                                     <span
                                                                         class="px-3 py-1 rounded-full text-[11px] font-bold ${item.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                                                                        ${item.active ? 'ACTIVE' : 'INACTIVE'}
+                                                                        ${item.active ? '
+                                                                        <fmt:message key="admin.status.yes" />' : '
+                                                                        <fmt:message key="admin.status.no" />'}
                                                                     </span>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-right space-x-2">
@@ -359,8 +361,13 @@
                                                         </div>
                                                         <div>
                                                             <div class="font-bold text-pos-text">${item.name}</div>
-                                                            <div class="text-xs text-pos-muted">Active: ${item.active ?
-                                                                'Yes' : 'No'}</div>
+                                                            <div class="text-xs text-pos-muted">
+                                                                <fmt:message key="admin.category.table.status" />:
+                                                                ${item.active ?
+                                                                '
+                                                                <fmt:message key="admin.status.yes" />' : '
+                                                                <fmt:message key="admin.status.no" />'}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-2">
@@ -423,13 +430,16 @@
                                                                 <td class="px-6 py-4">
                                                                     <span
                                                                         class="px-2.5 py-1 rounded text-[10px] font-black tracking-widest ${item.role ? 'bg-purple-100 text-purple-700' : 'bg-gray-100 text-gray-700'}">
-                                                                        ${item.role ? 'MANAGER' : 'STAFF'}
+                                                                        ${item.role ? '
+                                                                        <fmt:message key="admin.role.manager" />' : '
+                                                                        <fmt:message key="admin.role.staff" />'}
                                                                     </span>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-center">
                                                                     <div class="flex justify-center">
                                                                         <span
-                                                                            class="w-2 h-2 rounded-full ${item.active ? 'bg-green-500' : 'bg-red-500'}"></span>
+                                                                            class="w-2 h-2 rounded-full ${item.active ? 'bg-green-500' : 'bg-red-500'}"
+                                                                            title="${item.active ? 'ACTIVE' : 'LOCKED'}"></span>
                                                                     </div>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-right">
@@ -471,6 +481,9 @@
                                                             class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
                                                             <fmt:message key="admin.bill.status" />
                                                         </th>
+                                                        <th class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                            <fmt:message key="admin.drink.action" />
+                                                        </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="divide-y divide-pos-border">
@@ -489,25 +502,46 @@
                                                             </td>
                                                             <td class="px-6 py-4 text-center text-xs">
                                                                 <span
-                                                                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">PAID</span>
+                                                                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
+                                                                    <fmt:message key="admin.bill.status.paid" />
+                                                                </span>
+                                                            </td>
+                                                            <td class="px-6 py-4 text-right">
+                                                                <a href="?tab=bills&billId=${item.id}"
+                                                                   class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors">
+                                                                    <i class="bi bi-eye-fill"></i>
+                                                                </a>
                                                             </td>
                                                         </tr>
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
+                                            <div class="p-4 bg-gray-50 border-t border-pos-border flex justify-center">
+                                                <a href="${pageContext.request.contextPath}/manager/bills" class="text-xs font-bold text-coffee-700 hover:underline uppercase tracking-widest flex items-center gap-2">
+                                                    <i class="bi bi-journal-text"></i> <fmt:message key="header.bill" /> &rarr;
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'stats'}">
                                     <div class="flex-grow flex flex-col bg-pos-bg overflow-y-auto p-6">
-                                        <h2 class="text-2xl font-black text-gray-900 mb-6">Business Dashboard</h2>
+                                        <div class="flex justify-between items-center mb-6">
+                                            <h2 class="text-2xl font-black text-gray-900">
+                                                <fmt:message key="admin.stats.dashboard" />
+                                            </h2>
+                                            <a href="${pageContext.request.contextPath}/manager/statistics" class="text-xs font-black text-coffee-700 hover:text-coffee-800 bg-white px-4 py-2 rounded-xl border border-pos-border shadow-sm flex items-center gap-2 transition-all">
+                                                 <i class="bi bi-bar-chart-fill"></i> <fmt:message key="header.report" /> &rarr;
+                                            </a>
+                                        </div>
 
                                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
                                             <!-- Revenue Snapshot -->
                                             <div class="bg-white p-6 rounded-2xl border border-pos-border shadow-sm">
                                                 <h3
                                                     class="text-sm font-black text-pos-muted uppercase tracking-widest mb-4">
-                                                    Daily Revenue (Last 5 days)</h3>
+                                                    <fmt:message key="admin.stats.revenue_snapshot" />
+                                                </h3>
                                                 <div class="space-y-4">
                                                     <c:forEach var="r" items="${revenueReport}" varStatus="st">
                                                         <c:if test="${st.index < 5}">
@@ -516,14 +550,17 @@
                                                                     <fmt:formatDate value="${r.revenueDate}"
                                                                         pattern="MM-dd" />
                                                                 </div>
-                                                                <div class="flex-grow bg-gray-100 rounded-full h-2">
+                                                                 <div class="flex-grow bg-gray-100 rounded-full h-2 relative group overflow-visible">
                                                                     <div class="bg-coffee-500 h-full rounded-full"
-                                                                        style="width: 70%"></div>
+                                                                        style="width: 75%"></div>
                                                                 </div>
                                                                 <div
-                                                                    class="text-xs font-black text-pos-text w-20 text-right">
+                                                                    class="text-xs font-black text-pos-text w-24 text-right">
                                                                     <fmt:formatNumber value="${r.totalRevenue}"
                                                                         pattern="#,###" />
+                                                                    <div class="text-[9px] text-pos-muted font-normal leading-none mt-0.5">
+                                                                        ${r.totalBills} <fmt:message key="admin.report.rev.bills"/>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </c:if>
@@ -535,7 +572,8 @@
                                             <div class="bg-white p-6 rounded-2xl border border-pos-border shadow-sm">
                                                 <h3
                                                     class="text-sm font-black text-pos-muted uppercase tracking-widest mb-4">
-                                                    Popular Drinks</h3>
+                                                    <fmt:message key="admin.stats.popular_drinks" />
+                                                </h3>
                                                 <div class="space-y-3">
                                                     <c:forEach var="d" items="${topDrinks}" varStatus="st">
                                                         <c:if test="${st.index < 5}">
@@ -550,7 +588,8 @@
                                                                 </div>
                                                                 <span
                                                                     class="bg-gray-50 px-2 py-0.5 rounded text-[11px] font-bold text-pos-muted italic">${d.totalQuantitySold}
-                                                                    cups</span>
+                                                                    <fmt:message key="admin.stats.sold_count" />
+                                                                </span>
                                                             </div>
                                                         </c:if>
                                                     </c:forEach>
@@ -562,8 +601,8 @@
                             </c:choose>
                         </div>
 
-                        <!-- Right Side: Order/Cart (Visible only on POS tab) -->
-                        <c:if test="${activeTab == 'pos'}">
+                        <!-- Right Side: Order/Cart or Detail View -->
+                        <c:if test="${activeTab == 'pos' || (activeTab == 'bills' && not empty currentBill)}">
                             <div
                                 class="w-[380px] xl:w-[420px] bg-white border-l border-pos-border flex flex-col shrink-0 relative z-20 shadow-[-5px_0_15px_-5px_rgba(0,0,0,0.05)]">
 
@@ -627,14 +666,27 @@
 
                                                             <!-- Note Field with Quick Dropdown -->
                                                             <div class="relative mt-2">
-                                                                <div onclick="toggleNoteDropdown(${not empty item.drink.id ? item.drink.id : 0})"
-                                                                    class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
-                                                                    <i class="bi bi-pencil-square"></i>
-                                                                    <span class="truncate max-w-[120px]">${not empty
-                                                                        item.note ? item.note : '
-                                                                        <fmt:message key="pos.item.note" />'}
-                                                                    </span>
-                                                                </div>
+                                                                <c:choose>
+                                                                    <c:when test="${currentBill.status == 'WAITING'}">
+                                                                        <div onclick="toggleNoteDropdown('${item.drink.id}')"
+                                                                            class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
+                                                                            <i class="bi bi-pencil-square"></i>
+                                                                            <span class="truncate max-w-[120px]">${not empty
+                                                                                item.note ? item.note : '
+                                                                                <fmt:message key="pos.item.note" />'}
+                                                                            </span>
+                                                                        </div>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <div class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-gray-600 font-bold' : 'text-pos-muted'} cursor-default w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
+                                                                            <i class="bi bi-pencil-square"></i>
+                                                                            <span class="truncate max-w-[120px]">${not empty
+                                                                                item.note ? item.note : '
+                                                                                <fmt:message key="pos.item.note" />'}
+                                                                            </span>
+                                                                        </div>
+                                                                    </c:otherwise>
+                                                                </c:choose>
 
                                                                 <!-- Dropdown for notes -->
                                                                 <div id="note-dropdown-${item.drink.id}"
@@ -668,18 +720,25 @@
                                                         <td class="py-3 px-1 w-[110px] align-top">
                                                             <div
                                                                 class="flex items-center bg-white border border-pos-border rounded-md shrink-0 overflow-hidden shadow-sm h-8 mt-1">
-                                                                <button
-                                                                    class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-r border-pos-border shrink-0 active:bg-gray-200"
-                                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
-                                                                    <i class="bi bi-dash"></i>
-                                                                </button>
-                                                                <input type="text" value="${item.quantity}" readonly
-                                                                    class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
-                                                                <button
-                                                                    class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
-                                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity + 1}'">
-                                                                    <i class="bi bi-plus"></i>
-                                                                </button>
+                                                                <c:choose>
+                                                                    <c:when test="${currentBill.status == 'WAITING'}">
+                                                                        <button
+                                                                            class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-r border-pos-border shrink-0 active:bg-gray-200"
+                                                                            onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
+                                                                            <i class="bi bi-dash"></i>
+                                                                        </button>
+                                                                        <input type="text" value="${item.quantity}" readonly
+                                                                            class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
+                                                                        <button
+                                                                            class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
+                                                                            onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity + 1}'">
+                                                                            <i class="bi bi-plus"></i>
+                                                                        </button>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span class="w-full text-center font-bold text-sm text-pos-muted">x${item.quantity}</span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             </div>
                                                         </td>
                                                         <td
@@ -753,21 +812,360 @@
                                                 <i class="bi bi-trash3"></i>
                                             </button>
 
-                                            <!-- Pay Button -->
+                                            <!-- Print Bill Button -->
                                             <button
-                                                class="col-span-4 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
+                                                class="col-span-1 border-2 border-pos-border text-coffee-700 rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-coffee-50 hover:border-coffee-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
                                                 ${empty currentBill.billDetails ? 'disabled' : '' }
-                                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
-                                                <i class="bi bi-cash-stack text-xl"></i>
-                                                <span class="tracking-wide">
-                                                    <fmt:message key="pos.bill.checkout" /> (F9)
-                                                </span>
+                                                onclick="showPrintModal()" title="In hoá đơn">
+                                                <i class="bi bi-printer"></i>
                                             </button>
+
+                                            <c:choose>
+                                                <c:when test="${currentBill.status == 'WAITING'}">
+                                                    <!-- Pay Button -->
+                                                    <button
+                                                        class="col-span-3 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
+                                                        ${empty currentBill.billDetails ? 'disabled' : '' }
+                                                        onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
+                                                        <i class="bi bi-cash-stack text-xl"></i>
+                                                        <span class="tracking-wide text-sm">
+                                                            <fmt:message key="pos.bill.checkout" /> (F9)
+                                                        </span>
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="${pageContext.request.contextPath}/employee/pos"
+                                                       class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
+                                                       <i class="bi bi-plus-circle text-xl"></i>
+                                                       <span class="tracking-wide text-sm">New Order</span>
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </div>
                                     </div>
                                 </div>
                         </c:if>
                     </main>
+
+                    <!-- Print Modal -->
+                    <div id="printModal" class="fixed inset-0 z-[200] hidden">
+                        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="hidePrintModal()"></div>
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                            <!-- Content already defined above in printableBill, we keep it as is for printing -->
+                            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+                                <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                    <i class="bi bi-receipt"></i>
+                                    <fmt:message key="admin.bill.print.preview" />
+                                </h3>
+                                <button onclick="hidePrintModal()" class="text-gray-400 hover:text-gray-600">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+
+                            <div id="printableBill"
+                                class="flex-grow overflow-y-auto p-8 bg-white text-black font-mono text-sm leading-relaxed">
+                                <!-- Bill Header -->
+                                <div class="text-center mb-6">
+                                    <h2 class="text-xl font-black uppercase tracking-tighter mb-1">POLY COFFEE</h2>
+                                    <p class="text-[10px] text-gray-500 italic">
+                                        <fmt:message key="app.subtitle" />
+                                    </p>
+                                    <p class="text-[11px] mt-2 underline decoration-gray-200">
+                                        <fmt:message key="admin.bill.print.address" />
+                                    </p>
+                                    <p class="text-[11px]">
+                                        <fmt:message key="admin.bill.print.phone" />
+                                    </p>
+                                </div>
+
+                                <div class="border-t border-dashed border-gray-300 my-4"></div>
+
+                                <!-- Bill Info -->
+                                <div class="space-y-1 text-xs mb-4">
+                                    <div class="flex justify-between">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.code" />:
+                                        </span>
+                                        <span class="font-bold text-right">${currentBill.code}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.date" />:
+                                        </span>
+                                        <span>
+                                            <fmt:formatDate value="${currentBill.createdAt}"
+                                                pattern="dd/MM/yyyy HH:mm" />
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.cashier" />:
+                                        </span>
+                                        <span>${sessionScope.user.fullName}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.type" />:
+                                        </span>
+                                        <span class="font-bold">
+                                            <fmt:message key="pos.takeaway" />
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-dashed border-gray-300 my-4"></div>
+
+                                <!-- Items -->
+                                <table class="w-full text-xs">
+                                    <thead>
+                                        <tr class="border-b border-gray-100 italic">
+                                            <th class="text-left py-2 font-normal">
+                                                <fmt:message key="admin.bill.print.item" />
+                                            </th>
+                                            <th class="text-center py-2 font-normal">
+                                                <fmt:message key="admin.bill.print.qty" />
+                                            </th>
+                                            <th class="text-right py-2 font-normal">
+                                                <fmt:message key="admin.bill.print.price" />
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-50">
+                                        <c:forEach var="item" items="${currentBill.billDetails}">
+                                            <tr>
+                                                <td class="py-2">
+                                                    <div class="font-bold">${item.drink.name}</div>
+                                                    <c:if test="${not empty item.note}">
+                                                        <div class="text-[10px] text-gray-500 italic">(${item.note})
+                                                        </div>
+                                                    </c:if>
+                                                </td>
+                                                <td class="text-center py-2">${item.quantity}</td>
+                                                <td class="text-right py-2 font-bold">
+                                                    <fmt:formatNumber value="${item.price * item.quantity}"
+                                                        pattern="#,###" />
+                                                </td>
+                                            </tr>
+                                        </c:forEach>
+                                    </tbody>
+                                </table>
+
+                                <div class="border-t border-dashed border-gray-300 my-4"></div>
+
+                                <!-- Totals -->
+                                <div class="space-y-2 mb-6">
+                                    <div class="flex justify-between text-xs">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.subtotal" />:
+                                        </span>
+                                        <span>
+                                            <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
+                                        </span>
+                                    </div>
+                                    <div class="flex justify-between text-xs">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.discount" />:
+                                        </span>
+                                        <span>0</span>
+                                    </div>
+                                    <div class="flex justify-between text-lg font-black pt-2 border-t border-gray-100">
+                                        <span>
+                                            <fmt:message key="admin.bill.print.total" />:
+                                        </span>
+                                        <span class="text-coffee-700">
+                                            <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
+                                            <fmt:message key="common.currency" />
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- QR Area -->
+                                <div
+                                    class="flex flex-col items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
+                                    <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest">
+                                        <fmt:message key="admin.bill.print.qr_label" />
+                                    </p>
+                                    <div class="bg-white p-2 rounded-lg shadow-inner border border-white">
+                                        <img id="vietqr-img" src="" alt="QR Code" class="w-48 h-48 object-contain">
+                                    </div>
+                                    <div class="text-center">
+                                        <p class="text-[11px] font-bold text-blue-800">
+                                            <fmt:message key="bank.id" />
+                                        </p>
+                                        <p class="text-[10px] text-gray-600">STK:
+                                            <fmt:message key="bank.account.no" />
+                                        </p>
+                                        <p class="text-[10px] font-black uppercase">
+                                            <fmt:message key="bank.account.name" />
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-8 space-y-1">
+                                    <p class="text-[10px] font-bold">
+                                        <fmt:message key="admin.bill.print.thankyou" />
+                                    </p>
+                                    <p class="text-[9px] text-gray-400">
+                                        <fmt:message key="admin.bill.print.footer" />
+                                    </p>
+                                    <p class="text-[8px] text-gray-300 mt-4">Powered by SmartPOS v1.2</p>
+                                </div>
+                            </div>
+
+                            <div class="p-4 border-t border-gray-100 flex gap-3 bg-gray-50">
+                                <button onclick="printBill()"
+                                    class="flex-grow bg-coffee-700 text-white font-bold py-3 rounded-xl hover:bg-coffee-800 shadow-lg shadow-coffee-100 flex items-center justify-center gap-2">
+                                    <i class="bi bi-printer-fill"></i>
+                                    <fmt:message key="admin.bill.print.btn" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bill Detail Modal (Viewer only) -->
+                    <div id="detailModal" class="fixed inset-0 z-[200] hidden">
+                        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="hideDetailModal()"></div>
+                        <div
+                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+                            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+                                <div>
+                                    <h3 class="font-black text-gray-900 text-lg flex items-center gap-2">
+                                        <i class="bi bi-info-square text-coffee-600"></i>
+                                        Bill Details
+                                    </h3>
+                                    <p class="text-[11px] text-pos-muted font-bold uppercase tracking-wider mt-0.5">
+                                        Reviewing order history
+                                    </p>
+                                </div>
+                                <button onclick="hideDetailModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors">
+                                    <i class="bi bi-x-lg"></i>
+                                </button>
+                            </div>
+
+                            <div class="flex-grow overflow-y-auto p-6 space-y-6">
+                                <!-- Order Info Card -->
+                                <div class="grid grid-cols-2 gap-4 p-4 bg-pos-bg rounded-2xl border border-pos-border">
+                                    <div>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Bill Code</p>
+                                        <p class="font-mono text-sm font-bold text-coffee-700">${currentBill.code}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Status</p>
+                                        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
+                                            ${currentBill.status}
+                                        </span>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Date Time</p>
+                                        <p class="text-xs font-bold text-gray-700">
+                                            <fmt:formatDate value="${currentBill.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Cashier</p>
+                                        <p class="text-xs font-bold text-gray-700">${sessionScope.user.fullName}</p>
+                                    </div>
+                                </div>
+
+                                <!-- Items Table -->
+                                <div>
+                                    <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 px-1">Order Items</h4>
+                                    <div class="bg-white rounded-2xl border border-pos-border overflow-hidden">
+                                        <table class="w-full text-sm">
+                                            <thead class="bg-gray-50 border-b border-pos-border">
+                                                <tr>
+                                                    <th class="text-left p-3 text-[10px] font-black uppercase text-pos-muted">Item</th>
+                                                    <th class="text-center p-3 text-[10px] font-black uppercase text-pos-muted">Qty</th>
+                                                    <th class="text-right p-3 text-[10px] font-black uppercase text-pos-muted">Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="divide-y divide-pos-border">
+                                                <c:forEach var="item" items="${currentBill.billDetails}">
+                                                    <tr>
+                                                        <td class="p-3">
+                                                            <div class="font-bold text-gray-800">${item.drink.name}</div>
+                                                            <c:if test="${not empty item.note}">
+                                                                <div class="text-[10px] text-coffee-600 italic mt-0.5">${item.note}</div>
+                                                            </c:if>
+                                                        </td>
+                                                        <td class="p-3 text-center font-bold text-gray-600">${item.quantity}</td>
+                                                        <td class="p-3 text-right font-black text-gray-900">
+                                                            <fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###" />
+                                                        </td>
+                                                    </tr>
+                                                </c:forEach>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Total Card -->
+                                <div class="p-5 bg-coffee-50 rounded-2xl border border-coffee-100 flex justify-between items-center">
+                                    <span class="font-black text-coffee-700 uppercase tracking-widest text-xs">Total Amount Paid</span>
+                                    <span class="text-2xl font-black text-coffee-800">
+                                        <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
+                                        <span class="text-sm font-bold ml-1">VNĐ</span>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="p-6 bg-gray-50 border-t border-gray-100 flex gap-3">
+                                <button onclick="hideDetailModal()" class="flex-grow bg-white border border-pos-border text-gray-700 font-bold py-3 rounded-2xl hover:bg-gray-100 transition-colors shadow-sm">
+                                    Close Window
+                                </button>
+                                <button onclick="hideDetailModal(); showPrintModal();" class="w-14 bg-white border border-pos-border text-coffee-600 rounded-2xl flex items-center justify-center hover:bg-coffee-50 transition-colors shadow-sm" title="Print/Pay Options">
+                                    <i class="bi bi-printer-fill"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <style type="text/css" media="print">
+                        @page {
+                            size: 80mm auto;
+                            margin: 0;
+                        }
+
+                        body * {
+                            visibility: hidden;
+                        }
+
+                        #printableBill,
+                        #printableBill * {
+                            visibility: visible;
+                        }
+
+                        #printableBill {
+                            position: absolute;
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            padding: 10px;
+                            margin: 0;
+                        }
+
+                        #printModal {
+                            background: white !important;
+                        }
+
+                        .absolute.inset-0.bg-black\/60 {
+                            display: none !important;
+                        }
+
+                        #printModal>div:last-child {
+                            position: static !important;
+                            transform: none !important;
+                            width: 100% !important;
+                            box-shadow: none !important;
+                            max-height: none !important;
+                        }
+
+                        .p-4.border-b,
+                        .p-4.border-t {
+                            display: none !important;
+                        }
+                    </style>
 
                     <script>
                         function toggleNoteDropdown(id) {
@@ -792,6 +1190,55 @@
                         document.addEventListener('click', function (e) {
                             if (!e.target.closest('.relative')) {
                                 document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
+                            }
+                        });
+
+                        function showPrintModal() {
+                            const modal = document.getElementById('printModal');
+                            const qrImg = document.getElementById('vietqr-img');
+
+                            // Bank Details from Messages Bundle
+                            const bankId = '<fmt:message key="bank.id" />';
+                            const accountNo = '<fmt:message key="bank.account.no" />';
+                            const accountName = '<fmt:message key="bank.account.name" />';
+                            const template = '<fmt:message key="bank.qr.template" />';
+                            const amount = ${ (not empty currentBill.total) ? currentBill.total : 0 };
+                            const billCode = '${currentBill.code}';
+                            const description = encodeURIComponent('Thanh toan hoa don ' + billCode);
+
+                        // Construct VietQR URL using string concatenation to avoid JSP EL conflict
+                        const qrUrl = 'https://img.vietqr.io/image/' + bankId + '-' + accountNo + '-' + template + '.png?amount=' + amount + '&addInfo=' + description + '&accountName=' + encodeURIComponent(accountName);
+
+                        qrImg.src = qrUrl;
+                        modal.classList.remove('hidden');
+                        }
+
+                        function hidePrintModal() {
+                            document.getElementById('printModal').classList.add('hidden');
+                        }
+
+                        function showDetailModal() {
+                            document.getElementById('detailModal').classList.remove('hidden');
+                        }
+
+                        function hideDetailModal() {
+                            document.getElementById('detailModal').classList.add('hidden');
+                        }
+
+                        function printBill() {
+                            window.print();
+                        }
+
+                        // Auto-show modal after checkout or history click
+                        window.addEventListener('load', () => {
+                            const isCheckout = '${param.checkout}' === 'true';
+                            const isHistoryTab = '${param.tab}' === 'bills';
+                            const billStatus = '${currentBill.status}';
+                            
+                            if (isCheckout && billStatus === 'FINISHED') {
+                                showPrintModal();
+                            } else if (isHistoryTab && billStatus != '') {
+                                showDetailModal();
                             }
                         });
                     </script>

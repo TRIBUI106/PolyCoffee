@@ -1,10 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ taglib uri="jakarta.tags.core" prefix="c" %>
-<%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
-<%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
+    <%@ taglib uri="jakarta.tags.core" prefix="c" %>
+        <%@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
+            <%@ taglib uri="jakarta.tags.functions" prefix="fn" %>
 
-<fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
-<fmt:setBundle basename="messages" />
+                <fmt:setLocale value="${empty sessionScope.lang ? 'vi' : sessionScope.lang}" />
+                <fmt:setBundle basename="messages" />
 
                 <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
                     <nav class="max-w-7xl mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
@@ -36,33 +36,26 @@
                                     <div class="relative group">
                                         <button class="nav-link-custom">
                                             <fmt:message key="header.management" /> <i
-                                                class="bi bi-chevron-down text-[10px] text-gray-400"></i>
+                                                class="bi bi-chevron-down text-[10px] ml-1 opacity-50 group-hover:rotate-180 transition-transform"></i>
                                         </button>
-                                        <div class="dropdown-luxury">
-                                            <div
-                                                class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                                <fmt:message key="header.catalog" />
-                                            </div>
-                                            <a href="${pageContext.request.contextPath}/manager/categories"
-                                                class="dropdown-item">
-                                                <i class="bi bi-grid-1x2 text-gray-400"></i>
-                                                <fmt:message key="header.category" />
-                                            </a>
+                                        <div
+                                            class="absolute top-full left-0 w-56 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all z-50">
                                             <a href="${pageContext.request.contextPath}/manager/drinks"
                                                 class="dropdown-item">
-                                                <i class="bi bi-cup-straw text-gray-400"></i>
+                                                <i class="bi bi-cup-hot text-gray-400"></i>
                                                 <fmt:message key="header.drink" />
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/manager/categories"
+                                                class="dropdown-item">
+                                                <i class="bi bi-tags text-gray-400"></i>
+                                                <fmt:message key="header.category" />
                                             </a>
                                             <a href="${pageContext.request.contextPath}/manager/staff"
                                                 class="dropdown-item">
                                                 <i class="bi bi-people text-gray-400"></i>
                                                 <fmt:message key="header.staff" />
                                             </a>
-                                            <div class="h-px bg-gray-100 my-1 mx-2"></div>
-                                            <div
-                                                class="px-3 py-1.5 text-xs font-semibold text-gray-400 uppercase tracking-wider">
-                                                <fmt:message key="header.intelligence" />
-                                            </div>
+                                            <div class="h-px bg-gray-50 my-2 mx-4"></div>
                                             <a href="${pageContext.request.contextPath}/manager/bills"
                                                 class="dropdown-item">
                                                 <i class="bi bi-receipt text-gray-400"></i>

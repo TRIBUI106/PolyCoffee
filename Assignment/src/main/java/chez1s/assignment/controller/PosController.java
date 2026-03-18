@@ -64,7 +64,7 @@ public class PosController extends HttpServlet {
 
         if (uri.contains("/checkout")) {
             if (billId > 0) billService.checkout(billId);
-            resp.sendRedirect(req.getContextPath() + "/employee/pos");
+            resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + billId + "&checkout=true");
             return;
         }
 
