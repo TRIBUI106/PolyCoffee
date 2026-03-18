@@ -17,6 +17,14 @@
                         <fmt:message key="pos.title" />
                     </title>
                     <jsp:include page="/views/common/head.jsp" />
+                    <!-- Bootstrap CSS -->
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                        rel="stylesheet"
+                        integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1H7kU2Kk2bZ9+8Gk5j5c5b5U5Y5Z5Z5Z5Z5Z5Z5Z5Z5Z"
+                        crossorigin="anonymous">
+                    <!-- Bootstrap Icons -->
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+                        rel="stylesheet" crossorigin="anonymous">
                     <script>
                         // Extend existing config for POS specific needs
                         tailwind.config = {
@@ -76,6 +84,10 @@
                         }
                     </style>
                 </head>
+                <!-- Bootstrap JS Bundle (includes Popper) -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+5q5E5V5Z5Y5Z5Z5Z5Z5Z5Z5Z5Z"
+                    crossorigin="anonymous"></script>
 
                 <body class="h-screen w-screen flex flex-col text-pos-text select-none">
 
@@ -460,6 +472,11 @@
                                         <h2 class="text-2xl font-black text-gray-900 mb-6">
                                             <fmt:message key="admin.bill.title" />
                                         </h2>
+                                        <!-- Find Bill Button -->
+                                        <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
+                                            data-bs-target="#findBillModal">
+                                            <i class="bi bi-search"></i> Find Bill
+                                        </button>
                                         <div
                                             class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
                                             <table class="w-full text-left">
@@ -481,7 +498,8 @@
                                                             class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
                                                             <fmt:message key="admin.bill.status" />
                                                         </th>
-                                                        <th class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                        <th
+                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
                                                             <fmt:message key="admin.drink.action" />
                                                         </th>
                                                     </tr>
@@ -508,7 +526,7 @@
                                                             </td>
                                                             <td class="px-6 py-4 text-right">
                                                                 <a href="?tab=bills&billId=${item.id}"
-                                                                   class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors">
+                                                                    class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors">
                                                                     <i class="bi bi-eye-fill"></i>
                                                                 </a>
                                                             </td>
@@ -517,9 +535,57 @@
                                                 </tbody>
                                             </table>
                                             <div class="p-4 bg-gray-50 border-t border-pos-border flex justify-center">
-                                                <a href="${pageContext.request.contextPath}/manager/bills" class="text-xs font-bold text-coffee-700 hover:underline uppercase tracking-widest flex items-center gap-2">
-                                                    <i class="bi bi-journal-text"></i> <fmt:message key="header.bill" /> &rarr;
+                                                <a href="${pageContext.request.contextPath}/manager/bills"
+                                                    class="text-xs font-bold text-coffee-700 hover:underline uppercase tracking-widest flex items-center gap-2">
+                                                    <i class="bi bi-journal-text"></i>
+                                                    <fmt:message key="header.bill" /> &rarr;
                                                 </a>
+                                            </div>
+                                        </div>
+                                        <!-- Find Bill Modal -->
+                                        <div class="modal fade" id="findBillModal" tabindex="-1"
+                                            aria-labelledby="findBillModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                <div class="modal-content bg-white">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="findBillModalLabel">Find Bill</h5>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <form method="GET"
+                                                        action="${pageContext.request.contextPath}/employee/pos">
+                                                        <input type="hidden" name="tab" value="bills" />
+                                                        <div class="modal-body">
+                                                            <div class="row g-3">
+                                                                <div class="col-md-4">
+                                                                    <label for="cashier" class="form-label">Cashier
+                                                                        Name</label>
+                                                                    <input type="text" class="form-control" id="cashier"
+                                                                        name="cashier"
+                                                                        placeholder="Enter cashier name" />
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label for="date" class="form-label">Date</label>
+                                                                    <input type="date" class="form-control" id="date"
+                                                                        name="date" />
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <label for="total" class="form-label">Total Price
+                                                                        (>=)</label>
+                                                                    <input type="number" step="0.01"
+                                                                        class="form-control" id="total" name="total"
+                                                                        placeholder="Minimum total" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Cancel</button>
+                                                            <button type="submit"
+                                                                class="btn btn-primary">Search</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -530,8 +596,10 @@
                                             <h2 class="text-2xl font-black text-gray-900">
                                                 <fmt:message key="admin.stats.dashboard" />
                                             </h2>
-                                            <a href="${pageContext.request.contextPath}/manager/statistics" class="text-xs font-black text-coffee-700 hover:text-coffee-800 bg-white px-4 py-2 rounded-xl border border-pos-border shadow-sm flex items-center gap-2 transition-all">
-                                                 <i class="bi bi-bar-chart-fill"></i> <fmt:message key="header.report" /> &rarr;
+                                            <a href="${pageContext.request.contextPath}/manager/statistics"
+                                                class="text-xs font-black text-coffee-700 hover:text-coffee-800 bg-white px-4 py-2 rounded-xl border border-pos-border shadow-sm flex items-center gap-2 transition-all">
+                                                <i class="bi bi-bar-chart-fill"></i>
+                                                <fmt:message key="header.report" /> &rarr;
                                             </a>
                                         </div>
 
@@ -550,7 +618,8 @@
                                                                     <fmt:formatDate value="${r.revenueDate}"
                                                                         pattern="MM-dd" />
                                                                 </div>
-                                                                 <div class="flex-grow bg-gray-100 rounded-full h-2 relative group overflow-visible">
+                                                                <div
+                                                                    class="flex-grow bg-gray-100 rounded-full h-2 relative group overflow-visible">
                                                                     <div class="bg-coffee-500 h-full rounded-full"
                                                                         style="width: 75%"></div>
                                                                 </div>
@@ -558,8 +627,10 @@
                                                                     class="text-xs font-black text-pos-text w-24 text-right">
                                                                     <fmt:formatNumber value="${r.totalRevenue}"
                                                                         pattern="#,###" />
-                                                                    <div class="text-[9px] text-pos-muted font-normal leading-none mt-0.5">
-                                                                        ${r.totalBills} <fmt:message key="admin.report.rev.bills"/>
+                                                                    <div
+                                                                        class="text-[9px] text-pos-muted font-normal leading-none mt-0.5">
+                                                                        ${r.totalBills}
+                                                                        <fmt:message key="admin.report.rev.bills" />
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -671,16 +742,19 @@
                                                                         <div onclick="toggleNoteDropdown('${item.drink.id}')"
                                                                             class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
                                                                             <i class="bi bi-pencil-square"></i>
-                                                                            <span class="truncate max-w-[120px]">${not empty
+                                                                            <span class="truncate max-w-[120px]">${not
+                                                                                empty
                                                                                 item.note ? item.note : '
                                                                                 <fmt:message key="pos.item.note" />'}
                                                                             </span>
                                                                         </div>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <div class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-gray-600 font-bold' : 'text-pos-muted'} cursor-default w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
+                                                                        <div
+                                                                            class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-gray-600 font-bold' : 'text-pos-muted'} cursor-default w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
                                                                             <i class="bi bi-pencil-square"></i>
-                                                                            <span class="truncate max-w-[120px]">${not empty
+                                                                            <span class="truncate max-w-[120px]">${not
+                                                                                empty
                                                                                 item.note ? item.note : '
                                                                                 <fmt:message key="pos.item.note" />'}
                                                                             </span>
@@ -727,7 +801,8 @@
                                                                             onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
                                                                             <i class="bi bi-dash"></i>
                                                                         </button>
-                                                                        <input type="text" value="${item.quantity}" readonly
+                                                                        <input type="text" value="${item.quantity}"
+                                                                            readonly
                                                                             class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
                                                                         <button
                                                                             class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
@@ -736,7 +811,8 @@
                                                                         </button>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <span class="w-full text-center font-bold text-sm text-pos-muted">x${item.quantity}</span>
+                                                                        <span
+                                                                            class="w-full text-center font-bold text-sm text-pos-muted">x${item.quantity}</span>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </div>
@@ -835,9 +911,9 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <a href="${pageContext.request.contextPath}/employee/pos"
-                                                       class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
-                                                       <i class="bi bi-plus-circle text-xl"></i>
-                                                       <span class="tracking-wide text-sm">New Order</span>
+                                                        class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
+                                                        <i class="bi bi-plus-circle text-xl"></i>
+                                                        <span class="tracking-wide text-sm">New Order</span>
                                                     </a>
                                                 </c:otherwise>
                                             </c:choose>
@@ -981,26 +1057,26 @@
                                 </div>
 
                                 <!-- QR Area -->
+                                <p class="text-[14px] uppercase font-black text-gray-400 tracking-widest text-center">
+                                    <fmt:message key="admin.bill.print.qr_label" />
+                                </p>
                                 <div
                                     class="flex flex-col items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                    <p class="text-[10px] uppercase font-black text-gray-400 tracking-widest">
-                                        <fmt:message key="admin.bill.print.qr_label" />
-                                    </p>
                                     <div class="bg-white p-2 rounded-lg shadow-inner border border-white">
-                                        <img id="vietqr-img" src="" alt="QR Code" class="w-48 h-48 object-contain">
-                                    </div>
-                                    <div class="text-center">
-                                        <p class="text-[11px] font-bold text-blue-800">
-                                            <fmt:message key="bank.id" />
-                                        </p>
-                                        <p class="text-[10px] text-gray-600">STK:
-                                            <fmt:message key="bank.account.no" />
-                                        </p>
-                                        <p class="text-[10px] font-black uppercase">
-                                            <fmt:message key="bank.account.name" />
-                                        </p>
+                                        <img id="vietqr-img" src="" alt="QR Code" class="w-100 h-100 object-contain">
                                     </div>
                                 </div>
+                                <!-- <div class="text-center">
+                                    <p class="text-[11px] font-bold text-blue-800">
+                                        <fmt:message key="bank.id" />
+                                    </p>
+                                    <p class="text-[10px] text-gray-600">STK:
+                                        <fmt:message key="bank.account.no" />
+                                    </p>
+                                    <p class="text-[10px] font-black uppercase">
+                                        <fmt:message key="bank.account.name" />
+                                    </p>
+                                </div> -->
 
                                 <div class="text-center mt-8 space-y-1">
                                     <p class="text-[10px] font-bold">
@@ -1028,7 +1104,8 @@
                         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="hideDetailModal()"></div>
                         <div
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[450px] bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
-                            <div class="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
+                            <div
+                                class="p-6 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0 z-10">
                                 <div>
                                     <h3 class="font-black text-gray-900 text-lg flex items-center gap-2">
                                         <i class="bi bi-info-square text-coffee-600"></i>
@@ -1038,7 +1115,8 @@
                                         Reviewing order history
                                     </p>
                                 </div>
-                                <button onclick="hideDetailModal()" class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors">
+                                <button onclick="hideDetailModal()"
+                                    class="w-10 h-10 flex items-center justify-center rounded-full bg-gray-50 text-gray-400 hover:text-gray-600 transition-colors">
                                     <i class="bi bi-x-lg"></i>
                                 </button>
                             </div>
@@ -1047,51 +1125,68 @@
                                 <!-- Order Info Card -->
                                 <div class="grid grid-cols-2 gap-4 p-4 bg-pos-bg rounded-2xl border border-pos-border">
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Bill Code</p>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                            Bill Code</p>
                                         <p class="font-mono text-sm font-bold text-coffee-700">${currentBill.code}</p>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Status</p>
-                                        <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                            Status</p>
+                                        <span
+                                            class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
                                             ${currentBill.status}
                                         </span>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Date Time</p>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                            Date Time</p>
                                         <p class="text-xs font-bold text-gray-700">
-                                            <fmt:formatDate value="${currentBill.createdAt}" pattern="yyyy-MM-dd HH:mm" />
+                                            <fmt:formatDate value="${currentBill.createdAt}"
+                                                pattern="yyyy-MM-dd HH:mm" />
                                         </p>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">Cashier</p>
+                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                            Cashier</p>
                                         <p class="text-xs font-bold text-gray-700">${sessionScope.user.fullName}</p>
                                     </div>
                                 </div>
 
                                 <!-- Items Table -->
                                 <div>
-                                    <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 px-1">Order Items</h4>
+                                    <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 px-1">
+                                        Order Items</h4>
                                     <div class="bg-white rounded-2xl border border-pos-border overflow-hidden">
                                         <table class="w-full text-sm">
                                             <thead class="bg-gray-50 border-b border-pos-border">
                                                 <tr>
-                                                    <th class="text-left p-3 text-[10px] font-black uppercase text-pos-muted">Item</th>
-                                                    <th class="text-center p-3 text-[10px] font-black uppercase text-pos-muted">Qty</th>
-                                                    <th class="text-right p-3 text-[10px] font-black uppercase text-pos-muted">Subtotal</th>
+                                                    <th
+                                                        class="text-left p-3 text-[10px] font-black uppercase text-pos-muted">
+                                                        Item</th>
+                                                    <th
+                                                        class="text-center p-3 text-[10px] font-black uppercase text-pos-muted">
+                                                        Qty</th>
+                                                    <th
+                                                        class="text-right p-3 text-[10px] font-black uppercase text-pos-muted">
+                                                        Subtotal</th>
                                                 </tr>
                                             </thead>
                                             <tbody class="divide-y divide-pos-border">
                                                 <c:forEach var="item" items="${currentBill.billDetails}">
                                                     <tr>
                                                         <td class="p-3">
-                                                            <div class="font-bold text-gray-800">${item.drink.name}</div>
+                                                            <div class="font-bold text-gray-800">${item.drink.name}
+                                                            </div>
                                                             <c:if test="${not empty item.note}">
-                                                                <div class="text-[10px] text-coffee-600 italic mt-0.5">${item.note}</div>
+                                                                <div class="text-[10px] text-coffee-600 italic mt-0.5">
+                                                                    ${item.note}</div>
                                                             </c:if>
                                                         </td>
-                                                        <td class="p-3 text-center font-bold text-gray-600">${item.quantity}</td>
+                                                        <td class="p-3 text-center font-bold text-gray-600">
+                                                            ${item.quantity}</td>
                                                         <td class="p-3 text-right font-black text-gray-900">
-                                                            <fmt:formatNumber value="${item.price * item.quantity}" pattern="#,###" />
+                                                            <fmt:formatNumber value="${item.price * item.quantity}"
+                                                                pattern="#,###" />
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
@@ -1101,8 +1196,10 @@
                                 </div>
 
                                 <!-- Total Card -->
-                                <div class="p-5 bg-coffee-50 rounded-2xl border border-coffee-100 flex justify-between items-center">
-                                    <span class="font-black text-coffee-700 uppercase tracking-widest text-xs">Total Amount Paid</span>
+                                <div
+                                    class="p-5 bg-coffee-50 rounded-2xl border border-coffee-100 flex justify-between items-center">
+                                    <span class="font-black text-coffee-700 uppercase tracking-widest text-xs">Total
+                                        Amount Paid</span>
                                     <span class="text-2xl font-black text-coffee-800">
                                         <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
                                         <span class="text-sm font-bold ml-1">VNĐ</span>
@@ -1111,10 +1208,13 @@
                             </div>
 
                             <div class="p-6 bg-gray-50 border-t border-gray-100 flex gap-3">
-                                <button onclick="hideDetailModal()" class="flex-grow bg-white border border-pos-border text-gray-700 font-bold py-3 rounded-2xl hover:bg-gray-100 transition-colors shadow-sm">
+                                <button onclick="hideDetailModal()"
+                                    class="flex-grow bg-white border border-pos-border text-gray-700 font-bold py-3 rounded-2xl hover:bg-gray-100 transition-colors shadow-sm">
                                     Close Window
                                 </button>
-                                <button onclick="hideDetailModal(); showPrintModal();" class="w-14 bg-white border border-pos-border text-coffee-600 rounded-2xl flex items-center justify-center hover:bg-coffee-50 transition-colors shadow-sm" title="Print/Pay Options">
+                                <button onclick="hideDetailModal(); showPrintModal();"
+                                    class="w-14 bg-white border border-pos-border text-coffee-600 rounded-2xl flex items-center justify-center hover:bg-coffee-50 transition-colors shadow-sm"
+                                    title="Print/Pay Options">
                                     <i class="bi bi-printer-fill"></i>
                                 </button>
                             </div>
@@ -1202,9 +1302,10 @@
                             const accountNo = '<fmt:message key="bank.account.no" />';
                             const accountName = '<fmt:message key="bank.account.name" />';
                             const template = '<fmt:message key="bank.qr.template" />';
-                            const amount = ${ (not empty currentBill.total) ? currentBill.total : 0 };
-                            const billCode = '${currentBill.code}';
-                            const description = encodeURIComponent('Thanh toan hoa don ' + billCode);
+                            const amount = ${ (not empty currentBill.total) ?currentBill.total : 0
+                        };
+                        const billCode = '${currentBill.code}';
+                        const description = encodeURIComponent('Thanh toan hoa don ' + billCode);
 
                         // Construct VietQR URL using string concatenation to avoid JSP EL conflict
                         const qrUrl = 'https://img.vietqr.io/image/' + bankId + '-' + accountNo + '-' + template + '.png?amount=' + amount + '&addInfo=' + description + '&accountName=' + encodeURIComponent(accountName);
@@ -1234,7 +1335,7 @@
                             const isCheckout = '${param.checkout}' === 'true';
                             const isHistoryTab = '${param.tab}' === 'bills';
                             const billStatus = '${currentBill.status}';
-                            
+
                             if (isCheckout && billStatus === 'FINISHED') {
                                 showPrintModal();
                             } else if (isHistoryTab && billStatus != '') {
