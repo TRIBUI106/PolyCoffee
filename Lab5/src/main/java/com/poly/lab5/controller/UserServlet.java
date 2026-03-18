@@ -1,0 +1,157 @@
+package com.poly.lab5.controller;
+
+import com.poly.lab5.dao.UserDAO;
+import com.poly.lab5.entity.User;
+
+import jakarta.servlet.*;
+import jakarta.servlet.http.*;
+import jakarta.servlet.annotation.*;
+
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet("/manager/user")
+public class UserServlet extends HttpServlet {
+
+    UserDAO dao = new UserDAO();
+
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String action = req.getParameter("action");
+
+        if(action == null) action = "list";
+
+        switch (action){
+
+            case "delete":
+                delete(req,resp);
+                break;
+
+            case "edit":
+                edit(req,resp);
+                break;
+
+            default:
+                list(req,resp);
+        }
+
+    }
+
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        String action = req.getParameter("action");
+
+        switch (action){
+
+            case "add":
+                add(req,resp);
+                break;
+
+            case "update":
+                update(req,resp);
+                break;
+        }
+    }
+
+
+    private void list(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        List<User> list = dao.findAll();
+
+        req.setAttribute("list", list);
+
+        req.getRequestDispatcher("/manager/user.jsp")
+                .forward(req,resp);
+    }
+
+    private void add(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        User u = new User();
+
+        u.setUsername(req.getParameter("username"));
+        u.setPassword(req.getParameter("password"));
+        u.setFullname(req.getParameter("fullname"));
+        u.setRole(req.getParameter("role"));
+        u.setEmail(req.getParameter("email"));
+
+        dao.insert(u);
+
+        resp.sendRedirect("user");
+    }
+
+    private void delete(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        dao.delete(id);
+
+        resp.sendRedirect("user");
+    }
+    private void edit(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        int id = Integer.parseInt(req.getParameter("id"));
+
+        User u = dao.findById(id);
+
+        req.setAttribute("user", u);
+
+        list(req,resp);
+    }
+
+
+    private void update(HttpServletRequest req, HttpServletResponse resp)
+            throws IOException {
+
+        User u = new User();
+
+        u.setId(Integer.parseInt(req.getParameter("id")));
+        u.setUsername(req.getParameter("username"));
+        u.setPassword(req.getParameter("password"));
+        u.setFullname(req.getParameter("fullname"));
+        u.setRole(req.getParameter("role"));
+        u.setEmail(req.getParameter("email"));
+
+        dao.update(u);
+
+        resp.sendRedirect("user");
+    }
+    // Cập nhật phương thức list trong UserServlet.java
+    private void List(HttpServletRequest req, HttpServletResponse resp)
+            throws ServletException, IOException {
+
+        // 1. Lấy tham số tìm kiếm và trang hiện tại
+        String fullname = req.getParameter("searchFullname");
+        String email = req.getParameter("searchEmail");
+        String statusStr = req.getParameter("searchStatus");
+        String pageStr = req.getParameter("page");
+
+        Boolean status = (statusStr != null && !statusStr.isEmpty()) ? Boolean.parseBoolean(statusStr) : null;
+        int currentPage = (pageStr != null) ? Integer.parseInt(pageStr) : 1;
+        int pageSize = 10;
+
+        // 2. Gọi DAO lấy dữ liệu lọc và phân trang
+        List<User> list = dao.search(fullname, email, status, currentPage, pageSize);
+        int totalItems = dao.count(fullname, email, status);
+        int totalPages = (int) Math.ceil((double) totalItems / pageSize);
+
+        // 3. Đẩy dữ liệu sang JSP
+        req.setAttribute("list", list);
+        req.setAttribute("totalPages", totalPages > 0 ? totalPages : 1);
+        req.setAttribute("currentPage", currentPage);
+
+        // Giữ lại giá trị để hiển thị trên Form sau khi load trang
+        req.setAttribute("searchFullname", fullname);
+        req.setAttribute("searchEmail", email);
+        req.setAttribute("searchStatus", statusStr);
+
+        req.getRequestDispatcher("/manager/user.jsp").forward(req, resp);
+    }
+
+}
+

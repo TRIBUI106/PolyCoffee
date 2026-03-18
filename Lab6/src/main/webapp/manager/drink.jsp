@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ page import="java.util.*,com.poly.lab5.entity.Drink" %>
+<%@ page import="java.util.*,com.poly.lab6.entity.Drink" %>
 
 <%
     Drink drink = (Drink) request.getAttribute("drink");
