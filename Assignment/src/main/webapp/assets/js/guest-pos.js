@@ -109,58 +109,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // -------------------------------------------------
-    // 4️⃣ Add drink to bill (guest flow)
-    // -------------------------------------------------
-    window.addDrink = function (drinkId) {
-        const guest = JSON.parse(localStorage.getItem('guestInfo') || '{}');
-        if (!guest.name || !guest.phone) {
-            showToast('Please enter your name & phone first', 'warning');
-            guestModal.classList.remove('hidden');
-            return;
-        }
-        const contextPath = window.location.pathname.replace('/guest/pos', '');
-        const url = new URL(`${window.location.protocol}//${window.location.host}${contextPath}/guest/pos/add`);
-        url.searchParams.set('drinkId', drinkId);
-        url.searchParams.set('guestName', guest.name);
-        url.searchParams.set('guestPhone', guest.phone);
-
-        window.location.href = url.toString();
-    };
-
-    // -------------------------------------------------
-    // 5️⃣ Toast helper (Client-side)
-    // -------------------------------------------------
-    window.showToast = function (message, type = 'success') {
-        const toast = document.createElement('div');
-        let bgStyle, icon;
-
-        if (type === 'error') {
-            bgStyle = 'bg-red-500 text-white';
-            icon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
-        } else if (type === 'warning') {
-            bgStyle = 'bg-amber-500 text-white';
-            icon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
-        } else {
-            bgStyle = 'bg-green-500 text-white';
-            icon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
-        }
-
-        toast.className = `${bgStyle} px-4 py-3 rounded-xl shadow-lg font-bold flex items-center gap-3 transform transition-all duration-300 translate-x-full opacity-0`;
-        toast.innerHTML = `${icon} <span>${message}</span>`;
-        toastContainer.appendChild(toast);
-
-        // Trigger animation
-        requestAnimationFrame(() => {
-            toast.classList.remove('translate-x-full', 'opacity-0');
-        });
-
-        setTimeout(() => {
-            toast.classList.add('translate-x-full', 'opacity-0');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, 3000);
-    };
-
-    // -------------------------------------------------
     // 6️⃣ Amount filter (syncing UI elements, if they exist on employee page mostly)
     // In Guest POS we might not list bills, but if we do...
     // -------------------------------------------------
@@ -179,3 +127,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 });
+
+// -------------------------------------------------
+// 4️⃣ Add drink to bill (guest flow)
+// -------------------------------------------------
+window.addDrink = function (drinkId) {
+    let guest = {};
+    try {
+        guest = JSON.parse(localStorage.getItem('guestInfo') || '{}');
+    } catch (e) {
+        console.error('Invalid guestInfo in localStorage');
+    }
+    
+    if (!guest.name || !guest.phone) {
+        window.showToast('Please enter your name & phone first', 'warning');
+        const guestModal = document.getElementById('guestModal');
+        if (guestModal) guestModal.classList.remove('hidden');
+        return;
+    }
+    const contextPath = window.location.pathname.replace('/guest/pos', '');
+    const url = new URL(`${window.location.protocol}//${window.location.host}${contextPath}/guest/pos/add`);
+    url.searchParams.set('drinkId', drinkId);
+    url.searchParams.set('guestName', guest.name);
+    url.searchParams.set('guestPhone', guest.phone);
+
+    window.location.href = url.toString();
+};
+
+// -------------------------------------------------
+// 5️⃣ Toast helper (Client-side)
+// -------------------------------------------------
+window.showToast = function (message, type = 'success') {
+    const toastContainer = document.getElementById('toastContainer');
+    if (!toastContainer) return;
+    
+    const toast = document.createElement('div');
+    let bgStyle, icon;
+
+    if (type === 'error') {
+        bgStyle = 'bg-red-500 text-white';
+        icon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
+    } else if (type === 'warning') {
+        bgStyle = 'bg-amber-500 text-white';
+        icon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>`;
+    } else {
+        bgStyle = 'bg-green-500 text-white';
+        icon = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>`;
+    }
+
+    toast.className = `${bgStyle} px-4 py-3 rounded-xl shadow-lg font-bold flex items-center gap-3 transform transition-all duration-300 translate-x-full opacity-0`;
+    toast.innerHTML = `${icon} <span>${message}</span>`;
+    toastContainer.appendChild(toast);
+
+    // Trigger animation
+    requestAnimationFrame(() => {
+        toast.classList.remove('translate-x-full', 'opacity-0');
+    });
+
+    setTimeout(() => {
+        toast.classList.add('translate-x-full', 'opacity-0');
+        toast.addEventListener('transitionend', () => toast.remove());
+    }, 3000);
+};
+

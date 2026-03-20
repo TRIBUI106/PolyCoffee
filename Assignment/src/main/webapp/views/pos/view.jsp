@@ -1159,10 +1159,8 @@
                                     <fmt:message key="admin.bill.print.qr_label" />
                                 </p>
                                 <div
-                                    class="flex flex-col items-center gap-3 bg-gray-50 p-4 rounded-xl border border-gray-100">
-                                    <div class="bg-white p-2 rounded-lg shadow-inner border border-white">
-                                        <img id="vietqr-img" src="" alt="QR Code" class="w-100 h-100 object-contain">
-                                    </div>
+                                    class="flex flex-col items-center gap-3 bg-white py-2">
+                                    <img id="vietqr-img" src="" alt="QR Code" class="w-32 h-32 object-contain mx-auto">
                                 </div>
                                 <!-- <div class="text-center">
                                     <p class="text-[11px] font-bold text-blue-800">
@@ -1338,9 +1336,16 @@
                             position: absolute;
                             left: 0;
                             top: 0;
-                            width: 100%;
-                            padding: 10px;
-                            margin: 0;
+                            width: 80mm !important;
+                            max-width: 80mm !important;
+                            padding: 0mm !important;
+                            margin: 0 auto;
+                        }
+
+                        #printableBill * {
+                            color: black !important;
+                            text-shadow: none !important;
+                            box-shadow: none !important;
                         }
 
                         #printModal {
