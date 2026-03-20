@@ -6,10 +6,10 @@ public class Bill {
 
     private int id;
     private int userId;
-    private double total;        // 🔥 thêm
-    private String status;       // 🔥 thêm
+    private double total;
+    private String status;
     private Date createdDate;
-    private String userName;     // 🔥 thêm (JOIN từ users)
+    private String userName;
 
     public Bill() {
     }
