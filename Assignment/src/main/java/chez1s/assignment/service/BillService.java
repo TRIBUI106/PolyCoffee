@@ -182,4 +182,64 @@ public class BillService {
                 .sum();
         bill.setTotal(total);
     }
+
+    public Integer createGuestBill(String name, String phone, Integer drinkId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            
+            Bill bill = new Bill();
+            bill.setGuestName(name);
+            bill.setGuestPhone(phone);
+            bill.setCode("GUEST-" + System.currentTimeMillis());
+            bill.setCreatedAt(new Date());
+            bill.setStatus(BillStatus.PENDING);
+            bill.setTotal(0);
+            
+            List<BillDetail> details = new ArrayList<>();
+            if (drinkId != null && drinkId > 0) {
+                Drink drink = em.find(Drink.class, drinkId);
+                if (drink != null) {
+                    BillDetail detail = new BillDetail();
+                    detail.setBill(bill);
+                    detail.setDrink(drink);
+                    detail.setQuantity(1);
+                    detail.setPrice(drink.getPrice());
+                    details.add(detail);
+                    bill.setTotal(drink.getPrice());
+                }
+            }
+            
+            bill.setBillDetails(details);
+            em.persist(bill);
+            
+            trans.commit();
+            return bill.getId();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void acceptBill(Integer billId) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            Bill bill = em.find(Bill.class, billId);
+            if (bill != null && bill.getStatus() == BillStatus.PENDING) {
+                bill.setStatus(BillStatus.PAID);
+                em.merge(bill);
+            }
+            trans.commit();
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
 }

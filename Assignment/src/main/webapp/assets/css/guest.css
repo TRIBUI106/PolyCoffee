@@ -1,0 +1,22 @@
+/* File: c:\Users\TRIBUI106\Desktop\Projects\FPL_JAV202\Assignment\src\main\webapp\assets\css\guest.css */
+
+/* Glass‑morphism cards */
+.bg-glass {
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* Toast animation */
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to   { transform: translateX(0);    opacity: 1; }
+}
+#toastContainer > div {
+    animation: slideIn 0.3s ease-out;
+}
+
+/* Dark mode (optional support) */
+@media (prefers-color-scheme: dark) {
+    /* Basic dark mode overrides could go here, relying mainly on Tailwind classes for dark mode */
+}

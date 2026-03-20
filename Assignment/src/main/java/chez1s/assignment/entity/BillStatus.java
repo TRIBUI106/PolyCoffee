@@ -5,7 +5,9 @@ package chez1s.assignment.entity;
  * Stored in DB as the enum name (e.g. "WAITING") via @Enumerated(STRING).
  */
 public enum BillStatus {
+    PENDING,
     WAITING,
+    PAID,
     FINISHED,
     CANCELLED
 }

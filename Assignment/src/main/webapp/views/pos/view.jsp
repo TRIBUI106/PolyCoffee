@@ -18,9 +18,9 @@
                     </title>
                     <jsp:include page="/views/common/head.jsp" />
                     <!-- Bootstrap CSS -->
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
                         rel="stylesheet"
-                        integrity="sha384-ENjdO4Dr2bkBIFxQpeoYz1H7kU2Kk2bZ9+8Gk5j5c5b5U5Y5Z5Z5Z5Z5Z5Z5Z5Z5Z"
+                        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
                         crossorigin="anonymous">
                     <!-- Bootstrap Icons -->
                     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
@@ -85,8 +85,8 @@
                     </style>
                 </head>
                 <!-- Bootstrap JS Bundle (includes Popper) -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+5q5E5V5Z5Y5Z5Z5Z5Z5Z5Z5Z5Z"
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
                     crossorigin="anonymous"></script>
 
                 <body class="h-screen w-screen flex flex-col text-pos-text select-none">
@@ -473,9 +473,23 @@
                                             <h2 class="text-2xl font-black text-gray-900">
                                                 <fmt:message key="admin.bill.title" />
                                             </h2>
-                                            <button type="button" class="bg-coffee-600 hover:bg-coffee-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all active:scale-95" data-bs-toggle="modal" data-bs-target="#findBillModal">
-                                                <i class="bi bi-search"></i> <fmt:message key="admin.bill.search.btn" />
-                                            </button>
+                                            <div class="flex items-center gap-4">
+                                                <div
+                                                    class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-pos-border shadow-sm">
+                                                    <span class="text-xs font-bold text-gray-500">Max: </span>
+                                                    <input id="adminAmountInput" type="number" placeholder="1,000,000"
+                                                        class="w-24 bg-transparent text-sm font-semibold outline-none text-right placeholder-gray-300" />
+                                                    <span class="text-xs font-bold text-gray-500">₫</span>
+                                                    <input id="adminAmountRange" type="range" min="0" max="1000000"
+                                                        step="10000" class="w-24 accent-coffee-600" />
+                                                </div>
+                                                <button type="button"
+                                                    class="bg-coffee-600 hover:bg-coffee-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all active:scale-95"
+                                                    data-bs-toggle="modal" data-bs-target="#findBillModal">
+                                                    <i class="bi bi-search"></i>
+                                                    <fmt:message key="admin.bill.search.btn" />
+                                                </button>
+                                            </div>
                                         </div>
                                         <div
                                             class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
@@ -506,7 +520,8 @@
                                                 </thead>
                                                 <tbody class="divide-y divide-pos-border">
                                                     <c:forEach var="item" items="${billHistory}">
-                                                        <tr class="hover:bg-pos-bg transition-colors">
+                                                        <tr class="hover:bg-pos-bg transition-colors admin-bill-row"
+                                                            data-total="${item.total}">
                                                             <td class="px-6 py-4 font-mono text-xs font-bold">
                                                                 ${item.code}</td>
                                                             <td class="px-6 py-4 text-sm text-pos-muted">
@@ -519,12 +534,52 @@
                                                                     pattern="#,###" />
                                                             </td>
                                                             <td class="px-6 py-4 text-center text-xs">
-                                                                <span
-                                                                    class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
-                                                                    <fmt:message key="admin.bill.status.paid" />
-                                                                </span>
+                                                                <c:choose>
+                                                                    <c:when test="${item.status == 'WAITING'}">
+                                                                        <span
+                                                                            class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">
+                                                                            <fmt:message
+                                                                                key="admin.bill.status.waiting" />
+                                                                        </span>
+                                                                    </c:when>
+                                                                    <c:when test="${item.status == 'PENDING'}">
+                                                                        <span
+                                                                            class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold">
+                                                                            Pending (Guest)
+                                                                        </span>
+                                                                    </c:when>
+                                                                    <c:when
+                                                                        test="${item.status == 'PAID' || item.status == 'FINISHED'}">
+                                                                        <span
+                                                                            class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
+                                                                            <fmt:message
+                                                                                key="admin.bill.status.finished" />
+                                                                        </span>
+                                                                    </c:when>
+                                                                    <c:otherwise>
+                                                                        <span
+                                                                            class="bg-red-100 text-red-700 px-3 py-1 rounded-full font-bold">
+                                                                            <fmt:message
+                                                                                key="admin.bill.status.cancelled" />
+                                                                        </span>
+                                                                    </c:otherwise>
+                                                                </c:choose>
                                                             </td>
-                                                            <td class="px-6 py-4 text-right">
+                                                            <td
+                                                                class="px-6 py-4 text-right flex items-center justify-end gap-2">
+                                                                <c:if test="${item.status == 'PENDING'}">
+                                                                    <form
+                                                                        action="${pageContext.request.contextPath}/guest/pos/accept"
+                                                                        method="POST" class="inline m-0 p-0">
+                                                                        <input type="hidden" name="billId"
+                                                                            value="${item.id}" />
+                                                                        <button type="submit"
+                                                                            class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-1.5 rounded-lg transition-colors font-bold text-xs"
+                                                                            title="Accept Guest Order">
+                                                                            Accept
+                                                                        </button>
+                                                                    </form>
+                                                                </c:if>
                                                                 <a href="?tab=bills&billId=${item.id}"
                                                                     class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors">
                                                                     <i class="bi bi-eye-fill"></i>
@@ -543,45 +598,87 @@
                                             </div>
                                         </div>
                                         <!-- Find Bill Modal -->
-                                        <div class="modal fade" id="findBillModal" tabindex="-1" aria-labelledby="findBillModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="findBillModal" tabindex="-1"
+                                            aria-labelledby="findBillModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                <div class="modal-content bg-white border-0 shadow-2xl rounded-3xl overflow-hidden">
-                                                    <div class="modal-header border-b border-pos-border bg-pos-bg px-6 py-5">
+                                                <div
+                                                    class="modal-content bg-white border-0 shadow-2xl rounded-3xl overflow-hidden">
+                                                    <div
+                                                        class="modal-header border-b border-pos-border bg-pos-bg px-6 py-5">
                                                         <div>
-                                                            <h5 class="text-xl font-black text-gray-900" id="findBillModalLabel"><fmt:message key="admin.bill.search.placeholder"/></h5>
+                                                            <h5 class="text-xl font-black text-gray-900"
+                                                                id="findBillModalLabel">
+                                                                <fmt:message key="admin.bill.search.placeholder" />
+                                                            </h5>
                                                         </div>
-                                                        <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-pos-border text-pos-muted hover:text-pos-text hover:bg-gray-50 transition-colors" data-bs-dismiss="modal" aria-label="Close">
+                                                        <button type="button"
+                                                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-pos-border text-pos-muted hover:text-pos-text hover:bg-gray-50 transition-colors"
+                                                            data-bs-dismiss="modal" aria-label="Close">
                                                             <i class="bi bi-x-lg"></i>
                                                         </button>
                                                     </div>
-                                                    <form method="GET" action="${pageContext.request.contextPath}/employee/pos">
+                                                    <form method="GET"
+                                                        action="${pageContext.request.contextPath}/employee/pos">
                                                         <input type="hidden" name="tab" value="bills" />
                                                         <div class="modal-body p-6">
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                                 <div class="space-y-2">
-                                                                    <label for="query" class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Mã HĐ / Tên Nhân Viên</label>
+                                                                    <label for="query"
+                                                                        class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Mã
+                                                                        HĐ / Tên Nhân Viên</label>
                                                                     <div class="relative">
-                                                                        <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                                        <input type="text" id="query" name="query" placeholder="<fmt:message key='admin.bill.search.placeholder'/>" value="${param.query}" class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all" />
+                                                                        <i
+                                                                            class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                                        <input type="text" id="query" name="query"
+                                                                            placeholder="<fmt:message key='admin.bill.search.placeholder'/>"
+                                                                            value="${param.query}"
+                                                                            class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="space-y-2">
-                                                                    <label for="status" class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Trạng Thái Giao Dịch</label>
+                                                                    <label for="status"
+                                                                        class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Trạng
+                                                                        Thái Giao Dịch</label>
                                                                     <div class="relative">
-                                                                        <i class="bi bi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                                        <select name="status" id="status" class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all cursor-pointer">
-                                                                            <option value="ALL" ${param.status == 'ALL' ? 'selected' : ''}><fmt:message key="admin.bill.status.all"/></option>
-                                                                            <option value="WAITING" ${param.status == 'WAITING' ? 'selected' : ''}><fmt:message key="admin.bill.status.waiting"/></option>
-                                                                            <option value="FINISHED" ${param.status == 'FINISHED' ? 'selected' : ''}><fmt:message key="admin.bill.status.finished"/></option>
-                                                                            <option value="CANCELLED" ${param.status == 'CANCELLED' ? 'selected' : ''}><fmt:message key="admin.bill.status.cancelled"/></option>
+                                                                        <i
+                                                                            class="bi bi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                                        <select name="status" id="status"
+                                                                            class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all cursor-pointer">
+                                                                            <option value="ALL" ${param.status=='ALL'
+                                                                                ? 'selected' : '' }>
+                                                                                <fmt:message
+                                                                                    key="admin.bill.status.all" />
+                                                                            </option>
+                                                                            <option value="WAITING"
+                                                                                ${param.status=='WAITING' ? 'selected'
+                                                                                : '' }>
+                                                                                <fmt:message
+                                                                                    key="admin.bill.status.waiting" />
+                                                                            </option>
+                                                                            <option value="FINISHED"
+                                                                                ${param.status=='FINISHED' ? 'selected'
+                                                                                : '' }>
+                                                                                <fmt:message
+                                                                                    key="admin.bill.status.finished" />
+                                                                            </option>
+                                                                            <option value="CANCELLED"
+                                                                                ${param.status=='CANCELLED' ? 'selected'
+                                                                                : '' }>
+                                                                                <fmt:message
+                                                                                    key="admin.bill.status.cancelled" />
+                                                                            </option>
                                                                         </select>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="modal-footer border-t border-pos-border bg-pos-bg px-6 py-4 flex gap-3">
-                                                            <button type="button" class="px-6 py-2.5 rounded-xl font-bold bg-white border border-pos-border text-pos-muted hover:bg-gray-50 hover:text-pos-text transition-all" data-bs-dismiss="modal">Thoát</button>
-                                                            <button type="submit" class="px-6 py-2.5 rounded-xl font-bold bg-coffee-600 hover:bg-coffee-700 text-white shadow-md shadow-coffee-200 transition-all flex items-center gap-2">
+                                                        <div
+                                                            class="modal-footer border-t border-pos-border bg-pos-bg px-6 py-4 flex gap-3">
+                                                            <button type="button"
+                                                                class="px-6 py-2.5 rounded-xl font-bold bg-white border border-pos-border text-pos-muted hover:bg-gray-50 hover:text-pos-text transition-all"
+                                                                data-bs-dismiss="modal">Thoát</button>
+                                                            <button type="submit"
+                                                                class="px-6 py-2.5 rounded-xl font-bold bg-coffee-600 hover:bg-coffee-700 text-white shadow-md shadow-coffee-200 transition-all flex items-center gap-2">
                                                                 <i class="bi bi-search text-xs"></i> Lọc Kết Quả
                                                             </button>
                                                         </div>
@@ -1308,30 +1405,36 @@
                         const billCode = '${currentBill.code}';
                         const description = encodeURIComponent('Thanh toan hoa don ' + billCode);
 
-                        // Construct VietQR URL using string concatenation to avoid JSP EL conflict
-                        const qrUrl = 'https://img.vietqr.io/image/' + bankId + '-' + accountNo + '-' + template + '.png?amount=' + amount + '&addInfo=' + description + '&accountName=' + encodeURIComponent(accountName);
+                        // Construct VietQR URL properly via standard API format
+                        const vietqrUrl = 'https://img.vietqr.io/image/' + bankId + '-' + accountNo + '-' + template + '.png?amount=' + amount + '&addInfo=' + description + '&accountName=' + encodeURIComponent(accountName);
 
-                        qrImg.src = qrUrl;
+                        qrImg.src = vietqrUrl;
                         modal.classList.remove('hidden');
-                        }
+                    }
 
                         function hidePrintModal() {
                             document.getElementById('printModal').classList.add('hidden');
-                        }
-
-                        function showDetailModal() {
-                            document.getElementById('detailModal').classList.remove('hidden');
-                        }
-
-                        function hideDetailModal() {
-                            document.getElementById('detailModal').classList.add('hidden');
                         }
 
                         function printBill() {
                             window.print();
                         }
 
-                        // Auto-show modal after checkout or history click
+                        function showDetailModal() {
+                            const modal = document.getElementById('detailModal');
+                            if (modal) {
+                                modal.classList.remove('hidden');
+                            }
+                        }
+
+                        function hideDetailModal() {
+                            const modal = document.getElementById('detailModal');
+                            if (modal) {
+                                modal.classList.add('hidden');
+                            }
+                        }
+
+                        // On page load, auto-show modal if needed:
                         window.addEventListener('load', () => {
                             const isCheckout = '${param.checkout}' === 'true';
                             const isHistoryTab = '${param.tab}' === 'bills';
@@ -1342,8 +1445,39 @@
                             } else if (isHistoryTab && billStatus != '') {
                                 showDetailModal();
                             }
+
+                            // Admin Bills Amount Filter
+                            const adminAmountInput = document.getElementById('adminAmountInput');
+                            const adminAmountRange = document.getElementById('adminAmountRange');
+
+                            if (adminAmountInput && adminAmountRange) {
+                                function filterAdminBills() {
+                                    const max = parseInt(adminAmountRange.value, 10);
+                                    document.querySelectorAll('.admin-bill-row').forEach(row => {
+                                        const total = parseInt(row.getAttribute('data-total') || '0', 10);
+                                        row.style.display = (total <= max) ? '' : 'none';
+                                    });
+                                }
+
+                                adminAmountInput.addEventListener('input', () => {
+                                    adminAmountRange.value = adminAmountInput.value || 0;
+                                    filterAdminBills();
+                                });
+
+                                adminAmountRange.addEventListener('input', () => {
+                                    adminAmountInput.value = adminAmountRange.value;
+                                    filterAdminBills();
+                                });
+
+                                // init
+                                adminAmountRange.value = 1000000;
+                                adminAmountInput.value = 1000000;
+                            }
                         });
                     </script>
+                    </div>
+                    </div>
+                    </div>
                 </body>
 
                 </html>

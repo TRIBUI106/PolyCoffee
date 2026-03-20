@@ -20,6 +20,12 @@ public class Bill {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "guest_name")
+    private String guestName;
+
+    @Column(name = "guest_phone")
+    private String guestPhone;
+
     @Column(unique = true, nullable = false)
     private String code;
 
