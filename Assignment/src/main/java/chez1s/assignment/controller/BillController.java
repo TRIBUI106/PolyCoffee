@@ -20,10 +20,13 @@ public class BillController extends HttpServlet {
         User user = AuthUtil.getUser(req);
         Integer userId = user.getId();
         
+        String query = req.getParameter("query");
+        String status = req.getParameter("status");
+        
         if (user.isRole()) {
-            req.setAttribute("bills", billService.getAllBills());
+            req.setAttribute("bills", billService.searchBills(query, status));
         } else {
-            req.setAttribute("bills", billService.getUserBills(userId));
+            req.setAttribute("bills", billService.searchUserBills(userId, query, status));
         }
         
         Integer detailId = ParamUtil.getInt(req, "id");

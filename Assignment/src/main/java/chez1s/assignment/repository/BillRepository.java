@@ -35,4 +35,55 @@ public class BillRepository extends BaseRepository<Bill, Integer> {
             em.close();
         }
     }
+
+    public List<Bill> searchBills(String query, String status) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            StringBuilder jpql = new StringBuilder("SELECT b FROM Bill b LEFT JOIN FETCH b.user WHERE 1=1");
+            if (query != null && !query.isEmpty()) {
+                jpql.append(" AND (LOWER(b.code) LIKE LOWER(:query) OR LOWER(b.user.fullName) LIKE LOWER(:query))");
+            }
+            if (status != null && !status.isEmpty() && !status.equals("ALL")) {
+                jpql.append(" AND b.status = :status");
+            }
+            jpql.append(" ORDER BY b.createdAt DESC");
+
+            var q = em.createQuery(jpql.toString(), Bill.class);
+            if (query != null && !query.isEmpty()) {
+                q.setParameter("query", "%" + query.toLowerCase() + "%");
+            }
+            if (status != null && !status.isEmpty() && !status.equals("ALL")) {
+                q.setParameter("status", chez1s.assignment.entity.BillStatus.valueOf(status));
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
+
+    public List<Bill> searchUserBills(Integer userId, String query, String status) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            StringBuilder jpql = new StringBuilder("SELECT b FROM Bill b WHERE b.user.id = :userId");
+            if (query != null && !query.isEmpty()) {
+                jpql.append(" AND LOWER(b.code) LIKE LOWER(:query)");
+            }
+            if (status != null && !status.isEmpty() && !status.equals("ALL")) {
+                jpql.append(" AND b.status = :status");
+            }
+            jpql.append(" ORDER BY b.createdAt DESC");
+
+            var q = em.createQuery(jpql.toString(), Bill.class);
+            q.setParameter("userId", userId);
+            if (query != null && !query.isEmpty()) {
+                q.setParameter("query", "%" + query.toLowerCase() + "%");
+            }
+            if (status != null && !status.isEmpty() && !status.equals("ALL")) {
+                q.setParameter("status", chez1s.assignment.entity.BillStatus.valueOf(status));
+            }
+            return q.getResultList();
+        } finally {
+            em.close();
+        }
+    }
 }

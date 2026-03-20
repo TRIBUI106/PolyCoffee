@@ -469,14 +469,14 @@
                                 </c:when>
                                 <c:when test="${activeTab == 'bills'}">
                                     <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
-                                        <h2 class="text-2xl font-black text-gray-900 mb-6">
-                                            <fmt:message key="admin.bill.title" />
-                                        </h2>
-                                        <!-- Find Bill Button -->
-                                        <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
-                                            data-bs-target="#findBillModal">
-                                            <i class="bi bi-search"></i> Find Bill
-                                        </button>
+                                        <div class="flex justify-between items-center mb-6">
+                                            <h2 class="text-2xl font-black text-gray-900">
+                                                <fmt:message key="admin.bill.title" />
+                                            </h2>
+                                            <button type="button" class="bg-coffee-600 hover:bg-coffee-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all active:scale-95" data-bs-toggle="modal" data-bs-target="#findBillModal">
+                                                <i class="bi bi-search"></i> <fmt:message key="admin.bill.search.btn" />
+                                            </button>
+                                        </div>
                                         <div
                                             class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
                                             <table class="w-full text-left">
@@ -543,46 +543,47 @@
                                             </div>
                                         </div>
                                         <!-- Find Bill Modal -->
-                                        <div class="modal fade" id="findBillModal" tabindex="-1"
-                                            aria-labelledby="findBillModalLabel" aria-hidden="true">
+                                        <div class="modal fade" id="findBillModal" tabindex="-1" aria-labelledby="findBillModalLabel" aria-hidden="true">
                                             <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                <div class="modal-content bg-white">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="findBillModalLabel">Find Bill</h5>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                                <div class="modal-content bg-white border-0 shadow-2xl rounded-3xl overflow-hidden">
+                                                    <div class="modal-header border-b border-pos-border bg-pos-bg px-6 py-5">
+                                                        <div>
+                                                            <h5 class="text-xl font-black text-gray-900" id="findBillModalLabel"><fmt:message key="admin.bill.search.placeholder"/></h5>
+                                                        </div>
+                                                        <button type="button" class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-pos-border text-pos-muted hover:text-pos-text hover:bg-gray-50 transition-colors" data-bs-dismiss="modal" aria-label="Close">
+                                                            <i class="bi bi-x-lg"></i>
+                                                        </button>
                                                     </div>
-                                                    <form method="GET"
-                                                        action="${pageContext.request.contextPath}/employee/pos">
+                                                    <form method="GET" action="${pageContext.request.contextPath}/employee/pos">
                                                         <input type="hidden" name="tab" value="bills" />
-                                                        <div class="modal-body">
-                                                            <div class="row g-3">
-                                                                <div class="col-md-4">
-                                                                    <label for="cashier" class="form-label">Cashier
-                                                                        Name</label>
-                                                                    <input type="text" class="form-control" id="cashier"
-                                                                        name="cashier"
-                                                                        placeholder="Enter cashier name" />
+                                                        <div class="modal-body p-6">
+                                                            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                                                                <div class="space-y-2">
+                                                                    <label for="query" class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Mã HĐ / Tên Nhân Viên</label>
+                                                                    <div class="relative">
+                                                                        <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                                        <input type="text" id="query" name="query" placeholder="<fmt:message key='admin.bill.search.placeholder'/>" value="${param.query}" class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all" />
+                                                                    </div>
                                                                 </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="date" class="form-label">Date</label>
-                                                                    <input type="date" class="form-control" id="date"
-                                                                        name="date" />
-                                                                </div>
-                                                                <div class="col-md-4">
-                                                                    <label for="total" class="form-label">Total Price
-                                                                        (>=)</label>
-                                                                    <input type="number" step="0.01"
-                                                                        class="form-control" id="total" name="total"
-                                                                        placeholder="Minimum total" />
+                                                                <div class="space-y-2">
+                                                                    <label for="status" class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Trạng Thái Giao Dịch</label>
+                                                                    <div class="relative">
+                                                                        <i class="bi bi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                                        <select name="status" id="status" class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all cursor-pointer">
+                                                                            <option value="ALL" ${param.status == 'ALL' ? 'selected' : ''}><fmt:message key="admin.bill.status.all"/></option>
+                                                                            <option value="WAITING" ${param.status == 'WAITING' ? 'selected' : ''}><fmt:message key="admin.bill.status.waiting"/></option>
+                                                                            <option value="FINISHED" ${param.status == 'FINISHED' ? 'selected' : ''}><fmt:message key="admin.bill.status.finished"/></option>
+                                                                            <option value="CANCELLED" ${param.status == 'CANCELLED' ? 'selected' : ''}><fmt:message key="admin.bill.status.cancelled"/></option>
+                                                                        </select>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Cancel</button>
-                                                            <button type="submit"
-                                                                class="btn btn-primary">Search</button>
+                                                        <div class="modal-footer border-t border-pos-border bg-pos-bg px-6 py-4 flex gap-3">
+                                                            <button type="button" class="px-6 py-2.5 rounded-xl font-bold bg-white border border-pos-border text-pos-muted hover:bg-gray-50 hover:text-pos-text transition-all" data-bs-dismiss="modal">Thoát</button>
+                                                            <button type="submit" class="px-6 py-2.5 rounded-xl font-bold bg-coffee-600 hover:bg-coffee-700 text-white shadow-md shadow-coffee-200 transition-all flex items-center gap-2">
+                                                                <i class="bi bi-search text-xs"></i> Lọc Kết Quả
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 </div>

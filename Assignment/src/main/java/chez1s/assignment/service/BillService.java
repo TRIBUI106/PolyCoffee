@@ -17,6 +17,14 @@ public class BillService {
         return billRepo.findByUserId(userId);
     }
 
+    public List<Bill> searchBills(String query, String status) {
+        return billRepo.searchBills(query, status);
+    }
+
+    public List<Bill> searchUserBills(Integer userId, String query, String status) {
+        return billRepo.searchUserBills(userId, query, status);
+    }
+
     public List<Bill> getAllBills() {
         return billRepo.findAll();
     }

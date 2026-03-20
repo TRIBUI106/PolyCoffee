@@ -15,9 +15,31 @@
     <jsp:include page="../common/header.jsp" />
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="mb-10">
-            <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2"><fmt:message key="admin.bill.subtitle"/></h1>
-            <p class="text-gray-500 font-medium text-xs tracking-widest uppercase"><fmt:message key="admin.bill.desc"/></p>
+        <div class="mb-10 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2"><fmt:message key="admin.bill.subtitle"/></h1>
+                <p class="text-gray-500 font-medium text-xs tracking-widest uppercase"><fmt:message key="admin.bill.desc"/></p>
+            </div>
+            
+            <form action="${pageContext.request.contextPath}/manager/bills" method="get" class="flex flex-wrap items-center gap-3 bg-white p-2 rounded-2xl border border-gray-200 shadow-sm">
+                <div class="relative flex-grow min-w-[240px]">
+                    <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" name="query" value="${param.query}" placeholder="<fmt:message key='admin.bill.search.placeholder'/>" 
+                        class="w-full pl-11 pr-4 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm transition-all">
+                </div>
+                
+                <select name="status" onchange="this.form.submit()" 
+                    class="pl-4 pr-10 py-2.5 bg-gray-50 border-transparent focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-gray-700 transition-all cursor-pointer">
+                    <option value="ALL" ${param.status == 'ALL' ? 'selected' : ''}><fmt:message key="admin.bill.status.all"/></option>
+                    <option value="WAITING" ${param.status == 'WAITING' ? 'selected' : ''}><fmt:message key="admin.bill.status.waiting"/></option>
+                    <option value="FINISHED" ${param.status == 'FINISHED' ? 'selected' : ''}><fmt:message key="admin.bill.status.finished"/></option>
+                    <option value="CANCELLED" ${param.status == 'CANCELLED' ? 'selected' : ''}><fmt:message key="admin.bill.status.cancelled"/></option>
+                </select>
+                
+                <button type="submit" class="bg-coffee-600 hover:bg-coffee-700 text-white font-bold py-2.5 px-6 rounded-xl text-sm transition-all shadow-md shadow-coffee-200">
+                    <fmt:message key="admin.bill.search.btn"/>
+                </button>
+            </form>
         </div>
 
         <div class="flex flex-col xl:flex-row gap-8 items-start">
