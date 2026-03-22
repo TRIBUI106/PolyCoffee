@@ -84,10 +84,6 @@
                         }
                     </style>
                 </head>
-                <!-- Bootstrap JS Bundle (includes Popper) -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-                    integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-                    crossorigin="anonymous"></script>
 
                 <body class="h-screen w-screen flex flex-col text-pos-text select-none">
 
@@ -185,6 +181,11 @@
                                     class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'bills' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
                                     title="<fmt:message key='admin.sidebar.bills'/>">
                                     <i class="bi bi-receipt text-xl"></i>
+                                </a>
+                                <a href="?tab=tables"
+                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'tables' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Tables">
+                                    <i class="bi bi-grid-3x3-gap text-xl"></i>
                                 </a>
                                 <div class="flex-grow"></div>
                                 <a href="?tab=stats"
@@ -702,83 +703,161 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'stats'}">
-                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-y-auto p-6">
-                                        <div class="flex justify-between items-center mb-6">
-                                            <h2 class="text-2xl font-black text-gray-900">
-                                                <fmt:message key="admin.stats.dashboard" />
-                                            </h2>
-                                            <a href="${pageContext.request.contextPath}/manager/statistics"
-                                                class="text-xs font-black text-coffee-700 hover:text-coffee-800 bg-white px-4 py-2 rounded-xl border border-pos-border shadow-sm flex items-center gap-2 transition-all">
-                                                <i class="bi bi-bar-chart-fill"></i>
-                                                <fmt:message key="header.report" /> &rarr;
-                                            </a>
+                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-y-auto p-8 lg:p-10">
+                                        <!-- Dashboard Header -->
+                                        <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                                            <div>
+                                                <h1 class="text-3xl font-black text-gray-900 tracking-tight mb-2">
+                                                    Dashboard
+                                                </h1>
+                                                <p class="text-pos-muted font-medium">Chào mừng trở lại! Dưới đây là hiệu suất kinh doanh của bạn hôm nay. <span class="text-xs text-coffee-600 opacity-60 ml-2">PolyCoffee Metrics Engine v2.0</span></p>
+                                            </div>
+                                            <div class="flex items-center gap-3">
+                                                <div class="bg-white border border-pos-border rounded-xl px-4 py-2 flex items-center gap-3 shadow-sm">
+                                                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                                    <span class="text-sm font-bold text-gray-700">Live Updates</span>
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-                                            <!-- Revenue Snapshot -->
-                                            <div class="bg-white p-6 rounded-2xl border border-pos-border shadow-sm">
-                                                <h3
-                                                    class="text-sm font-black text-pos-muted uppercase tracking-widest mb-4">
-                                                    <fmt:message key="admin.stats.revenue_snapshot" />
-                                                </h3>
-                                                <div class="space-y-4">
-                                                    <c:forEach var="r" items="${revenueReport}" varStatus="st">
-                                                        <c:if test="${st.index < 5}">
-                                                            <div class="flex items-center gap-4">
-                                                                <div class="text-xs font-bold w-16 text-pos-muted">
-                                                                    <fmt:formatDate value="${r.revenueDate}"
-                                                                        pattern="MM-dd" />
-                                                                </div>
-                                                                <div
-                                                                    class="flex-grow bg-gray-100 rounded-full h-2 relative group overflow-visible">
-                                                                    <div class="bg-coffee-500 h-full rounded-full"
-                                                                        style="width: 75%"></div>
-                                                                </div>
-                                                                <div
-                                                                    class="text-xs font-black text-pos-text w-24 text-right">
-                                                                    <fmt:formatNumber value="${r.totalRevenue}"
-                                                                        pattern="#,###" />
-                                                                    <div
-                                                                        class="text-[9px] text-pos-muted font-normal leading-none mt-0.5">
-                                                                        ${r.totalBills}
-                                                                        <fmt:message key="admin.report.rev.bills" />
+                                        <!-- Summary Cards -->
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                                             <!-- Card 1: Today Revenue -->
+                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-coffee-200 transition-all group overflow-hidden relative">
+                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-coffee-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
+                                                <div class="flex items-start justify-between relative z-10 mb-4">
+                                                    <div class="w-12 h-12 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-xl">
+                                                        <i class="bi bi-currency-dollar"></i>
+                                                    </div>
+                                                    <span class="text-xs font-black text-green-600 bg-green-50 px-2 py-1 rounded-lg">TODAY</span>
+                                                </div>
+                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Doanh thu hôm nay</h3>
+                                                <p class="text-2xl font-black text-gray-900"><fmt:formatNumber value="${dashboard.todayRevenue}" pattern="#,###" /> ₫</p>
+                                             </div>
+
+                                             <!-- Card 2: Today Orders -->
+                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-blue-200 transition-all group overflow-hidden relative">
+                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-blue-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
+                                                <div class="flex items-start justify-between relative z-10 mb-4">
+                                                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-xl">
+                                                        <i class="bi bi-bag-check"></i>
+                                                    </div>
+                                                </div>
+                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Đơn hàng mới</h3>
+                                                <p class="text-2xl font-black text-gray-900">${dashboard.todayOrders} đơn</p>
+                                             </div>
+
+                                             <!-- Card 3: Week Revenue -->
+                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all group overflow-hidden relative">
+                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-emerald-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
+                                                <div class="flex items-start justify-between relative z-10 mb-4">
+                                                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-xl">
+                                                        <i class="bi bi-calendar-range"></i>
+                                                    </div>
+                                                    <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">WEEKLY</span>
+                                                </div>
+                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Doanh thu tuần</h3>
+                                                <p class="text-2xl font-black text-gray-900"><fmt:formatNumber value="${dashboard.weekRevenue}" pattern="#,###" /> ₫</p>
+                                             </div>
+
+                                             <!-- Card 4: Total Bills -->
+                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all group overflow-hidden relative">
+                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-indigo-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
+                                                <div class="flex items-start justify-between relative z-10 mb-4">
+                                                    <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center text-xl">
+                                                        <i class="bi bi-database"></i>
+                                                    </div>
+                                                </div>
+                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Tổng cộng Hóa đơn</h3>
+                                                <p class="text-2xl font-black text-gray-900">${dashboard.totalBills}</p>
+                                             </div>
+                                        </div>
+
+                                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                                            <!-- Revenue Chart (CSS Based) -->
+                                            <div class="lg:col-span-2 bg-white p-8 rounded-[32px] border border-pos-border shadow-sm">
+                                                <div class="flex items-center justify-between mb-8">
+                                                    <div>
+                                                        <h3 class="text-lg font-black text-gray-900">Biểu đồ Doanh thu</h3>
+                                                        <p class="text-xs text-pos-muted font-bold uppercase tracking-wider">Revenue Trend (Daily)</p>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="h-64 flex items-end gap-3 md:gap-5 px-2">
+                                                    <c:forEach var="day" items="${dashboard.revenueByDay}" varStatus="st">
+                                                        <c:if test="${st.index >= (fn:length(dashboard.revenueByDay) - 7)}">
+                                                            <div class="flex-grow flex flex-col items-center group">
+                                                                <c:set var="hPerc" value="${(day.totalRevenue / 50000) > 100 ? 100 : (day.totalRevenue / 50000)}" />
+                                                                <div class="w-full relative bg-gray-50 rounded-t-xl min-h-[4px]" style="height: ${hPerc}%">
+                                                                    <div class="absolute inset-0 bg-coffee-500 group-hover:bg-coffee-600 transition-all"></div>
+                                                                    <!-- Tooltip effect on hover -->
+                                                                    <div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg transition-all whitespace-nowrap z-20">
+                                                                        <fmt:formatNumber value="${day.totalRevenue}" pattern="#,###" /> ₫
                                                                     </div>
                                                                 </div>
+                                                                <span class="mt-3 text-[10px] font-black text-pos-muted uppercase tracking-tighter"><fmt:formatDate value="${day.revenueDate}" pattern="dd/MM" /></span>
                                                             </div>
                                                         </c:if>
                                                     </c:forEach>
                                                 </div>
                                             </div>
 
-                                            <!-- Top Drinks -->
-                                            <div class="bg-white p-6 rounded-2xl border border-pos-border shadow-sm">
-                                                <h3
-                                                    class="text-sm font-black text-pos-muted uppercase tracking-widest mb-4">
-                                                    <fmt:message key="admin.stats.popular_drinks" />
-                                                </h3>
-                                                <div class="space-y-3">
-                                                    <c:forEach var="d" items="${topDrinks}" varStatus="st">
-                                                        <c:if test="${st.index < 5}">
-                                                            <div
-                                                                class="flex justify-between items-center text-sm group">
-                                                                <div class="flex items-center gap-3">
-                                                                    <span
-                                                                        class="w-6 h-6 flex items-center justify-center bg-coffee-50 text-coffee-700 rounded-lg text-[10px] font-black">${st.index
-                                                                        + 1}</span>
-                                                                    <span
-                                                                        class="font-bold group-hover:text-coffee-700 transition-colors">${d.drinkName}</span>
-                                                                </div>
-                                                                <span
-                                                                    class="bg-gray-50 px-2 py-0.5 rounded text-[11px] font-bold text-pos-muted italic">${d.totalQuantitySold}
-                                                                    <fmt:message key="admin.stats.sold_count" />
-                                                                </span>
+                                            <!-- Best Selling Drinks -->
+                                            <div class="bg-white p-8 rounded-[32px] border border-pos-border shadow-sm">
+                                                <h3 class="text-lg font-black text-gray-900 mb-6">Món Bán Chạy</h3>
+                                                <div class="space-y-6">
+                                                    <c:forEach var="drink" items="${dashboard.topDrinks}" varStatus="st">
+                                                        <div class="flex items-center gap-4 group">
+                                                            <div class="w-10 h-10 rounded-xl bg-pos-bg flex items-center justify-center font-black text-coffee-700 transition-colors group-hover:bg-coffee-100">
+                                                                ${st.index + 1}
                                                             </div>
-                                                        </c:if>
+                                                            <div class="flex-grow min-w-0">
+                                                                <p class="text-sm font-black text-gray-900 truncate">${drink.drinkName}</p>
+                                                                <p class="text-[11px] text-pos-muted font-bold">${drink.totalQuantitySold} lượt bán</p>
+                                                            </div>
+                                                            <div class="text-right">
+                                                                <p class="text-xs font-black text-coffee-700"><fmt:formatNumber value="${drink.totalRevenue}" pattern="#,###" />₫</p>
+                                                            </div>
+                                                        </div>
                                                     </c:forEach>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                </c:when>
+                                <c:when test="${activeTab == 'tables'}">
+                                     <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                         <div class="flex justify-between items-center mb-6">
+                                             <h2 class="text-2xl font-black text-gray-900">Quản Lý Bàn</h2>
+                                              <button class="bg-coffee-600 hover:bg-coffee-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all" data-bs-toggle="modal" data-bs-target="#addTableModal">
+                                                 <i class="bi bi-plus-lg"></i> Thêm Bàn Mới
+                                             </button>
+                                         </div>
+                                         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
+                                             <c:forEach var="table" items="${tables}">
+                                                 <div class="bg-white p-6 rounded-2xl border ${table.active ? 'border-pos-border' : 'border-red-100 opacity-60'} shadow-sm flex flex-col items-center gap-3 hover:shadow-md transition-all">
+                                                     <div class="w-12 h-12 rounded-full ${table.active ? 'bg-coffee-50 text-coffee-600' : 'bg-red-50 text-red-400'} flex items-center justify-center text-xl">
+                                                         <i class="bi bi-grid-3x3-gap"></i>
+                                                     </div>
+                                                     <div class="text-center">
+                                                         <p class="text-lg font-black text-gray-900">${table.tableNumber}</p>
+                                                         <p class="text-[10px] uppercase font-bold text-pos-muted">${table.code}</p>
+                                                     </div>
+                                                     <div class="flex gap-2">
+                                                         <button onclick="showQR('${table.id}', '${table.tableNumber}', '${table.code}')" 
+                                                                 class="p-1.5 text-pos-muted hover:text-coffee-700 border border-pos-border rounded-lg" title="QR Code">
+                                                             <i class="bi bi-qr-code"></i>
+                                                         </button>
+                                                         <button onclick="editTable('${table.id}', '${table.tableNumber}', '${table.code}')" 
+                                                                 class="p-1.5 text-pos-muted hover:text-blue-600 border border-pos-border rounded-lg" title="Edit">
+                                                             <i class="bi bi-pencil"></i>
+                                                         </button>
+                                                         <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${table.id}" class="p-1.5 text-pos-muted hover:text-red-600 border border-pos-border rounded-lg" onclick="return confirm('Xóa bàn này?')"><i class="bi bi-trash"></i></a>
+                                                     </div>
+                                                 </div>
+                                             </c:forEach>
+                                         </div>
+                                     </div>
                                 </c:when>
                             </c:choose>
                         </div>
@@ -1395,6 +1474,52 @@
                                 // Auto focus input
                                 setTimeout(() => el.querySelector('input').focus(), 100);
                             }
+                        }
+
+                        function showQR(tableId, tableNum, tableCode) {
+                            const baseUrl = window.location.origin + '${pageContext.request.contextPath}';
+                            const orderUrl = baseUrl + '/guest/pos?tableCode=' + tableCode;
+                            const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(orderUrl);
+
+                            document.getElementById('qrImage').src = qrUrl;
+                            document.getElementById('qrTableInfo').innerText = tableNum + ' (' + tableCode + ')';
+
+                            const modal = new bootstrap.Modal(document.getElementById('qrModal'));
+                            modal.show();
+                        }
+
+                        function editTable(id, name, code) {
+                            const form = document.querySelector('#addTableModal form');
+                            form.action = '${pageContext.request.contextPath}/manager/tables/save';
+                            form.querySelector('input[name="name"]').value = name;
+                            form.querySelector('input[name="code"]').value = code;
+
+                            // Add ID field if it doesn't exist
+                            let idInput = form.querySelector('input[name="id"]');
+                            if (!idInput) {
+                                idInput = document.createElement('input');
+                                idInput.type = 'hidden';
+                                idInput.name = 'id';
+                                form.appendChild(idInput);
+                            }
+                            idInput.value = id;
+
+                            document.querySelector('#addTableModal h5').innerText = 'Chỉnh Sửa Bàn';
+                            const modal = new bootstrap.Modal(document.getElementById('addTableModal'));
+                            modal.show();
+                        }
+
+                        // Reset modal on close/open for "Add"
+                        document.getElementById('addTableModal').addEventListener('hidden.bs.modal', function () {
+                            const form = this.querySelector('form');
+                            form.querySelector('input[name="name"]').value = '';
+                            form.querySelector('input[name="code"]').value = '';
+                            form.querySelector('input[name="id"]')?.remove();
+                            this.querySelector('h5').innerText = 'Thêm Bàn Mới';
+                        });
+
+                        function printQR() {
+                            window.print();
                         }
 
                         function handleCustomNote(billId, drinkId, note) {

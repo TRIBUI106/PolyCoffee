@@ -99,10 +99,12 @@ public class PosController extends HttpServlet {
                     String status = ParamUtil.getString(req, "status");
                     req.setAttribute("billHistory", billService.searchBills(query, status));
                     break;
+                case "tables":
+                    req.setAttribute("tables", new chez1s.assignment.service.TableService().getAllTables());
+                    break;
                 case "stats":
                     chez1s.assignment.service.StatisticService statService = new chez1s.assignment.service.StatisticService();
-                    req.setAttribute("topDrinks", statService.getTopSellingDrinks(null, null));
-                    req.setAttribute("revenueReport", statService.getRevenueReport(null, null));
+                    req.setAttribute("dashboard", statService.getDashboardData());
                     break;
             }
         } else {

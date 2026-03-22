@@ -32,48 +32,6 @@
                                     <span class="nav-indicator"></span>
                                 </a>
 
-                                <c:if test="${sessionScope.user.role}">
-                                    <div class="relative group">
-                                        <button class="nav-link-custom">
-                                            <fmt:message key="header.management" /> <i
-                                                class="bi bi-chevron-down text-[10px] ml-1 opacity-50 group-hover:rotate-180 transition-transform"></i>
-                                        </button>
-                                        <div
-                                            class="absolute top-full left-0 w-56 bg-white border border-gray-100 rounded-2xl shadow-2xl py-3 opacity-0 invisible group-hover:opacity-100 group-hover:visible translate-y-2 group-hover:translate-y-0 transition-all z-50">
-                                            <a href="${pageContext.request.contextPath}/manager/drinks"
-                                                class="dropdown-item">
-                                                <i class="bi bi-cup-hot text-gray-400"></i>
-                                                <fmt:message key="header.drink" />
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/manager/categories"
-                                                class="dropdown-item">
-                                                <i class="bi bi-tags text-gray-400"></i>
-                                                <fmt:message key="header.category" />
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/manager/staff"
-                                                class="dropdown-item">
-                                                <i class="bi bi-people text-gray-400"></i>
-                                                <fmt:message key="header.staff" />
-                                            </a>
-                                             <a href="${pageContext.request.contextPath}/manager/tables"
-                                                class="dropdown-item">
-                                                <i class="bi bi-grid-3x3-gap text-gray-400"></i>
-                                                Table Management
-                                            </a>
-                                            <div class="h-px bg-gray-50 my-2 mx-4"></div>
-                                            <a href="${pageContext.request.contextPath}/manager/bills"
-                                                class="dropdown-item">
-                                                <i class="bi bi-receipt text-gray-400"></i>
-                                                <fmt:message key="header.bill" />
-                                            </a>
-                                            <a href="${pageContext.request.contextPath}/manager/statistics"
-                                                class="dropdown-item">
-                                                <i class="bi bi-graph-up-arrow text-gray-400"></i>
-                                                <fmt:message key="header.report" />
-                                            </a>
-                                        </div>
-                                    </div>
-                                </c:if>
                             </c:if>
                         </div>
 

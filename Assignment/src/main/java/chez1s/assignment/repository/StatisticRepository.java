@@ -50,4 +50,34 @@ public class StatisticRepository {
             em.close();
         }
     }
+
+    public long getTotalFinishedCount(Date fromDate, Date toDate) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            String jpql = "SELECT COUNT(b) FROM Bill b WHERE b.status IN (chez1s.assignment.entity.BillStatus.PAID, chez1s.assignment.entity.BillStatus.FINISHED) " +
+                          (fromDate != null ? "AND b.createdAt >= :fromDate " : "") +
+                          (toDate != null ? "AND b.createdAt <= :toDate " : "");
+            var query = em.createQuery(jpql, Long.class);
+            if (fromDate != null) query.setParameter("fromDate", fromDate);
+            if (toDate != null) query.setParameter("toDate", toDate);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    public long getTotalRevenue(Date fromDate, Date toDate) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            String jpql = "SELECT COALESCE(SUM(b.total), 0L) FROM Bill b WHERE b.status IN (chez1s.assignment.entity.BillStatus.PAID, chez1s.assignment.entity.BillStatus.FINISHED) " +
+                          (fromDate != null ? "AND b.createdAt >= :fromDate " : "") +
+                          (toDate != null ? "AND b.createdAt <= :toDate " : "");
+            var query = em.createQuery(jpql, Long.class);
+            if (fromDate != null) query.setParameter("fromDate", fromDate);
+            if (toDate != null) query.setParameter("toDate", toDate);
+            return query.getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
 }

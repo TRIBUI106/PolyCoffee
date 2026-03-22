@@ -11,6 +11,7 @@
         <class>chez1s.assignment.entity.Drink</class>
         <class>chez1s.assignment.entity.Bill</class>
         <class>chez1s.assignment.entity.BillDetail</class>
+        <class>chez1s.assignment.entity.CoffeeTable</class>
 
         <properties>
             <!-- MySQL Connection -->
