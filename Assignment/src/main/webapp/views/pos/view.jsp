@@ -267,11 +267,18 @@
                                             <h2 class="text-2xl font-black text-gray-900">
                                                 <fmt:message key="admin.drink.subtitle" />
                                             </h2>
-                                            <a href="${pageContext.request.contextPath}/manager/drinks/form"
-                                                class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
-                                                <i class="bi bi-plus-lg"></i>
-                                                <fmt:message key="admin.drink.btn.add" />
-                                            </a>
+                                            <div class="flex flex-col sm:flex-row gap-4 items-center">
+                                                <div class="relative w-64">
+                                                    <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                    <input type="text" id="drinkSearch" placeholder="Tìm kiếm món..." 
+                                                           class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                </div>
+                                                <a href="${pageContext.request.contextPath}/manager/drinks/form"
+                                                    class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                    <fmt:message key="admin.drink.btn.add" />
+                                                </a>
+                                            </div>
                                         </div>
                                         <div
                                             class="bg-white rounded-2xl border border-pos-border shadow-sm flex-grow overflow-hidden flex flex-col">
@@ -304,7 +311,7 @@
                                                     </thead>
                                                     <tbody class="divide-y divide-pos-border">
                                                         <c:forEach var="item" items="${allDrinks}">
-                                                            <tr class="hover:bg-pos-bg transition-colors">
+                                                            <tr class="hover:bg-pos-bg transition-colors drink-row">
                                                                 <td class="px-6 py-4">
                                                                     <div class="flex items-center gap-3">
                                                                         <div
@@ -322,7 +329,7 @@
                                                                                 </c:otherwise>
                                                                             </c:choose>
                                                                         </div>
-                                                                        <div class="font-bold text-pos-text text-sm">
+                                                                        <div class="font-bold text-pos-text text-sm drink-name">
                                                                             ${item.name}</div>
                                                                     </div>
                                                                 </td>
@@ -1626,6 +1633,18 @@
                                 document.querySelectorAll('.category-card').forEach(card => {
                                     const name = card.querySelector('.category-name').textContent.toLowerCase();
                                     card.style.display = name.includes(term) ? 'flex' : 'none';
+                                });
+                            });
+                        }
+
+                        // Admin Drink Search
+                        const drinkSearch = document.getElementById('drinkSearch');
+                        if (drinkSearch) {
+                            drinkSearch.addEventListener('input', () => {
+                                const term = drinkSearch.value.toLowerCase();
+                                document.querySelectorAll('.drink-row').forEach(row => {
+                                    const name = row.querySelector('.drink-name').textContent.toLowerCase();
+                                    row.style.display = name.includes(term) ? '' : 'none';
                                 });
                             });
                         }

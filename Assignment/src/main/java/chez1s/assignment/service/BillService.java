@@ -195,6 +195,7 @@ public class BillService {
             bill.setCode("GUEST-" + System.currentTimeMillis());
             bill.setCreatedAt(new Date());
             bill.setStatus(BillStatus.PENDING);
+            bill.setPaymentMethod(request.getPaymentMethod());
             
             if (request.getTableId() != null && request.getTableId() > 0) {
                 bill.setTable(em.find(CoffeeTable.class, request.getTableId()));

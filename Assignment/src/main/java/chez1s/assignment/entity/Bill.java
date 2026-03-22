@@ -42,6 +42,9 @@ public class Bill {
     @JoinColumn(name = "table_id")
     private CoffeeTable table;
 
+    @Column(name = "payment_method")
+    private String paymentMethod; // "VIETQR", "CASH"
+
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BillDetail> billDetails;
 }

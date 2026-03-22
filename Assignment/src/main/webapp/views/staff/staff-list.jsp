@@ -16,18 +16,26 @@
     <jsp:include page="../common/header.jsp" />
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
             <div>
                 <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2"><fmt:message key="admin.staff.title"/></h1>
                 <p class="text-gray-500 font-medium text-xs tracking-widest uppercase"><fmt:message key="admin.staff.subtitle"/></p>
             </div>
-            <a href="${pageContext.request.contextPath}/manager/staff/form" class="bg-coffee-700 hover:bg-coffee-800 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm flex items-center gap-2 group">
-                <i class="bi bi-person-plus group-hover:scale-110 transition-transform"></i>
-                <fmt:message key="admin.staff.btn.add"/>
-            </a>
+            <div class="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
+                <div class="relative w-full sm:w-64">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                    <input type="text" id="searchStaffInput" placeholder="Search staff..." class="w-full bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-coffee-500 focus:border-coffee-500 block pl-10 p-3 transition-colors shadow-sm">
+                </div>
+                <a href="${pageContext.request.contextPath}/manager/staff/form" class="w-full sm:w-auto justify-center bg-coffee-700 hover:bg-coffee-800 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm flex items-center gap-2 group">
+                    <i class="bi bi-person-plus group-hover:scale-110 transition-transform"></i>
+                    <fmt:message key="admin.staff.btn.add"/>
+                </a>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div id="staffGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <c:forEach var="s" items="${staffList}">
                 <div class="group bg-white p-6 rounded-2xl border border-gray-200 transition-all hover:-translate-y-1 hover:shadow-md shadow-sm">
                     <div class="flex items-start justify-between mb-6">
@@ -86,5 +94,16 @@
     </main>
 
     <jsp:include page="../common/footer.jsp" />
+    
+    <script>
+        document.getElementById('searchStaffInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('#staffGrid > div');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        });
+    </script>
 </body>
 </html>

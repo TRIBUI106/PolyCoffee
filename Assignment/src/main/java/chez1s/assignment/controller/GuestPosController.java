@@ -53,6 +53,21 @@ public class GuestPosController extends HttpServlet {
             return;
         }
 
+        // 3️⃣ Get order status (JSON)
+        if (uri.equals(req.getContextPath() + "/guest/pos/status")) {
+            Integer billId = ParamUtil.getInt(req, "id");
+            Bill bill = billService.getBillById(billId);
+            
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");
+            if (bill != null) {
+                resp.getWriter().write("{\"success\":true,\"status\":\"" + bill.getStatus() + "\"}");
+            } else {
+                resp.getWriter().write("{\"success\":false,\"message\":\"Order not found\"}");
+            }
+            return;
+        }
+
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 

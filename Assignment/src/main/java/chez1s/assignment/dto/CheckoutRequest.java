@@ -8,6 +8,7 @@ public class CheckoutRequest {
     private String guestName;
     private String guestPhone;
     private Integer tableId;
+    private String paymentMethod;
     private List<CartItem> items;
 
     @Data

@@ -21,14 +21,22 @@
                 <h1 class="text-3xl font-black text-gray-900 tracking-tight">Table Management</h1>
                 <p class="text-gray-500 font-medium">Create and manage your coffee shop tables & QR codes</p>
             </div>
-            <button onclick="document.getElementById('tableModal').classList.remove('hidden')"
-                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-2xl font-bold shadow-lg shadow-indigo-200 transition-all transform active:scale-95 flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
-                Create New Table
-            </button>
+            <div class="flex flex-col sm:flex-row gap-4 items-center w-full md:w-auto">
+                <div class="relative w-full sm:w-64">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    </div>
+                    <input type="text" id="searchInput" placeholder="Search tables..." class="w-full bg-white border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block pl-10 p-2.5 transition-colors shadow-sm">
+                </div>
+                <button onclick="document.getElementById('tableModal').classList.remove('hidden')"
+                        class="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-indigo-200 transition-all transform active:scale-95 flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+                    Create Table
+                </button>
+            </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div id="tableGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <c:forEach var="t" items="${tables}">
                 <div class="bg-white rounded-3xl border border-gray-100 p-6 shadow-sm hover:shadow-xl transition-all group">
                     <div class="flex items-start justify-between mb-4">
@@ -123,6 +131,16 @@
                 </html>
             `);
         }
+        
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const query = e.target.value.toLowerCase();
+            const cards = document.querySelectorAll('#tableGrid > div');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(query) ? 'block' : 'none';
+            });
+        });
     </script>
 </body>
 </html>

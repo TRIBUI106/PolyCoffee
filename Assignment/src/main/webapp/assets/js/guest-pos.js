@@ -15,10 +15,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // 1️⃣ Cart & LocalStorage
   // -------------------------------------------------
   let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+  let activeOrder = JSON.parse(localStorage.getItem("activeOrder") || "null");
+  let paymentMethod = "VIETQR"; // Default
   let currentDrink = null;
   let modalQty = 1;
 
   updateUI();
+  if (activeOrder) startPollingStatus();
+
+  window.selectPayment = (method) => {
+    paymentMethod = method;
+    document.querySelectorAll(".payment-opt-btn").forEach((btn) => {
+      btn.classList.add("grayscale", "border-transparent", "bg-gray-50", "text-gray-400");
+      btn.classList.remove("border-indigo-600", "bg-indigo-50", "text-indigo-600", "grayscale-0");
+    });
+
+    const activeBtn = document.getElementById(method === "VIETQR" ? "payVietQR" : "payCash");
+    activeBtn.classList.remove("grayscale", "border-transparent", "bg-gray-50", "text-gray-400");
+    activeBtn.classList.add("border-indigo-600", "bg-indigo-50", "text-indigo-600", "grayscale-0");
+  };
 
   // -------------------------------------------------
   // 2️⃣ Guest Profile
@@ -179,18 +194,66 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateUI() {
     const count = cart.reduce((acc, item) => acc + item.quantity, 0);
-    const total = cart.reduce(
-      (acc, item) => acc + item.price * item.quantity,
-      0,
-    );
+    const total = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
     document.getElementById("cartCountBadge").textContent = count;
-    document.getElementById("cartTotalDisplay").textContent =
-      total.toLocaleString() + "₫";
+    document.getElementById("cartTotalDisplay").textContent = total.toLocaleString() + "₫";
 
-    const bar = document.getElementById("bottomCartBar");
-    if (count > 0) bar.classList.remove("translate-y-full");
-    else bar.classList.add("translate-y-full");
+    const cartBar = document.getElementById("bottomCartBar");
+    const activeBar = document.getElementById("activeOrderBar");
+
+    // 1. Handle Cart Bar
+    if (count > 0) {
+      cartBar.classList.remove("translate-y-full");
+    } else {
+      cartBar.classList.add("translate-y-full");
+    }
+
+    // 2. Handle Active Order Bar
+    if (activeOrder) {
+      activeBar.classList.remove("translate-y-full");
+      document.getElementById("activeOrderCode").textContent = `#${activeOrder.billCode}`;
+      document.getElementById("activeOrderStatus").textContent = activeOrder.status || "PENDING";
+      
+      // If cart is also visible, move active bar up
+      if (count > 0) {
+        activeBar.classList.add("mb-20"); // Add margin to stack above cart bar
+      } else {
+        activeBar.classList.remove("mb-20");
+      }
+    } else {
+      activeBar.classList.add("translate-y-full");
+    }
+  }
+
+  function startPollingStatus() {
+    if (!activeOrder || !activeOrder.billId) return;
+    
+    const poll = async () => {
+      try {
+        const r = await fetch(`${contextPath}/guest/pos/status?id=${activeOrder.billId}`);
+        const res = await r.json();
+        if (res.success) {
+          activeOrder.status = res.status;
+          localStorage.setItem("activeOrder", JSON.stringify(activeOrder));
+          updateUI();
+          
+          if (res.status === "FINISHED" || res.status === "CANCELLED") {
+            // After some delay, clear the active order so they can order again
+            setTimeout(() => {
+              activeOrder = null;
+              localStorage.removeItem("activeOrder");
+              updateUI();
+            }, 60000); // Wait 1 minute before removing
+            return; // Stop polling
+          }
+        }
+      } catch (e) { console.error("Poll failed", e); }
+      
+      if (activeOrder) setTimeout(poll, 10000);
+    };
+    
+    poll();
   }
 
   // 5️⃣ Category Filtering (Client-side)
@@ -274,6 +337,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const payload = {
       guestName: info.name,
       guestPhone: info.phone,
+      paymentMethod: paymentMethod,
       items: cart.map((item) => ({
         drinkId: item.id,
         quantity: item.quantity,
@@ -289,22 +353,46 @@ document.addEventListener("DOMContentLoaded", () => {
       .then((r) => r.json())
       .then((res) => {
         if (res.success) {
+          activeOrder = { 
+            billId: res.billId, 
+            billCode: res.billCode, 
+            status: "PENDING",
+            total: res.total
+          };
+          localStorage.setItem("activeOrder", JSON.stringify(activeOrder));
+          
           cart = [];
           localStorage.setItem("cart", "[]");
           updateUI();
           cartModal.classList.add("hidden");
 
           // Show Payment
-          document.getElementById("paymentBillCode").textContent = res.billCode;
-          // VietQR logic: https://vietqr.net/portal/qr-api
-          // img.vietqr.io/image/<BANK_ID>-<ACCOUNT_NO>-<TEMPLATE>.jpg?amount=<AMOUNT>&addInfo=<DESCRIPTION>&accountName=<NAME>
-          const bankId = "MB"; // Example: MB Bank
-          const accountNo = "0901234567"; // Your account
-          const accountName = "BUI DUC TRI";
-          const vietqrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact.jpg?amount=${res.total}&addInfo=${res.billCode}&accountName=${accountName}`;
+          const billCodeEl = document.getElementById("paymentBillCode");
+          billCodeEl.textContent = res.billCode;
+          
+          const qrContainer = document.getElementById("qrContainer");
+          const cashContainer = document.getElementById("cashContainer");
+          const methodLabel = document.getElementById("paymentMethodLabel");
 
-          document.getElementById("vietqrImg").src = vietqrUrl;
+          if (paymentMethod === "VIETQR") {
+            qrContainer.classList.remove("hidden");
+            cashContainer.classList.add("hidden");
+            methodLabel.textContent = "Scan to pay for";
+            
+            const bankId = "MB";
+            const accountNo = "0946114115";
+            const accountName = "TRAN CHONG CHI";
+            const vietqrUrl = `https://img.vietqr.io/image/${bankId}-${accountNo}-compact.jpg?amount=${res.total}&addInfo=${res.billCode}&accountName=${accountName}`;
+            document.getElementById("vietqrImg").src = vietqrUrl;
+          } else {
+            qrContainer.classList.add("hidden");
+            cashContainer.classList.remove("hidden");
+            methodLabel.textContent = "Pay cash for";
+            document.getElementById("paymentAmountLabel").textContent = res.total.toLocaleString() + "₫";
+          }
+
           paymentModal.classList.remove("hidden");
+          startPollingStatus();
         } else {
           showToast(res.message, "error");
         }

@@ -16,7 +16,8 @@ public class TableController extends HttpServlet {
         String uri = req.getRequestURI();
         if (uri.contains("/delete")) {
             tableService.deleteTable(ParamUtil.getInt(req, "id"));
-            resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=tables");
+            String referer = req.getHeader("referer");
+            resp.sendRedirect(referer != null ? referer : req.getContextPath() + "/employee/pos?tab=tables");
             return;
         }
         
@@ -35,6 +36,8 @@ public class TableController extends HttpServlet {
         } else {
             tableService.createTable(name, code);
         }
-        resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=tables");
+        
+        String referer = req.getHeader("referer");
+        resp.sendRedirect(referer != null ? referer : req.getContextPath() + "/employee/pos?tab=tables");
     }
 }

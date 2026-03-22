@@ -29,11 +29,11 @@
 
     <!-- Header -->
     <header class="bg-white/80 backdrop-blur-lg border-b border-gray-100 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            </div>
-            <div>
+        <a href="${pageContext.request.contextPath}">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                </div>
                 <h1 class="font-black text-gray-900 leading-none">PolyCoffee</h1>
                 <p id="tableInfo" class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-1">
                     <c:choose>
@@ -42,7 +42,7 @@
                     </c:choose>
                 </p>
             </div>
-        </div>
+        </a>
         
         <button id="guestInfoBtn" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-xl transition-colors">
             <div id="guestAvatar" class="w-6 h-6 bg-white rounded-lg flex items-center justify-center text-gray-400">
@@ -102,6 +102,19 @@
         </div>
     </div>
 
+    <!-- Active Order Bar -->
+    <div id="activeOrderBar" class="fixed bottom-0 left-0 right-0 bg-indigo-600 text-white p-4 pb-8 z-40 translate-y-full transition-transform duration-300">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-4">
+            <div class="flex flex-col">
+                <span class="text-[10px] font-black text-white/60 uppercase tracking-widest">Active Order <span id="activeOrderCode"></span></span>
+                <span id="activeOrderStatus" class="text-xl font-black">PREPARING...</span>
+            </div>
+            <button onclick="window.location.reload()" class="bg-white text-indigo-600 px-6 py-3 rounded-2xl font-black text-xs shadow-xl transition-all active:scale-95">
+                Refresh Status
+            </button>
+        </div>
+    </div>
+
     <!-- Drink Options Modal -->
     <div id="drinkModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-end sm:items-center justify-center hidden">
         <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 transform transition-all animate-popIn">
@@ -156,6 +169,20 @@
             </div>
             
             <div class="border-t border-gray-100 pt-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3 px-1">Payment Method</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <button type="button" onclick="selectPayment('VIETQR')" id="payVietQR" class="payment-opt-btn flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-indigo-600 bg-indigo-50 text-indigo-600 transition-all">
+                            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                            <span class="text-[10px] font-black uppercase">VietQR</span>
+                        </button>
+                        <button type="button" onclick="selectPayment('CASH')" id="payCash" class="payment-opt-btn flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-transparent bg-gray-50 text-gray-400 grayscale hover:grayscale-0 transition-all">
+                            <svg class="w-6 h-6 mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                            <span class="text-[10px] font-black uppercase">Cash</span>
+                        </button>
+                    </div>
+                </div>
+
                 <div class="flex items-center justify-between">
                     <span class="text-gray-500 font-bold">Total Amount</span>
                     <span id="finalTotal" class="text-3xl font-black text-indigo-600">0₫</span>
@@ -174,14 +201,22 @@
                 <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
             </div>
             <h2 class="text-2xl font-black text-gray-900 mb-2">Almost Done!</h2>
-            <p class="text-gray-500 font-medium mb-8">Scan to pay for order <span id="paymentBillCode" class="text-indigo-600 font-black"></span></p>
+            <p class="text-gray-500 font-medium mb-8"><span id="paymentMethodLabel">Pay for</span> order <span id="paymentBillCode" class="text-indigo-600 font-black"></span></p>
             
-            <div class="bg-gray-50 rounded-3xl p-6 mb-8 border-2 border-dashed border-gray-200">
+            <div id="qrContainer" class="bg-gray-50 rounded-3xl p-6 mb-8 border-2 border-dashed border-gray-200">
                 <img id="vietqrImg" src="" alt="Payment QR" class="w-full rounded-2xl shadow-lg border border-white">
                 <p class="mt-4 text-xs font-black text-gray-400 uppercase tracking-widest">Open your banking app to scan</p>
             </div>
+
+            <div id="cashContainer" class="hidden bg-indigo-50 rounded-3xl p-6 mb-8 border-2 border-dashed border-indigo-200">
+                <div class="text-indigo-600 mb-2">
+                    <svg class="w-12 h-12 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                </div>
+                <p class="text-indigo-900 font-bold text-sm">Please pay <span id="paymentAmountLabel" class="font-black text-lg"></span> at the counter</p>
+                <p class="mt-2 text-[10px] font-black text-indigo-400 uppercase tracking-widest">Wait for staff to confirm</p>
+            </div>
             
-            <button onclick="window.location.reload()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm hover:bg-black transition-all">
+            <button onclick="document.getElementById('paymentModal').classList.add('hidden')" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm hover:bg-black transition-all">
                 Done, I've Paid
             </button>
         </div>
