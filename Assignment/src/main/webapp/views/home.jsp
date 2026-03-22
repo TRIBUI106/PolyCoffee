@@ -54,7 +54,7 @@
                         <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
                             <c:choose>
                                 <c:when test="${empty sessionScope.user}">
-                                    <a href="${pageContext.request.contextPath}/auth/login"
+                                    <a href="${pageContext.request.contextPath}/guest/pos"
                                         class="bg-coffee-700 hover:bg-coffee-800 text-white px-8 py-3 rounded-xl font-semibold shadow-sm transition-all flex items-center gap-2">
                                         <fmt:message key="home.btn.login" /> <i class="bi bi-arrow-right"></i>
                                     </a>

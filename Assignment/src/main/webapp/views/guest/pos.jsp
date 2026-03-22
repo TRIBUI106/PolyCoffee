@@ -12,163 +12,207 @@
 <!DOCTYPE html>
 <html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
 <head>
-    <title><fmt:message key="pos.title" /> - Guest</title>
-    <!-- Basic meta and tailwind -->
+    <title>PolyCoffee - Guest Order</title>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="${pageContext.request.contextPath}/assets/css/guest.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/assets/js/guest-pos.js" defer></script>
+    <style>
+        body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        .active-category { background-color: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2); }
+    </style>
 </head>
-<body class="bg-gray-50 font-sans text-gray-800 h-screen flex flex-col overflow-hidden select-none">
+<body class="bg-gray-50 flex flex-col h-screen overflow-hidden">
 
-<!-- Header -->
-<header class="h-14 bg-white/80 backdrop-blur-md border-b border-gray-200 flex items-center px-4 shadow-sm z-10 shrink-0">
-    <h1 class="text-xl font-bold flex items-center gap-2 text-indigo-600">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor"
-             viewBox="0 0 24 24"><path stroke-linecap="round"
-             stroke-linejoin="round" stroke-width="2"
-             d="M3 7h18M3 12h18M3 17h18"/></svg>
-        <span>Guest POS</span>
-    </h1>
-    
-    <div class="ml-auto flex items-center gap-4">
-        <!-- Range filter (simulated UI requested) -->
-        <div class="hidden sm:flex items-center gap-2 bg-gray-100 px-3 py-1 rounded-full border border-gray-200">
-            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/></svg>
-            <input id="amountInput" type="number" placeholder="Max ₫"
-                   class="w-20 bg-transparent text-sm font-semibold text-gray-700 outline-none"/>
-            <input id="amountRange" type="range" min="0" max="1000000" step="1000" class="w-24 accent-indigo-600"/>
+    <!-- Header -->
+    <header class="bg-white/80 backdrop-blur-lg border-b border-gray-100 px-4 py-3 flex items-center justify-between sticky top-0 z-40">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <div>
+                <h1 class="font-black text-gray-900 leading-none">PolyCoffee</h1>
+                <p id="tableInfo" class="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mt-1">
+                    <c:choose>
+                        <c:when test="${not empty sessionScope.tableId}">Table #${sessionScope.tableId}</c:when>
+                        <c:otherwise>TAKE AWAY</c:otherwise>
+                    </c:choose>
+                </p>
+            </div>
         </div>
-
-        <!-- Language Switcher -->
-        <div class="flex items-center bg-gray-100 border border-gray-200 rounded-lg p-1">
-            <a href="?lang=vi"
-               class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500 hover:text-gray-700'}">VI</a>
-            <a href="?lang=en"
-               class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-indigo-600' : 'text-gray-500 hover:text-gray-700'}">EN</a>
-        </div>
-
-        <button id="guestInfoBtn"
-                class="px-4 py-1.5 bg-indigo-600 text-white text-sm font-bold rounded-lg hover:bg-indigo-700 transition shadow-md flex items-center gap-2">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                 viewBox="0 0 24 24"><path stroke-linecap="round"
-                 stroke-linejoin="round" stroke-width="2"
-                 d="M5.121 17.804A9 9 0 1118.88 6.196M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
-            <span id="guestInfoLabel">Guest</span>
+        
+        <button id="guestInfoBtn" class="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 px-3 py-2 rounded-xl transition-colors">
+            <div id="guestAvatar" class="w-6 h-6 bg-white rounded-lg flex items-center justify-center text-gray-400">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+            </div>
+            <span id="guestInfoLabel" class="text-xs font-bold text-gray-700">Guest</span>
         </button>
+    </header>
+
+    <!-- Horizontal Categories -->
+    <div class="bg-white px-4 py-3 border-b border-gray-100 overflow-x-auto hide-scroll flex gap-2 shrink-0">
+        <button class="px-6 py-2 rounded-full text-sm font-bold transition-all whitespace-nowrap active-category category-btn" data-cat-id="0">All</button>
+        <c:forEach var="cat" items="${categories}">
+            <button class="px-6 py-2 rounded-full text-sm font-bold text-gray-500 bg-gray-50 hover:bg-gray-100 transition-all whitespace-nowrap category-btn" data-cat-id="${cat.id}">${cat.name}</button>
+        </c:forEach>
     </div>
-</header>
-
-<!-- Toast Container -->
-<div id="toastContainer" class="fixed top-20 right-5 z-50 flex flex-col gap-2"></div>
-
-<!-- Main Section -->
-<main class="flex-grow flex overflow-hidden">
-    <!-- Category sidebar -->
-    <aside class="w-24 md:w-48 bg-white border-r border-gray-200 flex flex-col shrink-0 overflow-y-auto hide-scroll">
-        <div class="p-3">
-            <button class="w-full mb-3 py-2.5 bg-indigo-600 text-white rounded-xl text-sm font-bold shadow-md shadow-indigo-200 transition-transform active:scale-95 text-center"
-                    data-cat-id="0">All</button>
-            <c:forEach var="cat" items="${categories}">
-                <button class="w-full mb-3 py-2.5 bg-gray-50 hover:bg-indigo-50 border border-transparent hover:border-indigo-100 text-gray-700 hover:text-indigo-700 rounded-xl text-sm font-semibold transition-all text-center break-words"
-                        data-cat-id="${cat.id}">${cat.name}</button>
-            </c:forEach>
-        </div>
-    </aside>
 
     <!-- Drinks Grid -->
-    <section class="flex-grow p-4 md:p-6 overflow-y-auto bg-gray-50 scroll-smooth">
-        <div id="drinksGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6 pb-20">
+    <main class="flex-grow overflow-y-auto p-4 md:p-6 bg-gray-50">
+        <div id="drinksGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 pb-24">
             <c:forEach var="d" items="${drinks}">
-                <div class="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all cursor-pointer group flex flex-col overflow-hidden"
-                     onclick="addDrink(${d.id})">
-                    <div class="aspect-square bg-gray-100 relative overflow-hidden">
+                <div class="bg-white rounded-3xl p-3 border border-gray-100 shadow-sm hover:shadow-xl transition-all cursor-pointer group active:scale-95 drink-card" 
+                     data-id="${d.id}" data-name="${d.name}" data-price="${d.price}" data-image="${d.image}" data-cat-id="${d.category.id}">
+                    <div class="aspect-square rounded-2xl bg-gray-100 mb-3 overflow-hidden relative">
                         <c:choose>
                             <c:when test="${not empty d.image}">
-                                <c:set var="imgUrl"
-                                       value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
-                                <img src="${imgUrl}"
-                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                <c:set var="imgUrl" value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
+                                <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                             </c:when>
                             <c:otherwise>
                                 <div class="w-full h-full flex items-center justify-center text-gray-300">
-                                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
                                 </div>
                             </c:otherwise>
                         </c:choose>
-                        <!-- Price overlay -->
-                        <div class="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm text-indigo-700 text-xs font-black px-2 py-1 rounded-lg shadow-sm border border-indigo-100">
+                        <div class="absolute bottom-2 right-2 bg-indigo-600/90 backdrop-blur-md px-2 py-1 rounded-lg text-white font-black text-[10px] shadow-sm">
                             <fmt:formatNumber value="${d.price}" pattern="#,###" />₫
                         </div>
                     </div>
-                    <div class="p-3">
-                        <h3 class="font-bold text-sm text-gray-800 line-clamp-2 leading-tight group-hover:text-indigo-600 transition-colors">${d.name}</h3>
-                    </div>
+                    <h3 class="font-bold text-sm text-gray-900 line-clamp-2 leading-tight">${d.name}</h3>
                 </div>
             </c:forEach>
         </div>
-    </section>
-</main>
+    </main>
 
-<!-- Pending Bill Notification (if redirected after purchase) -->
-<c:if test="${not empty param.billId}">
-    <div id="successModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[100] animate-fadeIn">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full mx-4 text-center transform scale-100 transition-transform animate-popIn">
-            <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+    <!-- Bottom Cart Bar -->
+    <div id="bottomCartBar" class="fixed bottom-0 left-0 right-0 bg-white/80 backdrop-blur-xl border-t border-gray-100 p-4 pb-8 z-40 translate-y-full transition-transform duration-300">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-4">
+            <div class="flex flex-col">
+                <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Your Cart</span>
+                <span id="cartTotalDisplay" class="text-xl font-black text-gray-900">0₫</span>
             </div>
-            <h2 class="text-2xl font-black text-gray-900 mb-2">Order Placed!</h2>
-            <p class="text-gray-500 text-sm mb-6">Your order #${param.billId} has been sent to the staff. Please wait while we process it.</p>
-            <button onclick="document.getElementById('successModal').remove()" class="w-full py-3 bg-gray-900 text-white rounded-xl font-bold hover:bg-black transition-colors">
-                Continue Browsing
+            <button id="viewCartBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-4 rounded-2xl font-black text-sm shadow-xl shadow-indigo-200 transition-all active:scale-95 flex items-center gap-2">
+                View Order
+                <span id="cartCountBadge" class="bg-white/20 px-2 py-0.5 rounded-lg text-xs">0</span>
             </button>
         </div>
     </div>
-</c:if>
 
-<!-- Guest Info Modal -->
-<div id="guestModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-[60] hidden transition-opacity">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-6 mx-4 transform transition-all">
-        <h2 class="text-xl font-black text-gray-900 mb-1">Welcome! 👋</h2>
-        <p class="text-sm text-gray-500 mb-5">Please enter your details to order.</p>
-        
-        <form id="guestForm" class="space-y-4">
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Your Name</label>
-                <div class="relative">
-                    <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
-                    <input type="text" name="guestName" required placeholder="John Doe"
-                           class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"/>
+    <!-- Drink Options Modal -->
+    <div id="drinkModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-end sm:items-center justify-center hidden">
+        <div class="bg-white w-full max-w-md rounded-t-3xl sm:rounded-3xl p-6 transform transition-all animate-popIn">
+            <div class="flex gap-4 mb-6">
+                <div id="modalDrinkImage" class="w-24 h-24 rounded-2xl bg-gray-100 overflow-hidden shrink-0"></div>
+                <div class="flex flex-col justify-center">
+                    <h2 id="modalDrinkName" class="text-xl font-black text-gray-900 leading-tight mb-1"></h2>
+                    <span id="modalDrinkPrice" class="text-indigo-600 font-bold"></span>
                 </div>
             </div>
-            <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1">Phone Number</label>
-                <div class="relative">
-                    <svg class="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-                    <input type="tel" name="guestPhone" required placeholder="0123 456 789"
-                           class="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 pl-10 pr-4 text-sm font-semibold focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all"/>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Quantity</label>
+                    <div class="flex items-center gap-6">
+                        <button onclick="changeModalQty(-1)" class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-900 hover:bg-gray-200 transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M20 12H4"/></svg>
+                        </button>
+                        <span id="modalQty" class="text-2xl font-black text-gray-900 w-8 text-center">1</span>
+                        <button onclick="changeModalQty(1)" class="w-12 h-12 rounded-xl bg-indigo-600 flex items-center justify-center text-white hover:bg-indigo-700 transition-colors shadow-lg shadow-indigo-100">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"/></svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Special Requests</label>
+                    <textarea id="modalNote" rows="2" placeholder="e.g. Less ice, extra sugar..." 
+                              class="w-full bg-gray-50 border border-gray-100 rounded-2xl p-4 text-sm font-bold focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"></textarea>
                 </div>
             </div>
-            <div class="flex gap-3 pt-2">
-                <button type="button" id="guestCancel"
-                        class="flex-1 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-colors">Cancel</button>
-                <button type="submit"
-                        class="flex-1 py-3 bg-indigo-600 text-white rounded-xl font-bold hover:bg-indigo-700 shadow-md shadow-indigo-200 transition-all">Save info</button>
+
+            <div class="flex gap-3 mt-8">
+                <button id="closeDrinkModal" class="flex-1 py-4 bg-gray-100 text-gray-900 rounded-2xl font-black text-sm hover:bg-gray-200 transition-colors">Cancel</button>
+                <button id="addToCartBtn" class="flex-2 px-8 py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm hover:bg-indigo-700 shadow-xl shadow-indigo-100 transition-all">Add to Cart</button>
             </div>
-        </form>
+        </div>
     </div>
-</div>
 
-<style>
-/* Animations */
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-@keyframes popIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
-.animate-fadeIn { animation: fadeIn 0.3s ease-out forwards; }
-.animate-popIn { animation: popIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-.hide-scroll::-webkit-scrollbar { display: none; }
-.hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-</style>
+    <!-- Cart Overview Modal -->
+    <div id="cartModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150] flex items-end sm:items-center justify-center hidden">
+        <div class="bg-white w-full max-w-md h-[80vh] sm:h-auto sm:max-h-[85vh] rounded-t-3xl sm:rounded-3xl p-6 flex flex-col transform transition-all">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-black text-gray-900">Your Order</h2>
+                <button id="closeCartModal" class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+            
+            <div id="cartItemsList" class="flex-grow overflow-y-auto space-y-4 pr-1 hide-scroll mb-6">
+                <!-- Items injected here -->
+            </div>
+            
+            <div class="border-t border-gray-100 pt-6 space-y-4">
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-500 font-bold">Total Amount</span>
+                    <span id="finalTotal" class="text-3xl font-black text-indigo-600">0₫</span>
+                </div>
+                <button id="checkoutBtn" class="w-full py-5 bg-indigo-600 text-white rounded-3xl font-black text-lg hover:bg-indigo-700 shadow-2xl shadow-indigo-200 transition-all active:scale-95">
+                    Place Order Now
+                </button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Payment Modal (VietQR) -->
+    <div id="paymentModal" class="fixed inset-0 bg-black/80 backdrop-blur-xl z-[200] flex items-center justify-center hidden">
+        <div class="bg-white w-full max-w-sm rounded-[3rem] p-8 mx-4 text-center transform shadow-2xl animate-popIn">
+            <div class="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h2 class="text-2xl font-black text-gray-900 mb-2">Almost Done!</h2>
+            <p class="text-gray-500 font-medium mb-8">Scan to pay for order <span id="paymentBillCode" class="text-indigo-600 font-black"></span></p>
+            
+            <div class="bg-gray-50 rounded-3xl p-6 mb-8 border-2 border-dashed border-gray-200">
+                <img id="vietqrImg" src="" alt="Payment QR" class="w-full rounded-2xl shadow-lg border border-white">
+                <p class="mt-4 text-xs font-black text-gray-400 uppercase tracking-widest">Open your banking app to scan</p>
+            </div>
+            
+            <button onclick="window.location.reload()" class="w-full py-4 bg-gray-900 text-white rounded-2xl font-black text-sm hover:bg-black transition-all">
+                Done, I've Paid
+            </button>
+        </div>
+    </div>
+
+    <!-- Guest Details Modal -->
+    <div id="guestModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-[110] flex items-center justify-center hidden">
+        <div class="bg-white w-full max-w-md rounded-3xl p-8 mx-4 shadow-2xl">
+            <h2 class="text-2xl font-black text-gray-900 mb-1">Welcome! 👋</h2>
+            <p class="text-gray-500 font-medium mb-8">Please tell us who you are.</p>
+            
+            <form id="guestForm" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Your Name</label>
+                    <input type="text" name="guestName" required placeholder="Nguyen Van A"
+                           class="w-full bg-gray-50 border border-transparent rounded-2xl py-4 px-5 text-sm font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>
+                </div>
+                <div>
+                    <label class="block text-xs font-black text-gray-400 uppercase tracking-widest mb-2 px-1">Phone Number</label>
+                    <input type="tel" name="guestPhone" required placeholder="09xx xxx xxx"
+                           class="w-full bg-gray-50 border border-transparent rounded-2xl py-4 px-5 text-sm font-bold focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-all"/>
+                </div>
+                <div class="pt-4">
+                    <button type="submit" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-black text-sm hover:bg-indigo-700 shadow-xl shadow-indigo-100">Save info</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const contextPath = "${pageContext.request.contextPath}";
+    </script>
 </body>
 </html>

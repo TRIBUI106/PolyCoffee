@@ -204,12 +204,14 @@
                                         class="h-14 bg-white border-b border-pos-border px-4 flex items-center shrink-0 shadow-sm z-0">
                                         <div class="flex gap-2 overflow-x-auto hide-scroll pb-1 items-center h-full">
                                             <button
-                                                class="bg-coffee-700 text-white px-5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-sm">
+                                                class="bg-coffee-700 text-white px-5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-sm category-btn"
+                                                data-cat-id="0">
                                                 <fmt:message key="pos.category.all" />
                                             </button>
                                             <c:forEach var="cat" items="${categories}">
                                                 <button
-                                                    class="bg-pos-bg hover:bg-coffee-50 text-pos-text hover:text-coffee-700 border border-transparent hover:border-coffee-200 px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors">${cat.name}</button>
+                                                    class="bg-pos-bg hover:bg-coffee-50 text-pos-text hover:text-coffee-700 border border-transparent hover:border-coffee-200 px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors category-btn"
+                                                    data-cat-id="${cat.id}">${cat.name}</button>
                                             </c:forEach>
                                         </div>
                                     </div>
@@ -224,7 +226,8 @@
                                                     <c:set var="urlParams"
                                                         value="${urlParams}&billId=${currentBill.id}" />
                                                 </c:if>
-                                                <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group"
+                                                <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group drink-item"
+                                                    data-cat-id="${d.category.id}"
                                                     onclick="location.href='${pageContext.request.contextPath}/employee/pos/add?${urlParams}'">
                                                     <div class="aspect-[4/3] bg-pos-bg relative overflow-hidden">
                                                         <c:choose>
@@ -360,19 +363,24 @@
                                                 <i class="bi bi-plus-lg"></i>
                                                 <fmt:message key="admin.category.btn.add" />
                                             </a>
+                                            <div class="relative w-64">
+                                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                <input type="text" id="categorySearch" placeholder="Tìm kiếm danh mục..." 
+                                                       class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                            </div>
                                         </div>
                                         <div
                                             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2">
                                             <c:forEach var="item" items="${categories}">
                                                 <div
-                                                    class="bg-white p-5 rounded-2xl border border-pos-border shadow-sm flex items-center justify-between group hover:border-coffee-300 transition-all">
+                                                    class="bg-white p-5 rounded-2xl border border-pos-border shadow-sm flex items-center justify-between group hover:border-coffee-300 transition-all category-card">
                                                     <div class="flex items-center gap-4">
                                                         <div
                                                             class="w-12 h-12 bg-coffee-50 rounded-xl flex items-center justify-center text-coffee-700 text-xl font-black">
                                                             ${fn:substring(item.name, 0, 1)}
                                                         </div>
                                                         <div>
-                                                            <div class="font-bold text-pos-text">${item.name}</div>
+                                                            <div class="font-bold text-pos-text category-name">${item.name}</div>
                                                             <div class="text-xs text-pos-muted">
                                                                 <fmt:message key="admin.category.table.status" />:
                                                                 ${item.active ?
@@ -403,6 +411,11 @@
                                                 <i class="bi bi-person-plus"></i>
                                                 <fmt:message key="admin.staff.btn.add" />
                                             </a>
+                                            <div class="relative w-64">
+                                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                <input type="text" id="staffSearch" placeholder="Tìm kiếm nhân viên..." 
+                                                       class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                            </div>
                                         </div>
                                         <div
                                             class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
@@ -434,8 +447,8 @@
                                                     </thead>
                                                     <tbody class="divide-y divide-pos-border">
                                                         <c:forEach var="item" items="${staffList}">
-                                                            <tr class="hover:bg-pos-bg">
-                                                                <td class="px-6 py-4 font-bold text-sm">${item.fullName}
+                                                            <tr class="hover:bg-pos-bg staff-row">
+                                                                <td class="px-6 py-4 font-bold text-sm staff-name">${item.fullName}
                                                                 </td>
                                                                 <td class="px-6 py-4 text-sm text-pos-muted">
                                                                     ${item.email}</td>
@@ -877,9 +890,8 @@
                                                                     <div
                                                                         class="border-t border-pos-border mt-2 pt-2 px-2">
                                                                         <input type="text"
-                                                                            onkeyup="if(event.key === 'Enter') handleCustomNote(${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0}, this.value)"
-                                                                            placeholder="<fmt:message key="
-                                                                            pos.item.note.placeholder" />"
+                                                                             onkeyup="if(event.key === 'Enter') handleCustomNoteInput(this, ${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0})"
+                                                                            placeholder="<fmt:message key='pos.item.note.placeholder' />"
                                                                         value="${item.note}"
                                                                         class="w-full text-xs p-2 bg-gray-50 border
                                                                         border-pos-border rounded-md focus:outline-none
@@ -1389,6 +1401,10 @@
                             location.href = '${pageContext.request.contextPath}/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note);
                         }
 
+                        function handleCustomNoteInput(input, billId, drinkId) {
+                            handleCustomNote(billId, drinkId, input.value);
+                        }
+
                         // Close on click outside
                         document.addEventListener('click', function (e) {
                             if (!e.target.closest('.relative')) {
@@ -1405,17 +1421,16 @@
                             const accountNo = '<fmt:message key="bank.account.no" />';
                             const accountName = '<fmt:message key="bank.account.name" />';
                             const template = '<fmt:message key="bank.qr.template" />';
-                            const amount = ${ (not empty currentBill.total) ?currentBill.total : 0
-                        };
-                        const billCode = '${currentBill.code}';
-                        const description = encodeURIComponent('Thanh toan hoa don ' + billCode);
+                            const amount = parseInt('${not empty currentBill.total ? currentBill.total : 0}');
+                            const billCode = '${currentBill.code}';
+                            const description = encodeURIComponent('Thanh toan hoa don ' + billCode);
 
-                        // Construct VietQR URL properly via standard API format
-                        const vietqrUrl = 'https://img.vietqr.io/image/' + bankId + '-' + accountNo + '-' + template + '.png?amount=' + amount + '&addInfo=' + description + '&accountName=' + encodeURIComponent(accountName);
+                            // Construct VietQR URL properly via standard API format
+                            const vietqrUrl = 'https://img.vietqr.io/image/' + bankId + '-' + accountNo + '-' + template + '.png?amount=' + amount + '&addInfo=' + description + '&accountName=' + encodeURIComponent(accountName);
 
-                        qrImg.src = vietqrUrl;
-                        modal.classList.remove('hidden');
-                    }
+                            qrImg.src = vietqrUrl;
+                            modal.classList.remove('hidden');
+                        }
 
                         function hidePrintModal() {
                             document.getElementById('printModal').classList.add('hidden');
@@ -1437,6 +1452,57 @@
                             if (modal) {
                                 modal.classList.add('hidden');
                             }
+                        }
+
+                            // Employee POS Category Filtering
+                            const catButtons = document.querySelectorAll('.category-btn');
+                            const drinkItems = document.querySelectorAll('.drink-item');
+
+                            catButtons.forEach(btn => {
+                                btn.addEventListener('click', () => {
+                                    const catId = btn.getAttribute('data-cat-id');
+                                    
+                                    // Update UI
+                                    catButtons.forEach(b => {
+                                        b.classList.remove('bg-coffee-700', 'text-white', 'shadow-lg');
+                                        b.classList.add('bg-pos-bg', 'text-pos-text');
+                                    });
+                                    btn.classList.add('bg-coffee-700', 'text-white', 'shadow-lg');
+                                    btn.classList.remove('bg-pos-bg', 'text-pos-text');
+
+                                    // Filter Items
+                                    drinkItems.forEach(item => {
+                                        if (catId === '0' || item.getAttribute('data-cat-id') === catId) {
+                                            item.style.display = 'flex';
+                                        } else {
+                                            item.style.display = 'none';
+                                        }
+                                    });
+                                });
+                            });
+
+                        // Admin Staff Search
+                        const staffSearch = document.getElementById('staffSearch');
+                        if (staffSearch) {
+                            staffSearch.addEventListener('input', () => {
+                                const term = staffSearch.value.toLowerCase();
+                                document.querySelectorAll('.staff-row').forEach(row => {
+                                    const name = row.querySelector('.staff-name').textContent.toLowerCase();
+                                    row.style.display = name.includes(term) ? '' : 'none';
+                                });
+                            });
+                        }
+
+                        // Admin Category Search
+                        const categorySearch = document.getElementById('categorySearch');
+                        if (categorySearch) {
+                            categorySearch.addEventListener('input', () => {
+                                const term = categorySearch.value.toLowerCase();
+                                document.querySelectorAll('.category-card').forEach(card => {
+                                    const name = card.querySelector('.category-name').textContent.toLowerCase();
+                                    card.style.display = name.includes(term) ? 'flex' : 'none';
+                                });
+                            });
                         }
 
                         // On page load, auto-show modal if needed:

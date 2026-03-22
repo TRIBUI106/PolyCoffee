@@ -55,6 +55,11 @@
                                                 <i class="bi bi-people text-gray-400"></i>
                                                 <fmt:message key="header.staff" />
                                             </a>
+                                             <a href="${pageContext.request.contextPath}/manager/tables"
+                                                class="dropdown-item">
+                                                <i class="bi bi-grid-3x3-gap text-gray-400"></i>
+                                                Table Management
+                                            </a>
                                             <div class="h-px bg-gray-50 my-2 mx-4"></div>
                                             <a href="${pageContext.request.contextPath}/manager/bills"
                                                 class="dropdown-item">

@@ -38,6 +38,10 @@ public class Bill {
     @Enumerated(EnumType.STRING)
     private BillStatus status = BillStatus.WAITING;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "table_id")
+    private CoffeeTable table;
+
     @OneToMany(mappedBy = "bill", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BillDetail> billDetails;
 }

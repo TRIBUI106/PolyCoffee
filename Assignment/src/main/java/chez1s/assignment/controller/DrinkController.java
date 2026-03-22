@@ -41,6 +41,7 @@ public class DrinkController extends HttpServlet {
         }
 
         req.setAttribute("drinks", drinkService.getAllDrinks());
+        req.setAttribute("categories", categoryService.getAllCategories());
         req.getRequestDispatcher("/views/drink/manager-list.jsp").forward(req, resp);
     }
 

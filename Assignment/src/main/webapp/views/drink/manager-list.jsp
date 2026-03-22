@@ -16,12 +16,25 @@
     <jsp:include page="../common/header.jsp" />
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-            <div>
-                <h1 class="text-3xl font-bold text-gray-900 tracking-tight mb-2"><fmt:message key="admin.drink.subtitle"/></h1>
-                <p class="text-gray-500"><fmt:message key="admin.drink.desc"/></p>
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+            <div class="flex-grow max-w-2xl flex flex-col md:flex-row gap-4">
+                <div class="flex-grow relative">
+                    <i class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <input type="text" id="drinkSearch" placeholder="Tìm kiếm tên món..." 
+                           class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-coffee-700 focus:border-transparent transition-all outline-none font-medium">
+                </div>
+                <div class="w-full md:w-56 relative">
+                    <i class="bi bi-filter absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                    <select id="categoryFilter" class="w-full pl-11 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-coffee-700 outline-none appearance-none font-medium text-gray-700 cursor-pointer">
+                        <option value="all">Tất cả danh mục</option>
+                        <c:forEach var="cat" items="${categories}">
+                            <option value="${cat.name}">${cat.name}</option>
+                        </c:forEach>
+                    </select>
+                    <i class="bi bi-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                </div>
             </div>
-            <a href="${pageContext.request.contextPath}/manager/drinks/form" class="bg-coffee-700 hover:bg-coffee-800 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm flex items-center gap-2 group">
+            <a href="${pageContext.request.contextPath}/manager/drinks/form" class="bg-coffee-700 hover:bg-coffee-800 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm flex items-center gap-2 group shrink-0">
                 <i class="bi bi-plus-circle"></i>
                 <fmt:message key="admin.drink.btn.add"/>
             </a>
@@ -105,6 +118,35 @@
         </div>
     </main>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('drinkSearch');
+            const categoryFilter = document.getElementById('categoryFilter');
+            const tableRows = document.querySelectorAll('tbody tr');
+
+            function filterTable() {
+                const searchTerm = searchInput.value.toLowerCase().trim();
+                const selectedCategory = categoryFilter.value.toLowerCase();
+
+                tableRows.forEach(row => {
+                    const drinkName = row.querySelector('.font-bold.text-gray-900').textContent.toLowerCase();
+                    const categoryCell = row.querySelector('td:nth-child(2) span').textContent.trim().toLowerCase();
+                    
+                    const matchesSearch = drinkName.includes(searchTerm);
+                    const matchesCategory = selectedCategory === 'all' || categoryCell === selectedCategory;
+
+                    if (matchesSearch && matchesCategory) {
+                        row.classList.remove('hidden');
+                    } else {
+                        row.classList.add('hidden');
+                    }
+                });
+            }
+
+            searchInput.addEventListener('input', filterTable);
+            categoryFilter.addEventListener('change', filterTable);
+        });
+    </script>
     <jsp:include page="../common/footer.jsp" />
 </body>
 </html>
