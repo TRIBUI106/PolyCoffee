@@ -5,7 +5,7 @@ import chez1s.assignment.entity.Bill;
 import chez1s.assignment.entity.BillDetail;
 import chez1s.assignment.entity.CoffeeTable;
 import chez1s.assignment.entity.Drink;
-import chez1s.assignment.enums.BillStatus;
+import chez1s.assignment.entity.BillStatus;
 import chez1s.assignment.util.JpaUtil;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
