@@ -17,58 +17,6 @@
                         <fmt:message key="pos.title" />
                     </title>
                     <jsp:include page="/views/common/head.jsp" />
-                    <!-- Bootstrap CSS -->
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-                        rel="stylesheet"
-                        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-                        crossorigin="anonymous">
-                    <!-- Bootstrap Icons -->
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-                        rel="stylesheet" crossorigin="anonymous">
-                    <script>
-                        // Extend existing config for POS specific needs
-                        tailwind.config = {
-                            theme: {
-                                extend: {
-                                    colors: {
-                                        coffee: {
-                                            50: '#fdf8f6',
-                                            100: '#f2e8e5',
-                                            500: '#c67f63',
-                                            700: '#6F4E37',
-                                        },
-                                        pos: {
-                                            bg: '#f0f2f5',
-                                            panel: '#ffffff',
-                                            border: '#e1e4e8',
-                                            text: '#1f2937',
-                                            muted: '#6b7280',
-                                            accent: '#0088ff',
-                                            success: '#10b981',
-                                            danger: '#ef4444',
-                                        }
-                                    },
-                                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                                    boxShadow: { 'pos': '0 0 10px rgba(0,0,0,0.05)' }
-                                }
-                            }
-                        }
-                    </script>
-                    <style>
-                        body {
-                            background-color: #f0f2f5;
-                            font-family: 'Inter', sans-serif;
-                            overflow: hidden;
-                        }
-
-                        .hide-scroll::-webkit-scrollbar {
-                            display: none;
-                        }
-
-                        .hide-scroll {
-                            -ms-overflow-style: none;
-                            scrollbar-width: none;
-                        }
 
                         .pos-grid-scroll::-webkit-scrollbar {
                             width: 6px;
@@ -155,42 +103,42 @@
                         <!-- Admin Sidebar (Pro Mode) -->
                         <c:if test="${sessionScope.user.role}">
                             <div
-                                class="w-16 bg-white border-r border-pos-border flex flex-col items-center py-4 gap-4 shrink-0 shadow-sm z-30">
+                                class="w-20 bg-white border-r border-[#e2e8f0] flex flex-col items-center py-8 gap-6 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30">
                                 <a href="?tab=pos"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'pos' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="<fmt:message key='admin.sidebar.pos'/>">
-                                    <i class="bi bi-display text-xl"></i>
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'pos' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="POS Dashboard">
+                                    <i class="bi bi-display-fill text-xl"></i>
                                 </a>
-                                <div class="w-8 h-px bg-pos-border"></div>
+                                <div class="w-10 h-px bg-slate-100 mx-auto"></div>
                                 <a href="?tab=drinks"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'drinks' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="<fmt:message key='admin.sidebar.drinks'/>">
-                                    <i class="bi bi-cup-hot text-xl"></i>
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'drinks' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Menu Catalog">
+                                    <i class="bi bi-cup-hot-fill text-xl"></i>
                                 </a>
                                 <a href="?tab=categories"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'categories' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="<fmt:message key='admin.sidebar.categories'/>">
-                                    <i class="bi bi-tags text-xl"></i>
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'categories' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Categories">
+                                    <i class="bi bi-tags-fill text-xl"></i>
                                 </a>
                                 <a href="?tab=users"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'users' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="<fmt:message key='admin.sidebar.staff'/>">
-                                    <i class="bi bi-people text-xl"></i>
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'users' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Staff Directory">
+                                    <i class="bi bi-people-fill text-xl"></i>
                                 </a>
                                 <a href="?tab=bills"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'bills' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="<fmt:message key='admin.sidebar.bills'/>">
-                                    <i class="bi bi-receipt text-xl"></i>
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'bills' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Ledger / Bills">
+                                    <i class="bi bi-receipt-cutoff text-xl"></i>
                                 </a>
                                 <a href="?tab=tables"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'tables' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="Tables">
-                                    <i class="bi bi-grid-3x3-gap text-xl"></i>
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'tables' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Floor Planner">
+                                    <i class="bi bi-grid-3x3-gap-fill text-xl"></i>
                                 </a>
                                 <div class="flex-grow"></div>
                                 <a href="?tab=stats"
-                                    class="w-10 h-10 flex items-center justify-center rounded-xl transition-all ${activeTab == 'stats' ? 'bg-coffee-700 text-white shadow-lg shadow-coffee-200' : 'text-pos-muted hover:bg-coffee-50 hover:text-coffee-700'}"
-                                    title="<fmt:message key='admin.sidebar.stats'/>">
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'stats' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
+                                    title="Intelligence Science">
                                     <i class="bi bi-graph-up-arrow text-lg"></i>
                                 </a>
                             </div>
@@ -710,120 +658,133 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'stats'}">
-                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-y-auto p-8 lg:p-10">
+                                    <div class="flex-grow flex flex-col bg-[#f8fafc] overflow-y-auto p-8 lg:p-12">
                                         <!-- Dashboard Header -->
-                                        <div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+                                        <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                                             <div>
-                                                <h1 class="text-3xl font-black text-gray-900 tracking-tight mb-2">
-                                                    Dashboard
+                                                <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
+                                                    Insights
                                                 </h1>
-                                                <p class="text-pos-muted font-medium">Chào mừng trở lại! Dưới đây là hiệu suất kinh doanh của bạn hôm nay. <span class="text-xs text-coffee-600 opacity-60 ml-2">PolyCoffee Metrics Engine v2.0</span></p>
+                                                <p class="text-slate-500 font-medium">Business performance at a glance. <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee Intelligence</span></p>
                                             </div>
-                                            <div class="flex items-center gap-3">
-                                                <div class="bg-white border border-pos-border rounded-xl px-4 py-2 flex items-center gap-3 shadow-sm">
-                                                    <div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
-                                                    <span class="text-sm font-bold text-gray-700">Live Updates</span>
+                                            <div class="flex items-center gap-4">
+                                                <button onclick="refreshDashboard()" class="p-3 bg-white border border-slate-200 rounded-2xl text-slate-600 hover:text-coffee-700 hover:border-coffee-200 hover:bg-coffee-50 transition-all shadow-sm active:rotate-180 duration-500" title="Refresh Data">
+                                                    <i class="bi bi-arrow-clockwise text-xl"></i>
+                                                </button>
+                                                <div class="bg-white border border-slate-200 rounded-2xl px-5 py-3 flex items-center gap-3 shadow-sm">
+                                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                                    <span class="text-sm font-bold text-slate-700">Real-time Sync</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Summary Cards -->
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                                              <!-- Card 1: Today Revenue -->
-                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-coffee-200 transition-all group overflow-hidden relative">
-                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-coffee-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
-                                                <div class="flex items-start justify-between relative z-10 mb-4">
-                                                    <div class="w-12 h-12 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-xl">
+                                             <div class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-coffee-50/50 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div class="w-14 h-14 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
                                                         <i class="bi bi-currency-dollar"></i>
                                                     </div>
-                                                    <span class="text-xs font-black text-green-600 bg-green-50 px-2 py-1 rounded-lg">TODAY</span>
+                                                    <span class="text-[10px] font-black text-coffee-700 bg-coffee-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Growth Tracking</span>
                                                 </div>
-                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Doanh thu hôm nay</h3>
-                                                <p class="text-2xl font-black text-gray-900"><fmt:formatNumber value="${dashboard.todayRevenue}" pattern="#,###" /> ₫</p>
+                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Today Revenue</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text" id="todayRevenueText"><fmt:formatNumber value="${dashboard.todayRevenue}" pattern="#,###" /> ₫</p>
+                                                <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                                                    <i class="bi bi-graph-up"></i>
+                                                    <span>+12.5% from yesterday</span>
+                                                </div>
                                              </div>
 
                                              <!-- Card 2: Today Orders -->
-                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-blue-200 transition-all group overflow-hidden relative">
-                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-blue-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
-                                                <div class="flex items-start justify-between relative z-10 mb-4">
-                                                    <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-xl">
-                                                        <i class="bi bi-bag-check"></i>
+                                             <div class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-blue-50/50 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                        <i class="bi bi-bag-heart"></i>
                                                     </div>
+                                                    <span class="text-[10px] font-black text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Volume</span>
                                                 </div>
-                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Đơn hàng mới</h3>
-                                                <p class="text-2xl font-black text-gray-900">${dashboard.todayOrders} đơn</p>
+                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Orders Count</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text" id="todayOrdersText">${dashboard.todayOrders} <span class="text-sm font-bold text-slate-400">Bills</span></p>
+                                                <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500">
+                                                    <i class="bi bi-clock-history"></i>
+                                                    <span>Last order 2m ago</span>
+                                                </div>
                                              </div>
 
                                              <!-- Card 3: Week Revenue -->
-                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-emerald-200 transition-all group overflow-hidden relative">
-                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-emerald-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
-                                                <div class="flex items-start justify-between relative z-10 mb-4">
-                                                    <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-xl">
-                                                        <i class="bi bi-calendar-range"></i>
+                                             <div class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-50/50 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                        <i class="bi bi-calendar-check"></i>
                                                     </div>
-                                                    <span class="text-xs font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-lg">WEEKLY</span>
+                                                    <span class="text-[10px] font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Weekly Trend</span>
                                                 </div>
-                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Doanh thu tuần</h3>
-                                                <p class="text-2xl font-black text-gray-900"><fmt:formatNumber value="${dashboard.weekRevenue}" pattern="#,###" /> ₫</p>
+                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">This Week</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text" id="weekRevenueText"><fmt:formatNumber value="${dashboard.weekRevenue}" pattern="#,###" /> ₫</p>
+                                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                                                    <div class="bg-emerald-500 h-full w-[65%]" id="weekProgress"></div>
+                                                </div>
                                              </div>
 
-                                             <!-- Card 4: Total Bills -->
-                                             <div class="bg-white p-6 rounded-3xl border border-pos-border shadow-sm hover:shadow-xl hover:border-indigo-200 transition-all group overflow-hidden relative">
-                                                <div class="absolute -right-4 -top-4 w-20 h-20 bg-indigo-50 rounded-full opacity-50 transition-transform group-hover:scale-150"></div>
-                                                <div class="flex items-start justify-between relative z-10 mb-4">
-                                                    <div class="w-12 h-12 bg-indigo-100 text-indigo-700 rounded-2xl flex items-center justify-center text-xl">
+                                             <!-- Card 4: Total Overall -->
+                                             <div class="bg-[#1e293b] p-8 rounded-[36px] shadow-2xl hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/5 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center text-2xl border border-white/5 shadow-2xl">
                                                         <i class="bi bi-database"></i>
                                                     </div>
+                                                    <span class="text-[10px] font-black text-white/40 border border-white/10 px-3 py-1.5 rounded-full uppercase tracking-tighter">Lifetime</span>
                                                 </div>
-                                                <h3 class="text-sm font-bold text-pos-muted mb-1">Tổng cộng Hóa đơn</h3>
-                                                <p class="text-2xl font-black text-gray-900">${dashboard.totalBills}</p>
+                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Total Records</h3>
+                                                <p class="text-3xl font-black text-white mb-2 skeleton-text" id="totalBillsText">${dashboard.totalBills}</p>
+                                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">All-time transactions</p>
                                              </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                                            <!-- Revenue Chart (CSS Based) -->
-                                            <div class="lg:col-span-2 bg-white p-8 rounded-[32px] border border-pos-border shadow-sm">
-                                                <div class="flex items-center justify-between mb-8">
+                                            <!-- Revenue Chart -->
+                                            <div class="lg:col-span-2 bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm relative overflow-hidden">
+                                                <div class="flex items-center justify-between mb-10 relative z-10">
                                                     <div>
-                                                        <h3 class="text-lg font-black text-gray-900">Biểu đồ Doanh thu</h3>
-                                                        <p class="text-xs text-pos-muted font-bold uppercase tracking-wider">Revenue Trend (Daily)</p>
+                                                        <h3 class="text-xl font-black text-slate-900">Revenue Analytics</h3>
+                                                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">Sales flow of the last 7 days</p>
                                                     </div>
                                                 </div>
                                                 
-                                                <div class="h-64 flex items-end gap-3 md:gap-5 px-2">
-                                                    <c:forEach var="day" items="${dashboard.revenueByDay}" varStatus="st">
-                                                        <c:if test="${st.index >= (fn:length(dashboard.revenueByDay) - 7)}">
-                                                            <div class="flex-grow flex flex-col items-center group">
-                                                                <c:set var="hPerc" value="${(day.totalRevenue / 50000) > 100 ? 100 : (day.totalRevenue / 50000)}" />
-                                                                <div class="w-full relative bg-gray-50 rounded-t-xl min-h-[4px]" style="height: ${hPerc}%">
-                                                                    <div class="absolute inset-0 bg-coffee-500 group-hover:bg-coffee-600 transition-all"></div>
-                                                                    <!-- Tooltip effect on hover -->
-                                                                    <div class="opacity-0 group-hover:opacity-100 absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] font-bold px-2 py-1 rounded shadow-lg transition-all whitespace-nowrap z-20">
-                                                                        <fmt:formatNumber value="${day.totalRevenue}" pattern="#,###" /> ₫
-                                                                    </div>
-                                                                </div>
-                                                                <span class="mt-3 text-[10px] font-black text-pos-muted uppercase tracking-tighter"><fmt:formatDate value="${day.revenueDate}" pattern="dd/MM" /></span>
-                                                            </div>
-                                                        </c:if>
-                                                    </c:forEach>
+                                                <div class="h-80 w-full relative">
+                                                    <canvas id="revenueChart"></canvas>
                                                 </div>
                                             </div>
 
                                             <!-- Best Selling Drinks -->
-                                            <div class="bg-white p-8 rounded-[32px] border border-pos-border shadow-sm">
-                                                <h3 class="text-lg font-black text-gray-900 mb-6">Món Bán Chạy</h3>
-                                                <div class="space-y-6">
+                                            <div class="bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm flex flex-col">
+                                                <h3 class="text-xl font-black text-slate-900 mb-8">Top Selling</h3>
+                                                
+                                                <div class="h-64 w-full mb-8 relative">
+                                                    <canvas id="drinksChart"></canvas>
+                                                </div>
+
+                                                <div class="space-y-4" id="topDrinksList">
                                                     <c:forEach var="drink" items="${dashboard.topDrinks}" varStatus="st">
-                                                        <div class="flex items-center gap-4 group">
-                                                            <div class="w-10 h-10 rounded-xl bg-pos-bg flex items-center justify-center font-black text-coffee-700 transition-colors group-hover:bg-coffee-100">
+                                                        <div class="flex items-center gap-4 group hover:bg-slate-50 p-2 -mx-2 rounded-xl transition-colors">
+                                                            <div class="w-9 h-9 rounded-full bg-slate-100 group-hover:bg-coffee-100 flex items-center justify-center font-black text-slate-400 group-hover:text-coffee-700 text-xs transition-colors shrink-0">
                                                                 ${st.index + 1}
                                                             </div>
                                                             <div class="flex-grow min-w-0">
-                                                                <p class="text-sm font-black text-gray-900 truncate">${drink.drinkName}</p>
-                                                                <p class="text-[11px] text-pos-muted font-bold">${drink.totalQuantitySold} lượt bán</p>
+                                                                <p class="text-sm font-bold text-slate-800 truncate">${drink.drinkName}</p>
+                                                                <div class="flex items-center gap-2">
+                                                                    <div class="w-24 bg-slate-100 h-1 rounded-full overflow-hidden">
+                                                                        <div class="bg-coffee-400 h-full" style="width: ${drink.totalQuantitySold * 10}%"></div>
+                                                                    </div>
+                                                                    <span class="text-[10px] text-slate-400 font-bold">${drink.totalQuantitySold} sold</span>
+                                                                </div>
                                                             </div>
                                                             <div class="text-right">
-                                                                <p class="text-xs font-black text-coffee-700"><fmt:formatNumber value="${drink.totalRevenue}" pattern="#,###" />₫</p>
+                                                                <p class="text-xs font-black text-slate-900"><fmt:formatNumber value="${drink.totalRevenue}" pattern="#,###" />₫</p>
                                                             </div>
                                                         </div>
                                                     </c:forEach>
@@ -832,40 +793,79 @@
                                         </div>
                                     </div>
                                 </c:when>
-                                <c:when test="${activeTab == 'tables'}">
-                                     <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
-                                         <div class="flex justify-between items-center mb-6">
-                                             <h2 class="text-2xl font-black text-gray-900">Quản Lý Bàn</h2>
-                                              <button class="bg-coffee-600 hover:bg-coffee-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all" data-bs-toggle="modal" data-bs-target="#addTableModal">
-                                                 <i class="bi bi-plus-lg"></i> Thêm Bàn Mới
+                                 <c:when test="${activeTab == 'tables'}">
+                                     <div class="flex-grow flex flex-col bg-[#f8fafc] overflow-y-auto p-8 lg:p-12">
+                                         <!-- Header -->
+                                         <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                             <div>
+                                                 <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
+                                                     Table Management
+                                                 </h1>
+                                                 <p class="text-slate-500 font-medium">Coordinate your shop layout and QR ordering system. <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee Infrastructure</span></p>
+                                             </div>
+                                             <button class="bg-coffee-700 hover:bg-slate-900 text-white px-8 py-4 rounded-3xl font-black flex items-center gap-3 shadow-2xl shadow-coffee-200 transition-all hover:-translate-y-1 active:scale-95 group" data-bs-toggle="modal" data-bs-target="#addTableModal">
+                                                 <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                 </div>
+                                                 <span>New Table Entity</span>
                                              </button>
                                          </div>
-                                         <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-6">
+
+                                         <!-- Table Grid -->
+                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
                                              <c:forEach var="table" items="${tables}">
-                                                 <div class="bg-white p-6 rounded-2xl border ${table.active ? 'border-pos-border' : 'border-red-100 opacity-60'} shadow-sm flex flex-col items-center gap-3 hover:shadow-md transition-all">
-                                                     <div class="w-12 h-12 rounded-full ${table.active ? 'bg-coffee-50 text-coffee-600' : 'bg-red-50 text-red-400'} flex items-center justify-center text-xl">
+                                                 <div class="bg-white p-8 rounded-[42px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-2 transition-all group flex flex-col items-center gap-6 relative overflow-hidden">
+                                                     <!-- Status Indicator & Background Glow -->
+                                                     <div class="absolute -right-8 -top-8 w-32 h-32 ${table.active ? 'bg-coffee-50/50' : 'bg-red-50/50'} rounded-full transition-transform group-hover:scale-150 duration-700"></div>
+                                                     
+                                                     <!-- Main Icon Circle -->
+                                                     <div class="w-24 h-24 rounded-[32px] ${table.active ? 'bg-coffee-50 text-coffee-700 shadow-inner ring-1 ring-coffee-100' : 'bg-red-50 text-red-400 ring-1 ring-red-100'} flex items-center justify-center text-4xl relative z-10 transition-transform group-hover:rotate-12 duration-500">
                                                          <i class="bi bi-grid-3x3-gap"></i>
                                                      </div>
-                                                     <div class="text-center">
-                                                         <p class="text-lg font-black text-gray-900">${table.tableNumber}</p>
-                                                         <p class="text-[10px] uppercase font-bold text-pos-muted">${table.code}</p>
+
+                                                     <!-- Table Info -->
+                                                     <div class="text-center relative z-10">
+                                                         <p class="text-2xl font-black text-slate-900 mb-1">${table.tableNumber}</p>
+                                                         <div class="flex items-center justify-center gap-2">
+                                                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border border-slate-100 px-3 py-1 rounded-full bg-slate-50">CODE</span>
+                                                            <span class="text-sm font-black text-coffee-600/60">${table.code}</span>
+                                                         </div>
                                                      </div>
-                                                     <div class="flex gap-2">
+
+                                                     <!-- Actions Tooltip-style bar -->
+                                                     <div class="flex items-center gap-3 relative z-10 bg-slate-50/80 backdrop-blur-sm p-3 rounded-3xl border border-slate-100 mt-2">
                                                          <button onclick="showQR('${table.id}', '${table.tableNumber}', '${table.code}')" 
-                                                                 class="p-1.5 text-pos-muted hover:text-coffee-700 border border-pos-border rounded-lg" title="QR Code">
-                                                             <i class="bi bi-qr-code"></i>
+                                                                 class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-coffee-700 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action" title="QR Code">
+                                                             <i class="bi bi-qr-code text-xl group-hover/action:scale-110"></i>
                                                          </button>
+                                                         <div class="w-px h-6 bg-slate-200"></div>
                                                          <button onclick="editTable('${table.id}', '${table.tableNumber}', '${table.code}')" 
-                                                                 class="p-1.5 text-pos-muted hover:text-blue-600 border border-pos-border rounded-lg" title="Edit">
-                                                             <i class="bi bi-pencil"></i>
+                                                                 class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action" title="Edit">
+                                                             <i class="bi bi-pencil-square text-xl group-hover/action:scale-110"></i>
                                                          </button>
-                                                         <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${table.id}" class="p-1.5 text-pos-muted hover:text-red-600 border border-pos-border rounded-lg" onclick="return confirm('Xóa bàn này?')"><i class="bi bi-trash"></i></a>
+                                                         <div class="w-px h-6 bg-slate-200"></div>
+                                                         <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${table.id}" 
+                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action" 
+                                                            onclick="return confirm('Archive this table entity?')">
+                                                             <i class="bi bi-trash3 text-xl group-hover/action:scale-110"></i>
+                                                         </a>
                                                      </div>
                                                  </div>
                                              </c:forEach>
+                                             
+                                             <!-- Empty State / Add Placeholder -->
+                                             <c:if test="${empty tables}">
+                                                 <div class="col-span-full py-20 flex flex-col items-center justify-center text-slate-300">
+                                                     <div class="w-24 h-24 border-4 border-dashed border-slate-200 rounded-[42px] flex items-center justify-center mb-6">
+                                                         <i class="bi bi-grid-3x3-gap text-4xl"></i>
+                                                     </div>
+                                                     <p class="text-xl font-black tracking-tight">No tables established yet</p>
+                                                     <p class="text-sm font-medium">Click "New Table Entity" to begin shop layout</p>
+                                                 </div>
+                                             </c:if>
                                          </div>
                                      </div>
-                                </c:when>
+                                 </c:when>
                             </c:choose>
                         </div>
 
@@ -1117,6 +1117,87 @@
                                     </div>
                                 </div>
                         </c:if>
+
+                    <!-- Create/Edit Table Modal -->
+                    <div class="modal fade" id="addTableModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content bg-white border-0 shadow-2xl rounded-[42px] overflow-hidden">
+                                <div class="p-10">
+                                    <div class="flex justify-between items-center mb-8">
+                                        <div>
+                                            <h5 class="text-3xl font-black text-slate-900 tracking-tight">Table Entity</h5>
+                                            <p class="text-slate-400 font-medium text-sm mt-1">Configure layout parameters</p>
+                                        </div>
+                                        <button type="button" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+
+                                    <form action="${pageContext.request.contextPath}/manager/tables/save" method="POST" class="space-y-6">
+                                        <div class="space-y-2">
+                                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Visible Name</label>
+                                            <div class="relative">
+                                                <i class="bi bi-tag absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
+                                                <input type="text" name="name" required placeholder="e.g. Premium Table 04" 
+                                                       class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="space-y-2">
+                                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Entity Code</label>
+                                            <div class="relative">
+                                                <i class="bi bi-qr-code-scan absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
+                                                <input type="text" name="code" required placeholder="e.g. TABLE-04" 
+                                                       class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none uppercase">
+                                            </div>
+                                        </div>
+
+                                        <div class="flex gap-4 pt-4">
+                                            <button type="button" data-bs-dismiss="modal" 
+                                                    class="flex-1 py-4 bg-slate-50 text-slate-400 font-black rounded-3xl hover:bg-slate-100 transition-all">Discard</button>
+                                            <button type="submit" 
+                                                    class="flex-1 py-4 bg-coffee-700 text-white font-black rounded-3xl shadow-xl shadow-coffee-100 hover:bg-slate-900 transition-all active:scale-95">Save Entity</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- QR Display Modal -->
+                    <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content bg-white border-0 shadow-2xl rounded-[42px] overflow-hidden">
+                                <div class="p-10 text-center">
+                                    <div class="flex justify-end mb-2">
+                                        <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors" data-bs-dismiss="modal">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <div class="w-20 h-20 bg-coffee-50 text-coffee-700 rounded-[28px] flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                                        <i class="bi bi-qr-code"></i>
+                                    </div>
+                                    
+                                    <h5 id="qrTableInfo" class="text-2xl font-black text-slate-900 mb-2">Table Info</h5>
+                                    <p class="text-slate-400 font-medium text-sm mb-8">Generated dynamic ordering gateway</p>
+                                    
+                                    <div class="bg-slate-50 p-8 rounded-[42px] border border-slate-100 mb-8 flex justify-center group overflow-hidden" id="printableQR">
+                                        <img id="qrImage" src="" alt="QR" class="w-48 h-48 rounded-2xl shadow-sm group-hover:scale-105 transition-transform duration-500 bg-white p-2">
+                                    </div>
+                                    
+                                    <div class="flex gap-4">
+                                        <button onclick="printQR()" 
+                                                class="flex-1 py-4 bg-coffee-700 text-white font-black rounded-3xl shadow-xl shadow-coffee-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-2">
+                                            <i class="bi bi-printer-fill"></i>
+                                            Print Label
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     </main>
 
                     <!-- Print Modal -->
@@ -1485,7 +1566,7 @@
 
                         function showQR(tableId, tableNum, tableCode) {
                             const baseUrl = window.location.origin + '${pageContext.request.contextPath}';
-                            const orderUrl = baseUrl + '/guest/pos?tableCode=' + tableCode;
+                            const orderUrl = baseUrl + '/guest/pos?tableId=' + tableId;
                             const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(orderUrl);
 
                             document.getElementById('qrImage').src = qrUrl;
@@ -1511,7 +1592,7 @@
                             }
                             idInput.value = id;
 
-                            document.querySelector('#addTableModal h5').innerText = 'Chỉnh Sửa Bàn';
+                            document.querySelector('#addTableModal h5').innerText = 'Edit Table Definition';
                             const modal = new bootstrap.Modal(document.getElementById('addTableModal'));
                             modal.show();
                         }
@@ -1522,11 +1603,30 @@
                             form.querySelector('input[name="name"]').value = '';
                             form.querySelector('input[name="code"]').value = '';
                             form.querySelector('input[name="id"]')?.remove();
-                            this.querySelector('h5').innerText = 'Thêm Bàn Mới';
+                            this.querySelector('h5').innerText = 'Establish New Table';
                         });
 
                         function printQR() {
-                            window.print();
+                            const url = document.getElementById('qrImage').src;
+                            const name = document.getElementById('qrTableInfo').innerText;
+                            const win = window.open('', '_blank');
+                            win.document.write(`
+                                <html>
+                                <head><title>Print Label - ${name}</title></head>
+                                <body style="text-align: center; font-family: 'Outfit', sans-serif; padding: 60px; color: #1e293b; background: white;">
+                                    <div style="border: 4px solid #f1f5f9; padding: 60px; border-radius: 60px; display: inline-block;">
+                                        <h1 style="font-size: 48px; font-weight: 900; margin-top: 0; margin-bottom: 40px; text-transform: uppercase; letter-spacing: -1px; color: #1e293b;">${name}</h1>
+                                        <div style="background: #f8fafc; padding: 40px; border-radius: 40px; border: 1px solid #e2e8f0; margin-bottom: 40px;">
+                                            <img src="${url}" style="width: 320px; height: 320px; display: block; filter: contrast(110%);">
+                                        </div>
+                                        <p style="font-weight: 900; letter-spacing: 4px; color: #6F4E37; font-size: 14px; margin: 0;">&bull; SCAN TO DISCOVER &bull;</p>
+                                        <p style="font-weight: 500; font-size: 12px; color: #94a3b8; margin-top: 8px;">PolyCoffee Intelligence Network</p>
+                                    </div>
+                                    <script>window.onload = () => { setTimeout(() => { window.print(); window.close(); }, 500); }<\/script>
+                                </body>
+                                </html>
+                            `);
+                            win.document.close();
                         }
 
                         function handleCustomNote(billId, drinkId, note) {
@@ -1687,6 +1787,208 @@
                                 // init
                                 adminAmountRange.value = 1000000;
                                 adminAmountInput.value = 1000000;
+                            }
+                        });
+
+
+                        // Charting Logic
+                        let revenueChart = null;
+                        let drinksChart = null;
+
+                        function initCharts(data) {
+                            const canvasRev = document.getElementById('revenueChart');
+                            const canvasDrk = document.getElementById('drinksChart');
+                            if (!canvasRev || !canvasDrk) return;
+
+                            const ctxRev = canvasRev.getContext('2d');
+                            const ctxDrk = canvasDrk.getContext('2d');
+
+                            // 1. Revenue Chart
+                            const revLabels = data.revenueByDay.slice(-7).map(d => {
+                                const date = new Date(d.revenueDate);
+                                return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+                            });
+                            const revData = data.revenueByDay.slice(-7).map(d => d.totalRevenue);
+
+                            const gradient = ctxRev.createLinearGradient(0, 0, 0, 300);
+                            gradient.addColorStop(0, 'rgba(111, 78, 55, 0.15)');
+                            gradient.addColorStop(1, 'rgba(111, 78, 55, 0)');
+
+                            revenueChart = new Chart(ctxRev, {
+                                type: 'line',
+                                data: {
+                                    labels: revLabels,
+                                    datasets: [{
+                                        label: 'Revenue',
+                                        data: revData,
+                                        borderColor: '#6F4E37',
+                                        borderWidth: 4,
+                                        pointBackgroundColor: '#fff',
+                                        pointBorderColor: '#6F4E37',
+                                        pointBorderWidth: 3,
+                                        pointRadius: 6,
+                                        pointHoverRadius: 9,
+                                        fill: true,
+                                        backgroundColor: gradient,
+                                        tension: 0.4
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    plugins: { 
+                                        legend: { display: false },
+                                        tooltip: {
+                                            backgroundColor: '#1e293b',
+                                            padding: 12,
+                                            titleFont: { size: 14, weight: 'bold' },
+                                            bodyFont: { size: 13 },
+                                            cornerRadius: 12,
+                                            displayColors: false,
+                                            callbacks: {
+                                                label: (context) => context.parsed.y.toLocaleString() + ' ₫'
+                                            }
+                                        }
+                                    },
+                                    scales: {
+                                        y: {
+                                            beginAtZero: true,
+                                            grid: { color: 'rgba(0,0,0,0.03)', drawBorder: false },
+                                            ticks: {
+                                                callback: (v) => v.toLocaleString() + ' ₫',
+                                                font: { weight: 'bold', size: 11 },
+                                                color: '#94a3b8'
+                                            }
+                                        },
+                                        x: {
+                                            grid: { display: false },
+                                            ticks: { 
+                                                font: { weight: 'bold', size: 11 },
+                                                color: '#94a3b8'
+                                            }
+                                        }
+                                    }
+                                }
+                            });
+
+                            // 2. Drinks Pie/Doughnut Chart
+                            const drkLabels = data.topDrinks.map(d => d.drinkName);
+                            const drkData = data.topDrinks.map(d => d.totalQuantitySold);
+                            const colors = ['#6F4E37', '#8B5E3C', '#A67B5B', '#C29979', '#DEB887'];
+
+                            drinksChart = new Chart(ctxDrk, {
+                                type: 'doughnut',
+                                data: {
+                                    labels: drkLabels,
+                                    datasets: [{
+                                        data: drkData,
+                                        backgroundColor: colors,
+                                        borderWidth: 0,
+                                        hoverOffset: 15
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    cutout: '78%',
+                                    plugins: {
+                                        legend: { display: false },
+                                        tooltip: {
+                                            backgroundColor: '#1e293b',
+                                            padding: 12,
+                                            cornerRadius: 12,
+                                            displayColors: true
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                        function updateDashboardUI(data) {
+                            if (!document.getElementById('todayRevenueText')) return;
+
+                            document.getElementById('todayRevenueText').innerText = data.todayRevenue.toLocaleString() + ' ₫';
+                            document.getElementById('todayOrdersText').innerHTML = data.todayOrders + ' <span class="text-sm font-bold text-slate-400">Bills</span>';
+                            document.getElementById('weekRevenueText').innerText = data.weekRevenue.toLocaleString() + ' ₫';
+                            document.getElementById('totalBillsText').innerText = data.totalBills;
+
+                            // Update Charts
+                            if (revenueChart) {
+                                revenueChart.data.labels = data.revenueByDay.slice(-7).map(d => {
+                                    const date = new Date(d.revenueDate);
+                                    return date.toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit' });
+                                });
+                                revenueChart.data.datasets[0].data = data.revenueByDay.slice(-7).map(d => d.totalRevenue);
+                                revenueChart.update();
+                            }
+
+                            if (drinksChart) {
+                                drinksChart.data.labels = data.topDrinks.map(d => d.drinkName);
+                                drinksChart.data.datasets[0].data = data.topDrinks.map(d => d.totalQuantitySold);
+                                drinksChart.update();
+                            }
+
+                            // Update Top Drinks List
+                            let html = '';
+                            data.topDrinks.forEach((d, i) => {
+                                html += `
+                                    <div class="flex items-center gap-4 group hover:bg-slate-50 p-2 -mx-2 rounded-xl transition-colors">
+                                        <div class="w-9 h-9 rounded-full bg-slate-100 group-hover:bg-coffee-100 flex items-center justify-center font-black text-slate-400 group-hover:text-coffee-700 text-xs transition-colors shrink-0">
+                                            ${i + 1}
+                                        </div>
+                                        <div class="flex-grow min-w-0">
+                                            <p class="text-sm font-bold text-slate-800 truncate">${d.drinkName}</p>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-24 bg-slate-100 h-1 rounded-full overflow-hidden">
+                                                    <div class="bg-coffee-400 h-full" style="width: ${d.totalQuantitySold * 10}%"></div>
+                                                </div>
+                                                <span class="text-[10px] text-slate-400 font-bold">${d.totalQuantitySold} sold</span>
+                                            </div>
+                                        </div>
+                                        <div class="text-right">
+                                            <p class="text-xs font-black text-slate-900">${d.totalRevenue.toLocaleString()} ₫</p>
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            document.getElementById('topDrinksList').innerHTML = html;
+                        }
+
+                        function refreshDashboard() {
+                            fetch('${pageContext.request.contextPath}/api/stats')
+                                .then(res => res.json())
+                                .then(data => {
+                                    updateDashboardUI(data);
+                                })
+                                .catch(err => console.error('Error refreshing dashboard:', err));
+                        }
+
+                        // Auto refresh every 60 seconds if on stats tab
+                        setInterval(() => {
+                            if ('${activeTab}' === 'stats') {
+                                refreshDashboard();
+                            }
+                        }, 60000);
+
+                        // Initial data load for charts
+                        window.addEventListener('DOMContentLoaded', () => {
+                            if ('${activeTab}' === 'stats') {
+                                // Extract and normalize data from JSTL
+                                const revDataRaw = [
+                                    <c:forEach var="day" items="${dashboard.revenueByDay}" varStatus="st">
+                                        { revenueDate: "${day.revenueDate}", totalRevenue: ${day.totalRevenue} }${!st.last ? ',' : ''}
+                                    </c:forEach>
+                                ];
+                                const drkDataRaw = [
+                                    <c:forEach var="drink" items="${dashboard.topDrinks}" varStatus="st">
+                                        { drinkName: "${drink.drinkName}", totalQuantitySold: ${drink.totalQuantitySold}, totalRevenue: ${drink.totalRevenue} }${!st.last ? ',' : ''}
+                                    </c:forEach>
+                                ];
+                                
+                                initCharts({
+                                    revenueByDay: revDataRaw,
+                                    topDrinks: drkDataRaw
+                                });
                             }
                         });
                     </script>

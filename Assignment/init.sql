@@ -263,7 +263,9 @@ DELETE FROM `users`;
 INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `phone`, `role`, `active`) VALUES
 	(1, 'chez1s.dev@gmail.com', 'cz', 'Bùi Đức Trí', '0901234567', 1, 1),
 	(2, 'haunvtv00054@fpt.edu.vn', '123', 'Nguyễn Vủ Hậu', '0907654321', 0, 1),
-	(3, 'demo@polycoffee.com', '123', 'Trợ Lý Khách Hàng', '0123456789', 0, 1);
+	(3, 'leminh@polycoffee.com', '123', 'Lê Minh', '0123456789', 0, 1),
+	(4, 'balam@polycoffee.com', '123', 'Bá Lãm', '0123456789', 0, 1),
+	(5, 'giabao@polycoffee.com', '123', 'Gia Bảo', '0123456789', 0, 1);
 
 /*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -14,36 +14,6 @@
     </title>
     <jsp:include page="/views/common/head.jsp" />
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        coffee: {
-                            50: '#fdf8f6',
-                            100: '#f2e8e5',
-                            200: '#eaddd7',
-                            300: '#e0cec7',
-                            400: '#d2bab0',
-                            500: '#b89283',
-                            600: '#9b7160',
-                            700: '#6f4e37',
-                            800: '#5a3d28',
-                            900: '#462e1c',
-                        },
-                        slate: {
-                            900: '#0F172A',
-                            800: '#1E293B',
-                            600: '#475569',
-                            400: '#94A3B8',
-                        }
-                    },
-                    fontFamily: { sans: ['Inter', 'sans-serif'] },
-                }
-            }
-        }
-    </script>
 </head>
 
 <body class="bg-white font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-coffee-200 selection:text-coffee-900 text-slate-900 antialiased">
