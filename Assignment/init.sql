@@ -90,6 +90,23 @@ INSERT INTO `bill_details` (`id`, `bill_id`, `drink_id`, `quantity`, `price`, `n
 	(52, 22, 8, 1, 49000, NULL),
 	(53, 22, 7, 1, 55000, NULL),
 	(54, 22, 9, 1, 19000, NULL);
+	
+-- Dumping structure for table jav202_assignment.coffee_tables
+CREATE TABLE IF NOT EXISTS `coffee_tables` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `table_number` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
+  `active` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+INSERT INTO `coffee_tables` (`id`, `table_number`, `code`, `active`) VALUES
+	(1, 'Bàn 1', 'T1', 1),
+	(2, 'Bàn 2', 'T2', 1),
+	(3, 'Bàn 3', 'T3', 1),
+	(4, 'Bàn 4', 'T4', 1),
+	(5, 'Bàn 5', 'T5', 1);
 
 -- Dumping structure for table jav202_assignment.bills
 CREATE TABLE IF NOT EXISTS `bills` (
@@ -104,14 +121,18 @@ CREATE TABLE IF NOT EXISTS `bills` (
   `guest_id` int DEFAULT NULL,
   `discount_amount` int DEFAULT 0,
   `guest_voucher_id` int DEFAULT NULL,
+  `table_id` int DEFAULT NULL,
+  `payment_method` varchar(255) DEFAULT 'CASH',
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`),
   KEY `fk_bill_user` (`user_id`),
   KEY `fk_bill_guest` (`guest_id`),
   KEY `fk_bill_guest_voucher` (`guest_voucher_id`),
+  KEY `fk_bill_table` (`table_id`),
   CONSTRAINT `fk_bill_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
   CONSTRAINT `fk_bill_guest` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`),
-  CONSTRAINT `fk_bill_guest_voucher` FOREIGN KEY (`guest_voucher_id`) REFERENCES `guest_vouchers` (`id`)
+  CONSTRAINT `fk_bill_guest_voucher` FOREIGN KEY (`guest_voucher_id`) REFERENCES `guest_vouchers` (`id`),
+  CONSTRAINT `fk_bill_table` FOREIGN KEY (`table_id`) REFERENCES `coffee_tables` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table jav202_assignment.bills: ~22 rows (approximately)

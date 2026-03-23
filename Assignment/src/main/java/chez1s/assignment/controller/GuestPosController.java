@@ -1,7 +1,6 @@
 package chez1s.assignment.controller;
 
 import chez1s.assignment.entity.Bill;
-import chez1s.assignment.entity.CoffeeTable;
 import chez1s.assignment.service.BillService;
 import chez1s.assignment.service.DrinkService;
 import chez1s.assignment.service.CategoryService;

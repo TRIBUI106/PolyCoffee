@@ -236,6 +236,13 @@ public class BillService {
             bill.setBillDetails(details);
             em.persist(bill);
             
+            // Point accumulation for Guest (1000 VND = 1 Point)
+            if (guest != null) {
+                int earnedPoints = total / 1000;
+                guest.setPoint(guest.getPoint() + earnedPoints);
+                em.merge(guest);
+            }
+            
             trans.commit();
             return bill;
         } catch (Exception e) {
