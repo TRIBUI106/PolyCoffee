@@ -30,6 +30,13 @@ public class Bill {
     @Column(name = "guest_phone")
     private String guestPhone;
 
+    @Column(name = "discount_amount")
+    private Integer discountAmount = 0;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guest_voucher_id")
+    private GuestVoucher guestVoucher;
+
     @Column(unique = true, nullable = false)
     private String code;
 

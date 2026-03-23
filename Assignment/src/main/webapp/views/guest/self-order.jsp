@@ -80,8 +80,14 @@
                 <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Guest</span>
             </h1>
         </div>
-        <div class="text-sm font-semibold text-slate-500 flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
-            <i data-lucide="clock" class="w-4 h-4"></i> <span id="clock" class="tabular-nums"></span>
+        <div class="flex items-center gap-3">
+            <button onclick="openPointShop()" class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white px-4 py-2 rounded-xl shadow-md cursor-pointer transition-all active:scale-95">
+                <i data-lucide="gift" class="w-4 h-4 text-orange-50"></i>
+                <span class="text-sm font-bold tracking-wide">Đổi Điểm Nhận Quà</span>
+            </button>
+            <div class="text-sm font-semibold text-slate-500 flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
+                <i data-lucide="clock" class="w-4 h-4"></i> <span id="clock" class="tabular-nums"></span>
+            </div>
         </div>
     </header>
 
@@ -161,27 +167,39 @@
             </div>
 
             <!-- Checkout Section -->
-            <div class="border-t border-gray-100 p-6 bg-white flex flex-col gap-5 shadow-[0_-10px_20px_rgba(0,0,0,0.02)] relative z-10">
+            <div class="border-t border-gray-100 p-6 bg-white flex flex-col gap-4 shadow-[0_-10px_20px_rgba(0,0,0,0.02)] relative z-10">
+                <!-- Vouchers Display Area -->
+                <div id="activeVoucherBox" class="hidden justify-between items-center bg-emerald-50 border border-emerald-200 p-3 rounded-xl">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="ticket" class="w-5 h-5 text-emerald-600"></i>
+                        <div>
+                            <p class="text-[11px] text-emerald-700 uppercase font-bold tracking-wider">VOUCHER ÁP DỤNG</p>
+                            <p class="text-sm text-emerald-900 font-bold" id="activeVoucherName">Giảm 25.000đ</p>
+                        </div>
+                    </div>
+                    <button onclick="removeVoucher()" class="text-emerald-700 bg-emerald-200/50 hover:bg-emerald-200 p-1.5 rounded-lg transition-colors">
+                        <i data-lucide="x" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                
                 <!-- Guest Information Input -->
-                <div class="grid grid-cols-1 gap-3">
+                <div class="grid grid-cols-1 gap-2.5">
                     <div class="relative flex items-center">
                         <i data-lucide="user" class="absolute left-3.5 w-4 h-4 text-slate-400"></i>
                         <input type="text" id="guestName" placeholder="Tên khách hàng" class="pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-coffee-500/20 focus:border-coffee-500 rounded-xl text-sm font-semibold w-full transition-all outline-none text-slate-900 placeholder:text-slate-400" autocomplete="off" required>
                     </div>
                     <div class="relative flex items-center">
                         <i data-lucide="phone" class="absolute left-3.5 w-4 h-4 text-slate-400"></i>
-                        <input type="tel" id="guestPhone" placeholder="Số điện thoại (để tích điểm)" class="pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-coffee-500/20 focus:border-coffee-500 rounded-xl text-sm font-semibold w-full transition-all outline-none text-slate-900 placeholder:text-slate-400" autocomplete="off" required>
+                        <input type="tel" id="guestPhone" onblur="fetchMyVouchers()" placeholder="Số điện thoại" class="pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 focus:bg-white focus:ring-2 focus:ring-coffee-500/20 focus:border-coffee-500 rounded-xl text-sm font-semibold w-full transition-all outline-none text-slate-900 placeholder:text-slate-400" autocomplete="off" required>
+                        <button onclick="fetchMyVouchers()" class="absolute right-2 text-xs font-bold text-white bg-slate-900 hover:bg-slate-800 px-3 py-1.5 rounded-lg active:scale-95 transition-all">
+                            Tìm Voucher
+                        </button>
                     </div>
                 </div>
-
-                <div class="bg-amber-50/80 border border-amber-200/60 p-3.5 rounded-xl flex items-start gap-3">
-                    <div class="bg-amber-100 p-1.5 rounded-lg text-amber-600 shrink-0 mt-0.5">
-                        <i data-lucide="star" class="w-4 h-4 fill-amber-500 stroke-amber-500"></i>
-                    </div>
-                    <div>
-                        <p class="text-xs font-semibold text-amber-900 leading-relaxed">Tích lũy điểm vào tài khoản</p>
-                        <p class="text-[11px] font-medium text-amber-700/80 mt-0.5">Bạn sẽ nhận được <span class="bg-white px-1.5 py-0.5 rounded text-amber-800 font-bold border border-amber-200 mx-0.5 shadow-sm" id="pointsPreview">0</span> điểm thưởng.</p>
-                    </div>
+                
+                <!-- Available Vouchers List (Hidden normally) -->
+                <div id="voucherListContainer" class="hidden flex-col gap-2 max-h-36 overflow-y-auto hide-scroll pb-2 border-b border-gray-100">
+                    <!-- Populated dynamically -->
                 </div>
 
                 <div class="flex justify-between items-end py-1">
@@ -196,9 +214,66 @@
         </div>
     </main>
 
+    <!-- Point Shop Modal -->
+    <div id="pointShopModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-[2rem] shadow-2xl w-[90%] max-w-2xl transform scale-95 transition-transform duration-300 flex flex-col overflow-hidden max-h-[85vh]">
+            <div class="px-8 py-6 border-b border-gray-100 flex justify-between items-center bg-gradient-to-r from-amber-50 to-orange-50">
+                <div class="flex items-center gap-3">
+                    <div class="bg-white p-2 rounded-xl shadow-sm"><i data-lucide="store" class="w-6 h-6 text-amber-600"></i></div>
+                    <h2 class="text-2xl font-black text-slate-900 tracking-tight">Cửa hàng Điểm</h2>
+                </div>
+                <button onclick="closePointShop()" class="text-slate-400 hover:text-slate-900 transition-colors bg-white p-2 rounded-full shadow-sm"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            
+            <div class="p-8 flex-grow overflow-y-auto">
+                <!-- Check Points Form -->
+                <div class="bg-slate-50 rounded-2xl p-6 border border-slate-100 flex gap-4 items-end mb-8 shadow-sm">
+                    <div class="flex-glow w-full relative">
+                        <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 px-1">Nhập Số Điện Thoại của bạn</label>
+                        <i data-lucide="phone" class="absolute left-4 bottom-3.5 w-5 h-5 text-slate-400"></i>
+                        <input type="tel" id="shopPhoneInput" class="pl-12 pr-4 py-3.5 bg-white border border-slate-300 focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20 rounded-xl text-base font-bold w-full transition-all outline-none text-slate-900 placeholder:text-slate-300" placeholder="0901234567">
+                    </div>
+                    <button onclick="checkPoints()" class="bg-slate-900 text-white font-bold py-3.5 px-6 rounded-xl hover:bg-slate-800 transition-colors flex shrink-0 gap-2 items-center">
+                        <i data-lucide="search" class="w-5 h-5"></i> Tra Cứu
+                    </button>
+                </div>
+
+                <!-- Point Balance Display -->
+                <div id="shopPointBalance" class="hidden mb-8 bg-gradient-to-br from-slate-900 to-slate-800 text-white p-6 rounded-2xl flex items-center justify-between shadow-lg">
+                    <div>
+                        <p class="text-slate-300 text-sm font-medium">Xin chào, số điện thoại <span id="shopPhoneLabel" class="font-bold text-white tracking-widest pl-1">...</span></p>
+                        <p class="text-4xl font-black mt-1">Điểm hiện tại: <span id="shopPointVal" class="text-amber-400 text-5xl">0</span></p>
+                    </div>
+                    <i data-lucide="award" class="w-16 h-16 text-slate-700"></i>
+                </div>
+
+                <div id="shopPointError" class="hidden mb-8 bg-red-50 text-red-600 p-4 rounded-xl border border-red-200 font-medium flex items-center gap-3">
+                    <i data-lucide="alert-circle" class="w-5 h-5"></i> <span id="shopErrorText">Không tìm thấy</span>
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900 mb-4 tracking-tight flex items-center gap-2">
+                    <i data-lucide="tags" class="w-5 h-5 text-slate-400"></i> Đổi Vouchers Hấp Dẫn
+                </h3>
+                
+                <!-- Catalog Grid -->
+                <div id="shopCatalogGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="col-span-2 text-center py-8 text-slate-400 flex flex-col items-center">
+                        <i data-lucide="loader" class="w-8 h-8 animate-spin"></i>
+                        <p class="mt-2 font-medium">Đang tải...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         lucide.createIcons();
         let cart = [];
+        let subtotalAmt = 0;
+        let activeVoucherId = null;
+        let activeVoucherDiscount = 0;
+        let currentShopPhone = "";
+        let currentShopPoints = 0;
 
         function strPrice(val) {
             return new Intl.NumberFormat('vi-VN').format(val) + " ₫";
@@ -209,29 +284,7 @@
             document.getElementById('clock').innerText = d.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
         }, 1000);
 
-        // Category filter
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.category-btn').forEach(b => {
-                    b.classList.remove('active', 'bg-slate-900', 'text-white', 'shadow-lg', 'shadow-slate-900/10');
-                    b.classList.add('bg-white', 'border-gray-200', 'text-slate-600');
-                });
-                btn.classList.add('active', 'bg-slate-900', 'text-white', 'shadow-lg', 'shadow-slate-900/10');
-                btn.classList.remove('bg-white', 'border-gray-200', 'text-slate-600');
-
-                let catId = btn.getAttribute('data-cat-id');
-                document.querySelectorAll('.drink-item').forEach(item => {
-                    if (catId === '0' || item.getAttribute('data-cat-id') === catId) {
-                        item.classList.remove('hidden');
-                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
-                    } else {
-                        item.style.opacity = '0'; item.style.transform = 'translateY(10px)';
-                        setTimeout(() => { item.classList.add('hidden'); }, 300);
-                    }
-                });
-            });
-        });
-
+        // -- Cart Logic --
         function addToCart(id, name, price, img) {
             let item = cart.find(i => i.drinkId === id);
             if (item) {
@@ -255,6 +308,7 @@
 
         function clearCart() {
             cart = [];
+            removeVoucher();
             renderCart();
         }
 
@@ -263,6 +317,9 @@
             const totalEl = document.getElementById('cartTotal');
             const checkoutBtn = document.getElementById('checkoutBtn');
             const pointsPreview = document.getElementById('pointsPreview');
+            const listContainer = document.getElementById('voucherListContainer');
+
+            let total = 0;
 
             if (cart.length === 0) {
                 container.innerHTML = `
@@ -278,12 +335,12 @@
                 totalEl.innerText = "0 ₫";
                 pointsPreview.innerText = "0";
                 checkoutBtn.disabled = true;
+                listContainer.classList.add('hidden');
                 return;
             }
 
             checkoutBtn.disabled = false;
 
-            let total = 0;
             let html = '';
             cart.forEach(item => {
                 total += item.price * item.quantity;
@@ -305,8 +362,69 @@
 
             container.innerHTML = html;
             lucide.createIcons();
-            totalEl.innerText = strPrice(total);
-            pointsPreview.innerText = Math.floor(total / 1000);
+            
+            subtotalAmt = total;
+            let finalAmt = Math.max(0, subtotalAmt - activeVoucherDiscount);
+
+            totalEl.innerText = strPrice(finalAmt);
+            pointsPreview.innerText = Math.floor(finalAmt / 1000);
+        }
+
+        // -- Apply Vouchers in Checkout --
+        function fetchMyVouchers() {
+            const phone = document.getElementById('guestPhone').value.trim();
+            if(!phone) return;
+            const container = document.getElementById('voucherListContainer');
+            container.innerHTML = `<div class="text-xs font-semibold text-slate-500 p-2"><i data-lucide="loader" class="w-3 h-3 inline animate-spin mr-1"></i> Đang tải...</div>`;
+            container.classList.remove('hidden');
+            lucide.createIcons();
+
+            fetch('${pageContext.request.contextPath}/guest/pointshop/status?phone=' + phone)
+            .then(res => res.json())
+            .then(data => {
+                if(data.success) {
+                    if(!data.vouchers || data.vouchers.length === 0) {
+                        container.innerHTML = `<div class="text-[11px] font-bold text-slate-400 bg-slate-50 rounded-lg p-2.5 text-center">Tài khoản này chưa đổi voucher nào.</div>`;
+                    } else {
+                        let vHtml = '';
+                        data.vouchers.forEach(v => {
+                            vHtml += `
+                                <div class="flex justify-between items-center bg-white border border-slate-200 rounded-lg p-2.5 hover:border-coffee-400 transition-colors cursor-pointer group" onclick="applyVoucher(\${v.id}, '\${v.name}', \${v.discountAmount})">
+                                    <div class="flex items-center gap-2">
+                                        <i data-lucide="ticket" class="w-4 h-4 text-coffee-500"></i>
+                                        <span class="text-sm font-bold text-slate-700 group-hover:text-slate-900">\${v.name}</span>
+                                    </div>
+                                    <span class="bg-coffee-50 text-coffee-700 text-xs font-bold px-2 py-1 rounded">Áp Dụng</span>
+                                </div>
+                            `;
+                        });
+                        container.innerHTML = vHtml;
+                    }
+                } else {
+                    container.innerHTML = `<div class="text-[11px] font-bold text-red-500 bg-red-50 rounded-lg p-2.5 text-center">Không khả dụng. Bạn cần tạo đơn hàng đầu tiên để lập tài khoản.</div>`;
+                }
+                lucide.createIcons();
+            }).catch(e => {
+                container.innerHTML = `<div class="text-[11px] font-bold text-red-500 p-2">Lỗi kết nối.</div>`;
+            });
+        }
+
+        function applyVoucher(id, name, discount) {
+            activeVoucherId = id;
+            activeVoucherDiscount = discount;
+            document.getElementById('voucherListContainer').classList.add('hidden');
+            document.getElementById('activeVoucherName').innerText = name;
+            document.getElementById('activeVoucherBox').classList.remove('hidden');
+            document.getElementById('activeVoucherBox').classList.add('flex');
+            renderCart();
+        }
+
+        function removeVoucher() {
+            activeVoucherId = null;
+            activeVoucherDiscount = 0;
+            document.getElementById('activeVoucherBox').classList.add('hidden');
+            document.getElementById('activeVoucherBox').classList.remove('flex');
+            renderCart();
         }
 
         function checkout() {
@@ -332,6 +450,8 @@
             const payload = {
                 guestName: name,
                 guestPhone: phone,
+                guestVoucherId: activeVoucherId,
+                paymentMethod: 'CASH', // Guest mostly pays at desk
                 items: cart.map(c => ({ drinkId: c.drinkId, quantity: c.quantity, note: c.note }))
             };
 
@@ -352,20 +472,16 @@
                                     <span class="text-slate-500 font-medium tracking-wide">Mã hóa đơn</span>
                                     <span class="text-slate-900 font-mono font-bold">\${data.billCode}</span>
                                 </div>
-                                <div class="bg-slate-50 p-4 rounded-xl border border-slate-100 flex justify-between items-center">
-                                    <span class="text-slate-500 font-medium tracking-wide">Tổng cộng</span>
-                                    <span class="text-coffee-600 font-bold tabular-nums text-lg">\${strPrice(data.total)}</span>
+                                <div class="bg-emerald-50 p-4 rounded-xl border border-emerald-100 flex justify-between items-center">
+                                    <span class="text-emerald-700 font-bold tracking-wide">Tổng Phải Trả</span>
+                                    <span class="text-emerald-700 font-bold tabular-nums text-2xl drop-shadow-sm">\${strPrice(data.total)}</span>
                                 </div>
-                                <div class="mt-2 bg-gradient-to-r from-amber-50 to-orange-50 p-4 rounded-xl border border-amber-100 flex flex-col items-center justify-center gap-2">
-                                    <div class="flex items-center gap-2 text-amber-600 font-bold">
-                                        <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                                        <span>Chúc mừng! Bạn nhận được \${data.pointsEarned} điểm</span>
-                                    </div>
-                                    <p class="text-xs text-amber-700/80 font-medium">Tổng điểm tích lũy của bạn: <span class="font-bold underline tabular-nums">\${data.totalPoints}</span></p>
+                                <div class="mt-2 text-center text-[10px] text-slate-400 font-medium uppercase tracking-widest px-8">
+                                    Vui lòng thanh toán trực tiếp tại quầy trong vài phút tới nhé!
                                 </div>
                             </div>
                         `,
-                        confirmButtonText: 'Đóng & Tiếp Tục',
+                        confirmButtonText: 'Làm Mới',
                         confirmButtonColor: '#0F172A',
                         allowOutsideClick: false,
                         customClass: { 
@@ -392,6 +508,138 @@
                 checkoutBtn.innerHTML = 'Thanh Toán Ngay <i data-lucide="arrow-right" class="w-4 h-4"></i>';
                 lucide.createIcons();
             });
+        }
+
+        // -- Category filter --
+        document.querySelectorAll('.category-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.category-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-slate-900', 'text-white', 'shadow-lg', 'shadow-slate-900/10');
+                    b.classList.add('bg-white', 'border-gray-200', 'text-slate-600');
+                });
+                btn.classList.add('active', 'bg-slate-900', 'text-white', 'shadow-lg', 'shadow-slate-900/10');
+                btn.classList.remove('bg-white', 'border-gray-200', 'text-slate-600');
+
+                let catId = btn.getAttribute('data-cat-id');
+                document.querySelectorAll('.drink-item').forEach(item => {
+                    if (catId === '0' || item.getAttribute('data-cat-id') === catId) {
+                        item.classList.remove('hidden');
+                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'translateY(0)'; }, 10);
+                    } else {
+                        item.style.opacity = '0'; item.style.transform = 'translateY(10px)';
+                        setTimeout(() => { item.classList.add('hidden'); }, 300);
+                    }
+                });
+            });
+        });
+
+        // -- Point Shop Modals --
+        function openPointShop() {
+            const m = document.getElementById('pointShopModal');
+            m.classList.remove('hidden');
+            m.classList.add('flex');
+            setTimeout(() => {
+                m.classList.remove('opacity-0');
+                m.firstElementChild.classList.remove('scale-95');
+            }, 10);
+            loadCatalog();
+        }
+
+        function closePointShop() {
+            const m = document.getElementById('pointShopModal');
+            m.classList.add('opacity-0');
+            m.firstElementChild.classList.add('scale-95');
+            setTimeout(() => {
+                m.classList.remove('flex');
+                m.classList.add('hidden');
+            }, 300);
+        }
+
+        function loadCatalog() {
+            fetch('${pageContext.request.contextPath}/guest/pointshop/vouchers')
+            .then(res => res.json())
+            .then(data => {
+                let html = '';
+                data.forEach(v => {
+                    html += `
+                        <div class="bg-white rounded-2xl border border-dashed border-coffee-300 p-5 flex items-center justify-between group hover:border-coffee-500 hover:shadow-lg transition-all">
+                            <div class="flex items-center gap-4">
+                                <div class="bg-coffee-50 text-coffee-600 p-3 rounded-full group-hover:bg-coffee-600 group-hover:text-white transition-colors duration-300">
+                                    <i data-lucide="ticket" class="w-6 h-6"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-900 text-lg leading-tight">\${v.name}</h4>
+                                    <p class="text-[12px] font-bold text-coffee-600 mt-1 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> Yêu cầu \${v.requiredPoints} Điểm</p>
+                                </div>
+                            </div>
+                            <button onclick="redeemPoints(\${v.id}, \${v.requiredPoints})" class="bg-slate-900 hover:bg-coffee-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-md active:scale-95 text-sm uppercase tracking-wide">Đổi Ngay</button>
+                        </div>
+                    `;
+                });
+                document.getElementById('shopCatalogGrid').innerHTML = html || '<div class="col-span-2 text-center text-slate-500 py-6 font-semibold">Chưa có voucher nào.</div>';
+                lucide.createIcons();
+            });
+        }
+
+        function checkPoints() {
+            const p = document.getElementById('shopPhoneInput').value.trim();
+            if (!p) return;
+            document.getElementById('shopPointError').classList.add('hidden');
+            
+            fetch('${pageContext.request.contextPath}/guest/pointshop/status?phone=' + p)
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    currentShopPhone = p;
+                    currentShopPoints = data.points;
+                    document.getElementById('shopPhoneLabel').innerText = p;
+                    document.getElementById('shopPointVal').innerText = data.points;
+                    document.getElementById('shopPointBalance').classList.remove('hidden');
+                } else {
+                    document.getElementById('shopErrorText').innerText = data.message;
+                    document.getElementById('shopPointError').classList.remove('hidden');
+                    document.getElementById('shopPointBalance').classList.add('hidden');
+                    currentShopPhone = "";
+                }
+            });
+        }
+
+        function redeemPoints(voucherId, reqPoints) {
+            if (!currentShopPhone) {
+                Swal.fire({icon: 'warning', title: '<span class="font-sans">Lỗi</span>', html: 'Vui lòng tra cứu số điện thoại của bạn trước.', customClass: {popup: 'rounded-2xl'}});
+                return;
+            }
+            if (currentShopPoints < reqPoints) {
+                Swal.fire({icon: 'error', title: '<span class="font-sans">Rất tiếc!</span>', html: 'Bạn không đủ điểm để đổi voucher này.', customClass: {popup: 'rounded-2xl'}});
+                return;
+            }
+
+            Swal.fire({
+                title: 'Xác nhận đổi?',
+                text: "Bạn sẽ dùng " + reqPoints + " điểm để lấy voucher.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#6f4e37',
+                cancelButtonColor: '#94a3b8',
+                confirmButtonText: 'Chắc chắn',
+                cancelButtonText: 'Hủy',
+                customClass: { popup: 'rounded-2xl font-sans' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch('${pageContext.request.contextPath}/guest/pointshop/redeem', {
+                        method: 'POST',
+                        headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify({phone: currentShopPhone, voucherId: voucherId})
+                    }).then(r => r.json()).then(d => {
+                        if (d.success) {
+                            Swal.fire({icon: 'success', title: 'Thành công!', text: 'Voucher đã được thêm vào số điện thoại của bạn.', customClass: { popup: 'rounded-2xl font-sans' }});
+                            checkPoints(); // reduce points live
+                        } else {
+                            Swal.fire({icon: 'error', title: 'Lỗi', text: d.message, customClass: { popup: 'rounded-2xl font-sans' }});
+                        }
+                    });
+                }
+            })
         }
     </script>
 </body>

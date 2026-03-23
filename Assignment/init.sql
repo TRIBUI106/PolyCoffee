@@ -102,12 +102,16 @@ CREATE TABLE IF NOT EXISTS `bills` (
   `guest_name` varchar(255) DEFAULT NULL,
   `guest_phone` varchar(255) DEFAULT NULL,
   `guest_id` int DEFAULT NULL,
+  `discount_amount` int DEFAULT 0,
+  `guest_voucher_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`),
   KEY `fk_bill_user` (`user_id`),
   KEY `fk_bill_guest` (`guest_id`),
+  KEY `fk_bill_guest_voucher` (`guest_voucher_id`),
   CONSTRAINT `fk_bill_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-  CONSTRAINT `fk_bill_guest` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`)
+  CONSTRAINT `fk_bill_guest` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`),
+  CONSTRAINT `fk_bill_guest_voucher` FOREIGN KEY (`guest_voucher_id`) REFERENCES `guest_vouchers` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table jav202_assignment.bills: ~22 rows (approximately)
@@ -264,6 +268,29 @@ CREATE TABLE IF NOT EXISTS `guests` (
   PRIMARY KEY (`id`),
   KEY `idx_phone_number` (`phone_number`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE IF NOT EXISTS `vouchers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `required_points` int NOT NULL,
+  `discount_amount` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+INSERT INTO `vouchers` (`id`, `name`, `required_points`, `discount_amount`) VALUES
+	(1, 'Giảm 10.000đ', 10, 10000),
+	(2, 'Giảm 25.000đ', 25, 25000),
+	(3, 'Giảm 50.000đ', 45, 50000);
+
+CREATE TABLE IF NOT EXISTS `guest_vouchers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `guest_id` int NOT NULL,
+  `voucher_id` int NOT NULL,
+  `is_used` boolean DEFAULT FALSE,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`guest_id`) REFERENCES `guests`(`id`),
+  FOREIGN KEY (`voucher_id`) REFERENCES `vouchers`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 
 

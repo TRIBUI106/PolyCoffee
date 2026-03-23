@@ -13,6 +13,8 @@
         <class>chez1s.assignment.entity.BillDetail</class>
         <class>chez1s.assignment.entity.CoffeeTable</class>
         <class>chez1s.assignment.entity.Guest</class>
+        <class>chez1s.assignment.entity.Voucher</class>
+        <class>chez1s.assignment.entity.GuestVoucher</class>
 
         <properties>
             <!-- MySQL Connection -->

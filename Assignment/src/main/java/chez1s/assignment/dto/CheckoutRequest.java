@@ -9,6 +9,7 @@ public class CheckoutRequest {
     private String guestPhone;
     private Integer tableId;
     private String paymentMethod;
+    private Integer guestVoucherId;
     private List<CartItem> items;
 
     @Data

@@ -220,6 +220,18 @@ public class BillService {
                 }
             }
             
+            // Handle Voucher
+            if (request.getGuestVoucherId() != null && guest != null) {
+                GuestVoucher gv = em.find(GuestVoucher.class, request.getGuestVoucherId());
+                if (gv != null && !gv.getIsUsed() && gv.getGuest().getId().equals(guest.getId())) {
+                    bill.setGuestVoucher(gv);
+                    bill.setDiscountAmount(gv.getVoucher().getDiscountAmount());
+                    gv.setIsUsed(true);
+                    em.merge(gv);
+                }
+            }
+
+            total = Math.max(0, total - bill.getDiscountAmount());
             bill.setTotal(total);
             bill.setBillDetails(details);
             em.persist(bill);
