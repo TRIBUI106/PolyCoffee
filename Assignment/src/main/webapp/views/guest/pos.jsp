@@ -13,16 +13,10 @@
 <html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
 <head>
     <title>PolyCoffee - Guest Order</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <jsp:include page="/views/common/head.jsp" />
     <script src="${pageContext.request.contextPath}/assets/js/guest-pos.js" defer></script>
     <style>
-        body { font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        .active-category { background-color: #4f46e5; color: white; box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2); }
+        .active-category { @apply bg-indigo-600 text-white shadow-lg shadow-indigo-200; }
     </style>
 </head>
 <body class="bg-gray-50 flex flex-col h-screen overflow-hidden">

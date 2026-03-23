@@ -36,7 +36,7 @@ public class AuthController extends HttpServlet {
             AuthUtil.setUser(req, user);
             String redirectUrl = (String) req.getSession().getAttribute("REDIRECT_URL");
             if (redirectUrl == null) {
-                redirectUrl = req.getContextPath() + (user.isRole() ? "/manager/statistics" : "/employee/pos");
+                redirectUrl = req.getContextPath() + (user.isRole() ? "/employee/pos?tab=stats" : "/employee/pos");
             }
             req.getSession().removeAttribute("REDIRECT_URL");
             resp.sendRedirect(redirectUrl);

@@ -58,6 +58,15 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
         }
+        @keyframes cart-pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+        .animate-cart-pop {
+            animation: cart-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        main { height: calc(100vh - 4rem); } /* Fix height with header */
     </style>
 </head>
 
@@ -69,74 +78,73 @@
     </div>
 
     <!-- Header -->
-    <header class="h-16 glass-panel border-b border-gray-200/60 px-6 flex items-center justify-between shrink-0 shadow-sm z-20 relative">
-        <div class="flex items-center gap-4">
-            <a href="${pageContext.request.contextPath}/" class="w-10 h-10 flex items-center justify-center bg-white shadow-sm border border-gray-100 text-coffee-700 rounded-xl hover:bg-slate-50 hover:border-gray-200 transition-colors duration-200 cursor-pointer">
-                <i data-lucide="home" class="w-5 h-5 text-slate-700"></i>
+    <header class="h-16 glass-panel border-b border-gray-200/60 px-4 sm:px-6 flex items-center justify-between shrink-0 shadow-sm z-30 sticky top-0 bg-white/80 backdrop-blur-md">
+        <div class="flex items-center gap-3 sm:gap-4">
+            <a href="${pageContext.request.contextPath}/" class="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center bg-white shadow-sm border border-gray-100 text-coffee-700 rounded-xl hover:bg-slate-50 hover:border-gray-200 transition-colors duration-200 cursor-pointer">
+                <i data-lucide="home" class="w-4 h-4 sm:w-5 sm:h-5 text-slate-700"></i>
             </a>
-            <div class="h-6 w-px bg-gray-200"></div>
-            <h1 class="font-bold text-2xl flex items-center gap-2 text-slate-900 tracking-tight">
+            <div class="h-5 sm:h-6 w-px bg-gray-200"></div>
+            <h1 class="font-bold text-xl sm:text-2xl flex items-center gap-2 text-slate-900 tracking-tight">
                 Self Order
-                <span class="text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Guest</span>
+                <span class="hidden sm:inline-block text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Guest</span>
             </h1>
         </div>
-        <div class="flex items-center gap-3">
-            <button onclick="openPointShop()" class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white px-4 py-2 rounded-xl shadow-md cursor-pointer transition-all active:scale-95">
-                <i data-lucide="gift" class="w-4 h-4 text-orange-50"></i>
-                <span class="text-sm font-bold tracking-wide">Đổi Điểm Nhận Quà</span>
+        <div class="flex items-center gap-2 sm:gap-3">
+            <button onclick="openPointShop()" class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-md cursor-pointer transition-all active:scale-95">
+                <i data-lucide="gift" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-50"></i>
+                <span class="text-xs sm:text-sm font-bold tracking-wide">Point Shop</span>
             </button>
-            <div class="text-sm font-semibold text-slate-500 flex items-center gap-2 bg-white px-4 py-2 rounded-xl border border-gray-100 shadow-sm">
-                <i data-lucide="clock" class="w-4 h-4"></i> <span id="clock" class="tabular-nums"></span>
+            <div class="text-xs sm:text-sm font-semibold text-slate-500 flex items-center gap-2 bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-gray-100 shadow-sm hidden md:block">
+                <i data-lucide="clock" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> <span id="clock" class="tabular-nums"></span>
             </div>
         </div>
     </header>
 
     <!-- Main Workspace -->
-    <main class="flex-grow flex overflow-hidden z-10 relative">
+    <main class="flex-grow flex flex-col lg:flex-row overflow-hidden z-10 relative">
         <!-- Left: Menu Area -->
-        <div class="flex-grow flex flex-col bg-transparent">
+        <div class="flex-grow flex flex-col bg-transparent overflow-y-auto lg:overflow-visible">
             <!-- Categories -->
-            <div class="h-20 px-8 flex items-center gap-3 overflow-x-auto hide-scroll shrink-0">
-                <button class="category-btn active px-6 py-2.5 rounded-full text-sm font-bold whitespace-nowrap transition-all duration-200 bg-slate-900 text-white shadow-lg shadow-slate-900/10 cursor-pointer" data-cat-id="0">
+            <div class="h-16 sm:h-20 px-4 sm:px-8 flex items-center gap-2 sm:gap-3 overflow-x-auto hide-scroll shrink-0 bg-slate-50/30 sticky top-0 z-20">
+                <button class="category-btn active px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-200 bg-slate-900 text-white shadow-lg shadow-slate-900/10 cursor-pointer" data-cat-id="0">
                     Tất cả
                 </button>
                 <c:forEach var="cat" items="${categories}">
-                    <button class="category-btn px-6 py-2.5 rounded-full border border-gray-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 text-sm font-semibold whitespace-nowrap transition-all duration-200 shadow-sm cursor-pointer" data-cat-id="${cat.id}">
+                    <button class="category-btn px-4 sm:px-6 py-2 sm:py-2.5 rounded-full border border-gray-200 bg-white text-slate-600 hover:border-slate-300 hover:text-slate-900 text-xs sm:text-sm font-semibold whitespace-nowrap transition-all duration-200 shadow-sm cursor-pointer" data-cat-id="${cat.id}">
                         ${cat.name}
                     </button>
                 </c:forEach>
             </div>
 
             <!-- Drinks Grid -->
-            <div class="flex-grow px-8 pb-8 overflow-y-auto">
-                <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 gap-y-8">
+            <div class="flex-grow px-4 sm:px-8 pb-32 lg:pb-8 overflow-y-auto">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4 sm:gap-6 gap-y-6 sm:gap-y-8 mt-4">
                     <c:forEach var="d" items="${drinks}">
                         <c:set var="imgUrl" value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
                         <div class="bg-white rounded-3xl border border-gray-100/50 shadow-premium hover:shadow-premium-hover transition-all duration-300 cursor-pointer flex flex-col group drink-item active:scale-[0.98]"
                              data-cat-id="${d.category.id}"
                              onclick="addToCart(${d.id}, '${fn:escapeXml(d.name)}', ${d.price}, '${imgUrl}')">
-                            <div class="aspect-square bg-slate-50 relative overflow-hidden rounded-t-3xl border-b border-gray-50 p-4">
+                            <div class="aspect-square bg-slate-50 relative overflow-hidden rounded-t-3xl border-b border-gray-50 p-3 sm:p-4">
                                 <c:choose>
                                     <c:when test="${not empty d.image}">
                                         <div class="w-full h-full rounded-2xl overflow-hidden shadow-sm relative filter group-hover:brightness-105 transition-all duration-300">
-                                            <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                                            <!-- Overlay vignette -->
-                                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                            <img src="${imgUrl}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                         </div>
                                     </c:when>
                                     <c:otherwise>
                                         <div class="w-full h-full rounded-2xl flex items-center justify-center bg-gray-100 text-slate-300 group-hover:bg-coffee-50 transition-colors duration-300">
-                                            <i data-lucide="coffee" class="w-12 h-12"></i>
+                                            <i data-lucide="coffee" class="w-8 sm:w-12 h-8 sm:h-12"></i>
                                         </div>
                                     </c:otherwise>
                                 </c:choose>
-                                <div class="absolute bottom-6 right-6 bg-white/95 backdrop-blur-md text-slate-900 text-sm font-black px-3.5 py-1.5 rounded-lg shadow-md border border-gray-100 group-hover:-translate-y-1 transition-transform duration-300">
+                                <div class="absolute bottom-4 sm:bottom-6 right-4 sm:right-6 bg-white/95 backdrop-blur-md text-slate-900 text-xs sm:text-sm font-black px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-lg shadow-md border border-gray-100 group-hover:-translate-y-1 transition-transform duration-300">
                                     <fmt:formatNumber value="${d.price}" pattern="#,###" /> ₫
                                 </div>
                             </div>
-                            <div class="px-5 pt-4 pb-5 flex-grow flex flex-col justify-between bg-white rounded-b-3xl">
-                                <p class="text-[11px] font-bold tracking-widest text-coffee-600 uppercase mb-1.5">${d.category.name}</p>
-                                <h3 class="text-base font-bold text-slate-900 line-clamp-2 leading-snug group-hover:text-coffee-700 transition-colors duration-200">${d.name}</h3>
+                            <div class="px-3 sm:px-5 pt-3 sm:pt-4 pb-4 sm:pb-5 flex-grow flex flex-col justify-between bg-white rounded-b-3xl">
+                                <p class="text-[9px] sm:text-[11px] font-bold tracking-widest text-coffee-600 uppercase mb-1 sm:mb-1.5">${d.category.name}</p>
+                                <h3 class="text-sm sm:text-base font-bold text-slate-900 line-clamp-2 leading-tight group-hover:text-coffee-700 transition-colors duration-200">${d.name}</h3>
                             </div>
                         </div>
                     </c:forEach>
@@ -144,19 +152,32 @@
             </div>
         </div>
 
-        <!-- Right: Cart & Checkout -->
-        <div class="w-[420px] bg-white flex flex-col shrink-0 relative shadow-2xl z-30 border-l border-gray-100">
-            <div class="px-6 py-5 border-b border-gray-100 flex justify-between items-center bg-white">
-                <h2 class="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
-                    <i data-lucide="shopping-bag" class="w-5 h-5 text-coffee-600"></i> Hóa đơn của bạn
-                </h2>
-                <button onclick="clearCart()" class="text-slate-400 text-xs font-bold hover:text-red-500 transition-colors duration-200 cursor-pointer flex items-center gap-1 bg-slate-50 hover:bg-red-50 px-2 py-1.5 rounded-md">
+        <!-- Mobile Cart Toggle FAB -->
+        <button onclick="toggleMobileCart()" id="mobileCartFab" class="lg:hidden fixed bottom-6 right-6 w-16 h-16 bg-slate-900 text-white rounded-full shadow-2xl z-40 flex items-center justify-center active:scale-90 transition-transform">
+            <div class="relative">
+                <i data-lucide="shopping-cart" class="w-6 h-6"></i>
+                <span id="cartCountBadge" class="absolute -top-2 -right-2 w-5 h-5 bg-coffee-500 text-white text-[10px] font-black rounded-full border-2 border-slate-900 flex items-center justify-center hidden">0</span>
+            </div>
+        </button>
+
+        <!-- Right: Cart & Checkout (Drawer on Mobile) -->
+        <div id="cartSidebar" class="translate-x-full lg:translate-x-0 fixed lg:static right-0 top-0 bottom-0 w-full sm:w-[420px] lg:w-[420px] bg-white flex flex-col shrink-0 shadow-2xl z-[60] lg:z-30 border-l border-gray-100 transition-transform duration-300">
+            <div class="px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 flex justify-between items-center bg-white sticky top-0">
+                <div class="flex items-center gap-3">
+                    <button onclick="toggleMobileCart()" class="lg:hidden p-2 -ml-2 text-slate-400 hover:text-slate-900">
+                        <i data-lucide="chevron-right" class="w-6 h-6"></i>
+                    </button>
+                    <h2 class="text-base sm:text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                        <i data-lucide="shopping-bag" class="w-5 h-5 text-coffee-600"></i> Hóa đơn
+                    </h2>
+                </div>
+                <button onclick="clearCart()" class="text-slate-400 text-[10px] sm:text-xs font-bold hover:text-red-500 transition-colors duration-200 cursor-pointer flex items-center gap-1 bg-slate-50 hover:bg-red-50 px-2 py-1.5 rounded-md">
                     <i data-lucide="trash-2" class="w-3.5 h-3.5"></i> Xóa
                 </button>
             </div>
             
             <!-- Items Area -->
-            <div class="flex-grow overflow-y-auto px-6 py-4 space-y-3 bg-slate-50/50" id="cartContainer">
+            <div class="flex-grow overflow-y-auto px-4 sm:px-6 py-4 space-y-3 bg-slate-50/50" id="cartContainer">
                 <div class="h-full flex flex-col items-center justify-center text-slate-300">
                     <div class="bg-slate-100 p-4 rounded-full mb-4">
                         <i data-lucide="shopping-cart" class="w-8 h-8 text-slate-400"></i>
@@ -198,17 +219,28 @@
                 </div>
                 
                 <!-- Available Vouchers List (Hidden normally) -->
-                <div id="voucherListContainer" class="hidden flex-col gap-2 max-h-36 overflow-y-auto hide-scroll pb-2 border-b border-gray-100">
+                <div id="voucherListContainer" class="hidden flex-col gap-2 max-h-48 overflow-y-auto hide-scroll pb-2 border-b border-gray-100">
                     <!-- Populated dynamically -->
                 </div>
 
-                <div class="flex justify-between items-end py-1">
-                    <span class="text-slate-500 font-medium text-sm">Tổng cộng</span>
+                <div class="flex justify-between items-center py-2 px-1">
+                    <div class="flex flex-col">
+                        <span class="text-slate-500 font-bold text-xs uppercase tracking-tight">Tạm tính</span>
+                        <div class="flex items-center gap-1.5 mt-0.5" id="cartPointsRow">
+                            <span class="flex items-center gap-1.5 text-amber-600 font-black text-[11px] bg-amber-50 px-2 py-0.5 rounded-lg border border-amber-100">
+                                <i data-lucide="gem" class="w-3 h-3"></i> +<span id="pointsPreview">0</span>
+                            </span>
+                            <button onclick="openPointShop()" class="text-[10px] font-black text-coffee-600 hover:text-coffee-700 bg-coffee-50 hover:bg-coffee-100 px-2.5 py-1 rounded-lg border border-coffee-100 transition-all active:scale-95 flex items-center gap-1">
+                                <i data-lucide="refresh-cw" class="w-2.5 h-2.5"></i> CONVERT PC
+                            </button>
+                        </div>
+                    </div>
                     <span class="text-3xl font-black text-slate-900 tabular-nums" id="cartTotal">0 ₫</span>
                 </div>
 
-                <button onclick="checkout()" id="checkoutBtn" class="w-full bg-slate-900 hover:bg-coffee-700 text-white font-bold py-4 rounded-xl shadow-[0_4px_12px_rgba(15,23,42,0.15)] active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2.5 text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
-                    Thanh Toán Ngay <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                <button onclick="checkout()" id="checkoutBtn" class="w-full bg-slate-900 hover:bg-coffee-700 text-white font-black py-4.5 rounded-2xl shadow-xl shadow-slate-200 active:scale-[0.98] transition-all duration-300 flex items-center justify-center gap-3 text-base cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed group">
+                    <span class="uppercase tracking-widest">Thanh Toán</span>
+                    <i data-lucide="arrow-right" class="w-5 h-5 group-hover:translate-x-1 transition-transform"></i>
                 </button>
             </div>
         </div>
@@ -267,47 +299,71 @@
     </div>
 
     <script>
-        lucide.createIcons();
-        let cart = [];
-        let subtotalAmt = 0;
-        let activeVoucherId = null;
-        let activeVoucherDiscount = 0;
-        let currentShopPhone = "";
-        let currentShopPoints = 0;
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            // Update cart count badge for mobile
+            const badge = document.getElementById('cartCountBadge');
+            if (badge) {
+                const totalItems = cartState.items.reduce((sum, item) => sum + item.quantity, 0);
+                badge.innerText = totalItems;
+                if (totalItems > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+            
+            // Initial render
+            renderCart();
+        });
+
+        const cartState = {
+            items: [],
+            subtotal: 0,
+            activeVoucher: { id: null, name: '', discount: 0 }
+        };
 
         function strPrice(val) {
             return new Intl.NumberFormat('vi-VN').format(val) + " ₫";
         }
         
         setInterval(() => {
-            const d = new Date();
-            document.getElementById('clock').innerText = d.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+            const clockEl = document.getElementById('clock');
+            if (clockEl) {
+                const d = new Date();
+                clockEl.innerText = d.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+            }
         }, 1000);
 
         // -- Cart Logic --
         function addToCart(id, name, price, img) {
-            let item = cart.find(i => i.drinkId === id);
+            let item = cartState.items.find(i => i.drinkId === id);
             if (item) {
                 item.quantity++;
             } else {
-                cart.push({ drinkId: id, name, price, quantity: 1, note: '' });
+                cartState.items.push({ drinkId: id, name, price, quantity: 1, note: '' });
             }
             renderCart();
         }
 
+        window.addToCart = addToCart; // Ensure global access for onclick
+        window.updateQty = updateQty;
+        window.clearCart = clearCart;
+
         function updateQty(id, change) {
-            let item = cart.find(i => i.drinkId === id);
+            let item = cartState.items.find(i => i.drinkId === id);
             if (item) {
                 item.quantity += change;
                 if (item.quantity <= 0) {
-                    cart = cart.filter(i => i.drinkId !== id);
+                    cartState.items = cartState.items.filter(i => i.drinkId !== id);
                 }
                 renderCart();
             }
         }
 
         function clearCart() {
-            cart = [];
+            cartState.items = [];
             removeVoucher();
             renderCart();
         }
@@ -319,9 +375,11 @@
             const pointsPreview = document.getElementById('pointsPreview');
             const listContainer = document.getElementById('voucherListContainer');
 
+            if (!container || !totalEl || !checkoutBtn) return;
+
             let total = 0;
 
-            if (cart.length === 0) {
+            if (cartState.items.length === 0) {
                 container.innerHTML = `
                     <div class="h-full flex flex-col items-center justify-center text-slate-300">
                         <div class="bg-slate-100 p-4 rounded-full mb-4 ring-8 ring-white">
@@ -331,43 +389,60 @@
                         <p class="text-xs text-slate-400 mt-1">Chọn thức uống từ menu để đặt hàng</p>
                     </div>
                 `;
-                lucide.createIcons();
+                if (typeof lucide !== 'undefined') lucide.createIcons();
                 totalEl.innerText = "0 ₫";
-                pointsPreview.innerText = "0";
+                if (pointsPreview) pointsPreview.innerText = "0";
                 checkoutBtn.disabled = true;
-                listContainer.classList.add('hidden');
+                if (listContainer) listContainer.classList.add('hidden');
                 return;
             }
 
             checkoutBtn.disabled = false;
 
             let html = '';
-            cart.forEach(item => {
+            cartState.items.forEach(item => {
                 total += item.price * item.quantity;
-                html += `
-                <div class="bg-white p-3.5 rounded-2xl border border-gray-100/80 shadow-sm flex flex-col gap-3 group relative transform hover:-translate-y-0.5 transition-all duration-200">
-                    <div class="flex justify-between items-center gap-4">
-                        <div class="flex-grow pr-2">
-                            <h4 class="font-bold text-slate-900 text-sm line-clamp-2 leading-tight">\${item.name}</h4>
-                            <p class="text-coffee-600 font-bold mt-1 text-sm tabular-nums">\${strPrice(item.price)}</p>
-                        </div>
-                        <div class="flex items-center bg-slate-50 rounded-lg border border-slate-100 p-0.5">
-                            <button onclick="updateQty(\${item.drinkId}, -1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
-                            <span class="w-8 text-center font-bold text-sm text-slate-900 tabular-nums">\${item.quantity}</span>
-                            <button onclick="updateQty(\${item.drinkId}, 1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
-                        </div>
-                    </div>
-                </div>`;
+                html += '<div class="bg-white p-3.5 rounded-2xl border border-gray-100/80 shadow-sm flex flex-col gap-3 group relative transform hover:-translate-y-0.5 transition-all duration-200">' +
+                    '<div class="flex justify-between items-center gap-4">' +
+                        '<div class="flex-grow pr-2">' +
+                            '<h4 class="font-bold text-slate-900 text-sm line-clamp-2 leading-tight">' + item.name + '</h4>' +
+                            '<p class="text-coffee-600 font-bold mt-1 text-sm tabular-nums">' + strPrice(item.price) + '</p>' +
+                        '</div>' +
+                        '<div class="flex items-center bg-slate-50 rounded-lg border border-slate-100 p-0.5">' +
+                            '<button onclick="updateQty(' + item.drinkId + ', -1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>' +
+                            '<span class="w-8 text-center font-bold text-sm text-slate-900 tabular-nums">' + item.quantity + '</span>' +
+                            '<button onclick="updateQty(' + item.drinkId + ', 1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
             });
 
             container.innerHTML = html;
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
             
-            subtotalAmt = total;
-            let finalAmt = Math.max(0, subtotalAmt - activeVoucherDiscount);
+            cartState.subtotal = total;
+            let finalAmt = Math.max(0, cartState.subtotal - cartState.activeVoucher.discount);
 
             totalEl.innerText = strPrice(finalAmt);
-            pointsPreview.innerText = Math.floor(finalAmt / 1000);
+            if (pointsPreview) pointsPreview.innerText = Math.floor(finalAmt / 1000);
+
+            // Update cart count badge for mobile
+            const badge = document.getElementById('cartCountBadge');
+            if (badge) {
+                const totalItems = cartState.items.reduce((sum, item) => sum + item.quantity, 0);
+                badge.innerText = totalItems;
+                if (totalItems > 0) {
+                    badge.classList.remove('hidden', 'scale-0');
+                    badge.classList.add('flex', 'scale-100', 'animate-cart-pop');
+                    
+                    // Force re-trigger animation
+                    badge.style.animation = 'none';
+                    badge.offsetHeight; // trigger reflow
+                    badge.style.animation = null;
+                } else {
+                    badge.classList.add('hidden', 'scale-0');
+                }
+            }
         }
 
         // -- Apply Vouchers in Checkout --
@@ -410,27 +485,43 @@
         }
 
         function applyVoucher(id, name, discount) {
-            activeVoucherId = id;
-            activeVoucherDiscount = discount;
-            document.getElementById('voucherListContainer').classList.add('hidden');
-            document.getElementById('activeVoucherName').innerText = name;
-            document.getElementById('activeVoucherBox').classList.remove('hidden');
-            document.getElementById('activeVoucherBox').classList.add('flex');
+            cartState.activeVoucher.id = id;
+            cartState.activeVoucher.discount = discount;
+            const container = document.getElementById('voucherListContainer');
+            if (container) container.classList.add('hidden');
+            const voucherNameEl = document.getElementById('activeVoucherName');
+            if (voucherNameEl) voucherNameEl.innerText = name;
+            const voucherBox = document.getElementById('activeVoucherBox');
+            if (voucherBox) {
+                voucherBox.classList.remove('hidden');
+                voucherBox.classList.add('flex');
+            }
             renderCart();
         }
 
         function removeVoucher() {
-            activeVoucherId = null;
-            activeVoucherDiscount = 0;
-            document.getElementById('activeVoucherBox').classList.add('hidden');
-            document.getElementById('activeVoucherBox').classList.remove('flex');
+            cartState.activeVoucher.id = null;
+            cartState.activeVoucher.discount = 0;
+            const voucherBox = document.getElementById('activeVoucherBox');
+            if (voucherBox) {
+                voucherBox.classList.add('hidden');
+                voucherBox.classList.remove('flex');
+            }
             renderCart();
         }
 
+        window.applyVoucher = applyVoucher;
+        window.removeVoucher = removeVoucher;
+
         function checkout() {
-            if (cart.length === 0) return;
-            const name = document.getElementById('guestName').value.trim();
-            const phone = document.getElementById('guestPhone').value.trim();
+            if (cartState.items.length === 0) return;
+            const nameEl = document.getElementById('guestName');
+            const phoneEl = document.getElementById('guestPhone');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (!nameEl || !phoneEl || !checkoutBtn) return;
+
+            const name = nameEl.value.trim();
+            const phone = phoneEl.value.trim();
 
             if (!name || !phone) {
                 Swal.fire({
@@ -445,14 +536,14 @@
 
             checkoutBtn.disabled = true;
             checkoutBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Đang xử lý...';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
 
             const payload = {
                 guestName: name,
                 guestPhone: phone,
-                guestVoucherId: activeVoucherId,
+                guestVoucherId: cartState.activeVoucher.id,
                 paymentMethod: 'CASH', // Guest mostly pays at desk
-                items: cart.map(c => ({ drinkId: c.drinkId, quantity: c.quantity, note: c.note }))
+                items: cartState.items.map(c => ({ drinkId: c.drinkId, quantity: c.quantity, note: c.note }))
             };
 
             fetch('${pageContext.request.contextPath}/guest/order/checkout', {
@@ -562,66 +653,134 @@
                 let html = '';
                 data.forEach(v => {
                     html += `
-                        <div class="bg-white rounded-2xl border border-dashed border-coffee-300 p-5 flex items-center justify-between group hover:border-coffee-500 hover:shadow-lg transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="bg-coffee-50 text-coffee-600 p-3 rounded-full group-hover:bg-coffee-600 group-hover:text-white transition-colors duration-300">
-                                    <i data-lucide="ticket" class="w-6 h-6"></i>
+                        <div class="relative group cursor-default">
+                            <!-- Ticket Punch Hole Decoration -->
+                            <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50/50 rounded-full z-10 hidden sm:block border-r border-slate-100"></div>
+                            <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50/50 rounded-full z-10 hidden sm:block border-l border-slate-100"></div>
+                            
+                            <div class="bg-white rounded-3xl border border-slate-100 p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between shadow-sm hover:shadow-2xl hover:shadow-coffee-500/10 transition-all duration-500 gap-2 relative overflow-hidden">
+                                <div class="flex items-center gap-5 p-4 flex-grow bg-slate-50/30 rounded-2xl group-hover:bg-white transition-colors duration-500">
+                                    <div class="relative">
+                                        <div class="bg-gradient-to-br from-coffee-600 to-coffee-800 text-white p-4 rounded-2xl shadow-lg shadow-coffee-200 group-hover:rotate-12 transition-transform duration-500">
+                                            <i data-lucide="ticket" class="w-7 h-7"></i>
+                                        </div>
+                                        <div class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-amber-400 rounded-full border-2 border-white animate-pulse"></div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-black text-slate-900 text-xl leading-tight mb-2 group-hover:text-coffee-700 transition-colors">\${v.name}</h4>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 font-black text-[12px] px-3 py-1.5 rounded-full border border-amber-100/50">
+                                                <i data-lucide="gem" class="w-3.5 h-3.5"></i> \${v.requiredPoints} Điểm
+                                            </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 class="font-black text-slate-900 text-lg leading-tight">\${v.name}</h4>
-                                    <p class="text-[12px] font-bold text-coffee-600 mt-1 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> Yêu cầu \${v.requiredPoints} Điểm</p>
+                                
+                                <div class="flex items-center gap-3 p-4 sm:border-l border-dashed border-slate-200 sm:ml-2">
+                                    <div class="flex items-center bg-slate-100/50 hover:bg-slate-100 p-1 rounded-xl transition-colors">
+                                        <button onclick="changeVoucherQty(\${v.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-coffee-600 transition-colors active:scale-75">
+                                            <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                        <span id="v-qty-\${v.id}" class="w-8 text-center font-black text-slate-900 text-base tabular-nums">1</span>
+                                        <button onclick="changeVoucherQty(\${v.id}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-coffee-600 transition-colors active:scale-75">
+                                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <button onclick="redeemPoints(\${v.id}, \${v.requiredPoints})" class="group/btn relative overflow-hidden bg-slate-900 text-white font-black py-3.5 px-8 rounded-2xl transition-all hover:pr-10 active:scale-95 shadow-lg shadow-slate-200">
+                                        <span class="relative z-10 flex items-center gap-2 text-xs uppercase tracking-widest">
+                                            Đổi <i data-lucide="chevron-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                                        </span>
+                                        <div class="absolute inset-0 bg-gradient-to-r from-coffee-600 to-coffee-400 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                                    </button>
                                 </div>
                             </div>
-                            <button onclick="redeemPoints(\${v.id}, \${v.requiredPoints})" class="bg-slate-900 hover:bg-coffee-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-md active:scale-95 text-sm uppercase tracking-wide">Đổi Ngay</button>
                         </div>
                     `;
                 });
-                document.getElementById('shopCatalogGrid').innerHTML = html || '<div class="col-span-2 text-center text-slate-500 py-6 font-semibold">Chưa có voucher nào.</div>';
-                lucide.createIcons();
+                document.getElementById('shopCatalogGrid').innerHTML = html || '<div class="col-span-2 text-center text-slate-500 py-12 font-semibold">Chưa có voucher nào.</div>';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+            }).catch(e => {
+                console.error("Voucher catalog error:", e);
+                document.getElementById('shopCatalogGrid').innerHTML = '<div class="col-span-2 text-center text-red-500 py-12 font-semibold">Lỗi tải danh sách voucher. Vui lòng thử lại sau.</div>';
             });
         }
+
+        window.changeVoucherQty = function(id, delta) {
+            const el = document.getElementById('v-qty-' + id);
+            let val = parseInt(el.innerText) + delta;
+            if (val < 1) val = 1;
+            if (val > 10) val = 10; // limit per redeem
+            el.innerText = val;
+        };
 
         function checkPoints() {
             const p = document.getElementById('shopPhoneInput').value.trim();
             if (!p) return;
             document.getElementById('shopPointError').classList.add('hidden');
             
-            fetch('${pageContext.request.contextPath}/guest/pointshop/status?phone=' + p)
+            fetch('/Assignment/guest/pointshop/status?phone=' + p)
             .then(r => r.json())
             .then(data => {
                 if (data.success) {
                     currentShopPhone = p;
                     currentShopPoints = data.points;
-                    document.getElementById('shopPhoneLabel').innerText = p;
-                    document.getElementById('shopPointVal').innerText = data.points;
-                    document.getElementById('shopPointBalance').classList.remove('hidden');
+                    const shopPhoneLabel = document.getElementById('shopPhoneLabel');
+                    const shopPointVal = document.getElementById('shopPointVal');
+                    const shopPointBalance = document.getElementById('shopPointBalance');
+                    
+                    if (shopPhoneLabel) shopPhoneLabel.innerText = p;
+                    if (shopPointVal) shopPointVal.innerText = data.points;
+                    if (shopPointBalance) shopPointBalance.classList.remove('hidden');
                 } else {
-                    document.getElementById('shopErrorText').innerText = data.message;
-                    document.getElementById('shopPointError').classList.remove('hidden');
-                    document.getElementById('shopPointBalance').classList.add('hidden');
+                    const shopErrorText = document.getElementById('shopErrorText');
+                    const shopPointError = document.getElementById('shopPointError');
+                    const shopPointBalance = document.getElementById('shopPointBalance');
+                    
+                    if (shopErrorText) shopErrorText.innerText = data.message;
+                    if (shopPointError) shopPointError.classList.remove('hidden');
+                    if (shopPointBalance) shopPointBalance.classList.add('hidden');
                     currentShopPhone = "";
                 }
             });
         }
+
+        function toggleMobileCart() {
+            if (window.innerWidth >= 1024) return; // Don't toggle on desktop
+            const sidebar = document.getElementById('cartSidebar');
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+            } else {
+                sidebar.classList.add('translate-x-full');
+            }
+        }
+
+        window.toggleMobileCart = toggleMobileCart;
 
         function redeemPoints(voucherId, reqPoints) {
             if (!currentShopPhone) {
                 Swal.fire({icon: 'warning', title: '<span class="font-sans">Lỗi</span>', html: 'Vui lòng tra cứu số điện thoại của bạn trước.', customClass: {popup: 'rounded-2xl'}});
                 return;
             }
-            if (currentShopPoints < reqPoints) {
-                Swal.fire({icon: 'error', title: '<span class="font-sans">Rất tiếc!</span>', html: 'Bạn không đủ điểm để đổi voucher này.', customClass: {popup: 'rounded-2xl'}});
+            
+            const qty = parseInt(document.getElementById('v-qty-' + voucherId).innerText);
+            const totalPoints = reqPoints * qty;
+
+            if (currentShopPoints < totalPoints) {
+                Swal.fire({icon: 'error', title: '<span class="font-sans">Rất tiếc!</span>', html: 'Bạn không đủ điểm để đổi ' + qty + ' voucher này. (Cần ' + totalPoints + ' điểm)', customClass: {popup: 'rounded-2xl'}});
                 return;
             }
 
             Swal.fire({
                 title: 'Xác nhận đổi?',
-                text: "Bạn sẽ dùng " + reqPoints + " điểm để lấy voucher.",
+                html: `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-600 text-sm">Bạn sẽ dùng <span class="text-coffee-600 font-black">\${totalPoints}</span> điểm để đổi <span class="text-slate-900 font-black">\${qty}</span> voucher.</p>
+                       </div>`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#6f4e37',
                 cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'Chắc chắn',
+                confirmButtonText: 'Đổi Voucher',
                 cancelButtonText: 'Hủy',
                 customClass: { popup: 'rounded-2xl font-sans' }
             }).then((result) => {
@@ -629,10 +788,10 @@
                     fetch('${pageContext.request.contextPath}/guest/pointshop/redeem', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({phone: currentShopPhone, voucherId: voucherId})
+                        body: JSON.stringify({phone: currentShopPhone, voucherId: voucherId, quantity: qty})
                     }).then(r => r.json()).then(d => {
                         if (d.success) {
-                            Swal.fire({icon: 'success', title: 'Thành công!', text: 'Voucher đã được thêm vào số điện thoại của bạn.', customClass: { popup: 'rounded-2xl font-sans' }});
+                            Swal.fire({icon: 'success', title: 'Thành công!', text: qty + ' Voucher đã được thêm vào số điện thoại của bạn.', customClass: { popup: 'rounded-2xl font-sans' }});
                             checkPoints(); // reduce points live
                         } else {
                             Swal.fire({icon: 'error', title: 'Lỗi', text: d.message, customClass: { popup: 'rounded-2xl font-sans' }});
