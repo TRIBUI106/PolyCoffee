@@ -7,11 +7,9 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-DROP DATABASE IF EXISTS `jav202_assignment`;
 CREATE DATABASE IF NOT EXISTS `jav202_assignment` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 USE `jav202_assignment`;
 
-DROP TABLE IF EXISTS `bills`;
 CREATE TABLE IF NOT EXISTS `bills` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int DEFAULT NULL,
@@ -23,41 +21,50 @@ CREATE TABLE IF NOT EXISTS `bills` (
   `guest_phone` varchar(255) DEFAULT NULL,
   `table_id` int DEFAULT NULL,
   `payment_method` varchar(255) DEFAULT NULL,
+  `discount_amount` int DEFAULT NULL,
+  `guest_id` int DEFAULT NULL,
+  `guest_voucher_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`),
   KEY `fk_bill_user` (`user_id`),
   KEY `fk_bill_table` (`table_id`),
+  KEY `FK1dr34lyvirbn5ufmcss4gqsu3` (`guest_id`),
+  KEY `FK3m8cewyw2n3mh24hbrwigmxd5` (`guest_voucher_id`),
+  CONSTRAINT `FK1dr34lyvirbn5ufmcss4gqsu3` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`),
+  CONSTRAINT `FK3m8cewyw2n3mh24hbrwigmxd5` FOREIGN KEY (`guest_voucher_id`) REFERENCES `guest_vouchers` (`id`),
   CONSTRAINT `fk_bill_table` FOREIGN KEY (`table_id`) REFERENCES `coffee_tables` (`id`),
   CONSTRAINT `fk_bill_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `bills`;
-INSERT INTO `bills` (`id`, `user_id`, `code`, `created_at`, `total`, `status`, `guest_name`, `guest_phone`, `table_id`, `payment_method`) VALUES
-	(1, 1, 'BILL-1773648543465', '2026-03-16 15:09:03', 178000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(2, 1, 'BILL-1773648554873', '2026-03-16 15:09:15', 104000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(3, 1, 'BILL-1773651172614', '2026-03-16 15:52:53', 168000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(4, 1, 'BILL-1773654246523', '2026-03-16 16:44:07', 84000, 'WAITING', NULL, NULL, NULL, NULL),
-	(5, 1, 'BILL-1773655184772', '2026-03-16 16:59:45', 119000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(6, 1, 'BILL-1773655223766', '2026-03-16 17:00:24', 142000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(7, 1, 'BILL-1773807944379', '2026-03-18 11:25:44', 85000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(8, 1, 'BILL-1773808019895', '2026-03-18 11:27:00', 500000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(9, 1, 'BILL-1773809397101', '2026-03-18 11:49:57', 153000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(10, 1, 'BILL-1773809403681', '2026-03-18 11:50:04', 114000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(11, 1, 'BILL-1773810236538', '2026-03-18 12:03:57', 45000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(12, 1, 'BILL-1773810246090', '2026-03-18 12:04:06', 39000, 'WAITING', NULL, NULL, NULL, NULL),
-	(13, 1, 'BILL-1773810581981', '2026-03-18 12:09:42', 45000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(14, 1, 'BILL-1773811175672', '2026-03-18 12:19:36', 114000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(15, 1, 'BILL-1773811194619', '2026-03-18 12:19:55', 59000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(16, 1, 'BILL-1773819329387', '2026-03-18 14:35:29', 153000, 'WAITING', NULL, NULL, NULL, NULL),
-	(17, 1, 'BILL-1773820233730', '2026-03-18 14:50:34', 104000, 'WAITING', NULL, NULL, NULL, NULL),
-	(18, 1, 'BILL-1773822209010', '2026-03-18 15:23:29', 208000, 'WAITING', NULL, NULL, NULL, NULL),
-	(19, 1, 'BILL-1773995997971', '2026-03-20 15:39:58', 139000, 'WAITING', NULL, NULL, NULL, NULL),
-	(20, 1, 'BILL-1773996501934', '2026-03-20 15:48:22', 153000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(21, 1, 'BILL-1773996757200', '2026-03-20 15:52:37', 114000, 'WAITING', NULL, NULL, NULL, NULL),
-	(22, 1, 'BILL-1773996915031', '2026-03-20 15:55:15', 153000, 'FINISHED', NULL, NULL, NULL, NULL),
-	(23, 1, 'BILL-1774191965872', '2026-03-22 22:06:06', 138000, 'FINISHED', NULL, NULL, NULL, NULL);
+INSERT INTO `bills` (`id`, `user_id`, `code`, `created_at`, `total`, `status`, `guest_name`, `guest_phone`, `table_id`, `payment_method`, `discount_amount`, `guest_id`, `guest_voucher_id`) VALUES
+	(1, 1, 'BILL-1773648543465', '2026-03-16 15:09:03', 178000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(2, 1, 'BILL-1773648554873', '2026-03-16 15:09:15', 104000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(3, 1, 'BILL-1773651172614', '2026-03-16 15:52:53', 168000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(4, 1, 'BILL-1773654246523', '2026-03-16 16:44:07', 84000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(5, 1, 'BILL-1773655184772', '2026-03-16 16:59:45', 119000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(6, 1, 'BILL-1773655223766', '2026-03-16 17:00:24', 142000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(7, 1, 'BILL-1773807944379', '2026-03-18 11:25:44', 85000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(8, 1, 'BILL-1773808019895', '2026-03-18 11:27:00', 500000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(9, 1, 'BILL-1773809397101', '2026-03-18 11:49:57', 153000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(10, 1, 'BILL-1773809403681', '2026-03-18 11:50:04', 114000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(11, 1, 'BILL-1773810236538', '2026-03-18 12:03:57', 45000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(12, 1, 'BILL-1773810246090', '2026-03-18 12:04:06', 39000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(13, 1, 'BILL-1773810581981', '2026-03-18 12:09:42', 45000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(14, 1, 'BILL-1773811175672', '2026-03-18 12:19:36', 114000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(15, 1, 'BILL-1773811194619', '2026-03-18 12:19:55', 59000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(16, 1, 'BILL-1773819329387', '2026-03-18 14:35:29', 153000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(17, 1, 'BILL-1773820233730', '2026-03-18 14:50:34', 104000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(18, 1, 'BILL-1773822209010', '2026-03-18 15:23:29', 208000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(19, 1, 'BILL-1773995997971', '2026-03-20 15:39:58', 139000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(20, 1, 'BILL-1773996501934', '2026-03-20 15:48:22', 153000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(21, 1, 'BILL-1773996757200', '2026-03-20 15:52:37', 114000, 'WAITING', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(22, 1, 'BILL-1773996915031', '2026-03-20 15:55:15', 153000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(23, 1, 'BILL-1774191965872', '2026-03-22 22:06:06', 138000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
+	(24, NULL, 'GUEST-1774235179269', '2026-03-23 10:06:19', 113000, 'WAITING', '0911532866', 'Bui Duc Tri', NULL, 'CASH', 0, 1, NULL),
+	(25, 1, 'BILL-1774235640079', '2026-03-23 10:14:00', 110000, 'WAITING', NULL, NULL, NULL, NULL, 0, NULL, NULL),
+	(26, 1, 'BILL-1774271187301', '2026-03-23 20:06:27', 30000, 'WAITING', NULL, NULL, NULL, NULL, 0, NULL, NULL);
 
-DROP TABLE IF EXISTS `bill_details`;
 CREATE TABLE IF NOT EXISTS `bill_details` (
   `id` int NOT NULL AUTO_INCREMENT,
   `bill_id` int NOT NULL,
@@ -70,7 +77,7 @@ CREATE TABLE IF NOT EXISTS `bill_details` (
   KEY `fk_detail_drink` (`drink_id`),
   CONSTRAINT `fk_detail_bill` FOREIGN KEY (`bill_id`) REFERENCES `bills` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_detail_drink` FOREIGN KEY (`drink_id`) REFERENCES `drinks` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `bill_details`;
 INSERT INTO `bill_details` (`id`, `bill_id`, `drink_id`, `quantity`, `price`, `note`) VALUES
@@ -131,9 +138,14 @@ INSERT INTO `bill_details` (`id`, `bill_id`, `drink_id`, `quantity`, `price`, `n
 	(55, 23, 9, 1, 19000, NULL),
 	(56, 23, 5, 1, 49000, NULL),
 	(57, 23, 17, 1, 35000, NULL),
-	(58, 23, 16, 1, 35000, NULL);
+	(58, 23, 16, 1, 35000, NULL),
+	(59, 24, 4, 1, 45000, ''),
+	(60, 24, 9, 1, 19000, ''),
+	(61, 24, 8, 1, 49000, ''),
+	(62, 25, 22, 1, 55000, NULL),
+	(63, 25, 11, 1, 55000, NULL),
+	(64, 26, 2, 1, 30000, NULL);
 
-DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
@@ -149,7 +161,6 @@ INSERT INTO `categories` (`id`, `name`, `active`) VALUES
 	(4, 'Bánh Ngọt', 1),
 	(5, 'Đá Xay', 1);
 
-DROP TABLE IF EXISTS `coffee_tables`;
 CREATE TABLE IF NOT EXISTS `coffee_tables` (
   `id` int NOT NULL AUTO_INCREMENT,
   `table_number` varchar(255) NOT NULL,
@@ -167,7 +178,6 @@ INSERT INTO `coffee_tables` (`id`, `table_number`, `code`, `active`) VALUES
 	(4, 'Bàn số 4', 'T4', 1),
 	(5, 'Bàn số 5', 'T5', 1);
 
-DROP TABLE IF EXISTS `drinks`;
 CREATE TABLE IF NOT EXISTS `drinks` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_id` int NOT NULL,
@@ -226,27 +236,42 @@ INSERT INTO `drinks` (`id`, `category_id`, `name`, `description`, `image`, `pric
 	(41, 3, 'Cà Phê Kem Phô Mai', 'Sự pha trộn trứ danh của Cà phê và lớp Cheese béo ngậy thần thánh.', '1774171828058_C__Ph__Kem_Ph__Mai.jpg', 59000, 1),
 	(42, 3, 'Trà Sâm Dứa Sữa', 'Hương dứa truyền thống béo thơm từ sữa, ngọt ngào tuổi thơ.', '1774171834584_Tr__S_m_D_a_S_a.webp', 35000, 1),
 	(43, 4, 'Bánh Croissant Bơ Pháp', 'Bánh sừng bò ngàn lớp thơm lừng bơ Pháp cao cấp.', '1774171864033_B_nh_Croissant_B__Ph_p.jpg', 25000, 1),
-	(44, 4, 'Bánh Sừng Trâu Phô Mai', 'Phiên bản cải tiến nhân phô mai chảy béo ngậy bên trong hạt hạnh nhân.', 'https://loremflickr.com/400/400/pastry?random=1', 35000, 1),
-	(45, 4, 'Bánh Mousse Trà Xanh', 'Bánh Mousse mềm mịn với lớp trà xanh chát nhẹ, tan trong miệng.', 'https://loremflickr.com/400/400/mousse,cake?random=1', 45000, 1),
-	(46, 4, 'Bánh Mousse Dâu Tây', 'Mousse dâu tươi được phủ sốt dâu đỏ au hấp dẫn.', 'https://loremflickr.com/400/400/strawberry,cake?random=1', 45000, 1),
-	(47, 4, 'Bánh Phô Mai Nướng', 'Basque Cheesecake đặc biệt với vỏ bánh hơi xém, lõi mềm nhão béo ngậy.', 'https://loremflickr.com/400/400/cheesecake?random=1', 49000, 1),
-	(48, 4, 'Bánh Socola Lava', 'Socola đen nướng chảy nóng hổi từ trong lõi ra.', 'https://loremflickr.com/400/400/lavacake?random=1', 55000, 1),
-	(49, 4, 'Bánh Mì Bơ Tỏi (Korea)', 'Bánh mì nướng bơ tỏi kẹp bơ tỏi phô mai sốt kem Hàn Quốc.', 'https://loremflickr.com/400/400/garlicbread?random=1', 39000, 1),
-	(50, 4, 'Bánh Donut Vani', 'Donut socola hoặc vani rắc đường màu bắt mắt.', 'https://loremflickr.com/400/400/donut?random=1', 25000, 1),
-	(51, 4, 'Bánh Tart Trứng', 'Vỏ lớp tart ngàn lớp cùng nhân trứng béo vàng ươm.', 'https://loremflickr.com/400/400/eggtart?random=1', 19000, 1),
-	(52, 4, 'Bánh Bông Lan Trứng Muối', 'Cốt bông lan phô mai kết hợp nước xốt thần thánh và trứng muối.', 'https://loremflickr.com/400/400/cake,egg?random=1', 49000, 1),
-	(53, 5, 'Cà Phê Caramel Đá Xay', 'Cà phê caramel đá xay nhuyễn mịn màng.', 'https://loremflickr.com/400/400/frappuccino?random=2', 55000, 1),
-	(54, 5, 'Socola Đá Xay', 'Đá xay cacao đậm đà, phía trên bọc lớp Whipping cream béo ngậy.', 'https://loremflickr.com/400/400/chocolate,smoothie?random=1', 55000, 1),
-	(55, 5, 'Matcha Đá Xay Hokkaido', 'Trà xanh đá xay 100% bột Matcha từ Nhật Bản hòa với sữa tươi.', 'https://loremflickr.com/400/400/matcha,smoothie?random=1', 59000, 1),
-	(56, 5, 'Dâu Tây Đá Xay Vani', 'Sinh tố đá xay từ mứt dâu tươi và kem vani Pháp.', 'https://loremflickr.com/400/400/strawberry,smoothie?random=1', 55000, 1),
-	(57, 5, 'Vani Crème Frappuccino', 'Đá xay vị Vani sữa nguyên chất không cà phê cực kỳ thơm ngọt.', 'https://loremflickr.com/400/400/milkshake?random=1', 49000, 1),
-	(58, 5, 'Mocha Đá Xay Phủ Cacao', 'Món đá xay kết tinh giữa cà phê espresso dũng mãnh và syrup sô-cô-la tăm tối.', 'https://loremflickr.com/400/400/mocha,smoothie?random=1', 59000, 1),
-	(59, 5, 'Khoai Môn Đá Xay Béo', 'Hương vị Taro nguyên chất xay sữa đá tím lịm, có kem tươi lôi cuốn.', 'https://loremflickr.com/400/400/taro,drink?random=1', 55000, 1),
-	(60, 5, 'Cookie Cream Đá Xay', 'Bánh oreo vụn xay nhuyễn cùng bơ sữa ngậy rít.', 'https://loremflickr.com/400/400/oreo,drink?random=1', 59000, 1),
-	(61, 5, 'Sữa Chua Đá Xay Việt Quất', 'Sữa chua men sống đá xay với thạch việt quất thanh nhiệt cơ thể.', 'https://loremflickr.com/400/400/blueberry,smoothie?random=1', 55000, 1),
-	(62, 5, 'Sữa Chua Đá Xay Xoài', 'Vị dẻo mịn từ sữa chua với puree xoài tươi ngon ngọt lự.', 'https://loremflickr.com/400/400/mango,smoothie?random=1', 55000, 1);
+	(44, 4, 'Bánh Sừng Trâu Phô Mai', 'Phiên bản cải tiến nhân phô mai chảy béo ngậy bên trong hạt hạnh nhân.', '1774271545572_65535_53942003026_11d8356907_z_400_400_nofilter.jpg', 35000, 1),
+	(45, 4, 'Bánh Mousse Trà Xanh', 'Bánh Mousse mềm mịn với lớp trà xanh chát nhẹ, tan trong miệng.', '1774271584744_banh_mousse_ea00bf53f9ff483ea10fa0d8f17f1c18.jpg', 45000, 1),
+	(46, 4, 'Bánh Mousse Dâu Tây', 'Mousse dâu tươi được phủ sốt dâu đỏ au hấp dẫn.', '1774271633937_Banh_mousse_dautay_kisinfood_KISIN_0350.jpg', 45000, 1),
+	(47, 4, 'Bánh Phô Mai Nướng', 'Basque Cheesecake đặc biệt với vỏ bánh hơi xém, lõi mềm nhão béo ngậy.', '1774271683360_unnamed.jpg', 49000, 1),
+	(48, 4, 'Bánh Socola Lava', 'Socola đen nướng chảy nóng hổi từ trong lõi ra.', '1774271700235_MON_PHU_MB_Choco_Lava.jpg', 55000, 1),
+	(49, 4, 'Bánh Mì Bơ Tỏi (Korea)', 'Bánh mì nướng bơ tỏi kẹp bơ tỏi phô mai sốt kem Hàn Quốc.', '1774271715541_banh_mi_bo_toi_han_quoc_da_nang13.jpg', 39000, 1),
+	(50, 4, 'Bánh Donut Vani', 'Donut socola hoặc vani rắc đường màu bắt mắt.', '1774271753876_upload_2ba1557aa9b24a3f8d2953c8199106f4_grande.jpg', 25000, 1),
+	(51, 4, 'Bánh Tart Trứng', 'Vỏ lớp tart ngàn lớp cùng nhân trứng béo vàng ươm.', '1774271771070_2024_2_29_638447616936343098_bia.webp', 19000, 1);
 
-DROP TABLE IF EXISTS `users`;
+CREATE TABLE IF NOT EXISTS `guests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `point` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_phone_number` (`phone_number`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DELETE FROM `guests`;
+INSERT INTO `guests` (`id`, `fullname`, `phone_number`, `point`) VALUES
+	(1, '0911532866', 'Bui Duc Tri', 226);
+
+CREATE TABLE IF NOT EXISTS `guest_vouchers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `guest_id` int NOT NULL,
+  `voucher_id` int NOT NULL,
+  `is_used` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `guest_id` (`guest_id`),
+  KEY `voucher_id` (`voucher_id`),
+  CONSTRAINT `guest_vouchers_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`),
+  CONSTRAINT `guest_vouchers_ibfk_2` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+DELETE FROM `guest_vouchers`;
+
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,
   `email` varchar(255) NOT NULL,
@@ -257,31 +282,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   `active` tinyint(1) DEFAULT '1',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `users`;
 INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `phone`, `role`, `active`) VALUES
 	(1, 'chez1s.dev@gmail.com', 'cz', 'Bùi Đức Trí', '0901234567', 1, 1),
 	(2, 'haunvtv00054@fpt.edu.vn', '123', 'Nguyễn Vủ Hậu', '0907654321', 0, 1),
-	(3, 'leminh@polycoffee.com', '123', 'Lê Minh', '0123456789', 0, 1),
+	(3, 'demo@polycoffee.com', '123', 'Trợ Lý Khách Hàng', '0123456789', 0, 1),
 	(4, 'balam@polycoffee.com', '123', 'Bá Lãm', '0123456789', 0, 1),
-	(5, 'giabao@polycoffee.com', '123', 'Gia Bảo', '0123456789', 0, 1);
-
-/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
-
--- Dumping structure for table jav202_assignment.guests
-CREATE TABLE IF NOT EXISTS `guests` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fullname` varchar(255) NOT NULL,
-  `phone_number` varchar(255) NOT NULL,
-  `point` int DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_phone_number` (`phone_number`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+	(5, 'giabao@polycoffee.com', '123', 'Gia Bảo', '0123456789', 0, 1),
+	(6, 'leminh@polycoffee.com', '123', 'Lê Minh', '0123456789', 0, 1);
 
 CREATE TABLE IF NOT EXISTS `vouchers` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -289,19 +299,16 @@ CREATE TABLE IF NOT EXISTS `vouchers` (
   `required_points` int NOT NULL,
   `discount_amount` int NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+DELETE FROM `vouchers`;
 INSERT INTO `vouchers` (`id`, `name`, `required_points`, `discount_amount`) VALUES
 	(1, 'Giảm 10.000đ', 10, 10000),
 	(2, 'Giảm 25.000đ', 25, 25000),
 	(3, 'Giảm 50.000đ', 45, 50000);
 
-CREATE TABLE IF NOT EXISTS `guest_vouchers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `guest_id` int NOT NULL,
-  `voucher_id` int NOT NULL,
-  `is_used` boolean DEFAULT FALSE,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`guest_id`) REFERENCES `guests`(`id`),
-  FOREIGN KEY (`voucher_id`) REFERENCES `vouchers`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+/*!40103 SET TIME_ZONE=IFNULL(@OLD_TIME_ZONE, 'system') */;
+/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
+/*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
