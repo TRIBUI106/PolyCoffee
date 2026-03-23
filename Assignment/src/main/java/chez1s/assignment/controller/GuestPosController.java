@@ -87,7 +87,7 @@ public class GuestPosController extends HttpServlet {
                     }
                 }
                 
-                chez1s.assignment.entity.Bill bill = billService.checkoutGuestBill(checkoutRequest);
+                chez1s.assignment.entity.Bill bill = billService.checkoutGuestBill(checkoutRequest, null);
                 
                 resp.setContentType("application/json");
                 resp.getWriter().write("{\"success\":true,\"billId\":" + bill.getId() + ",\"billCode\":\"" + bill.getCode() + "\",\"total\":" + bill.getTotal() + "}");

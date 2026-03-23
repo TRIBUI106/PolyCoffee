@@ -183,7 +183,7 @@ public class BillService {
         bill.setTotal(total);
     }
 
-    public Bill checkoutGuestBill(chez1s.assignment.dto.CheckoutRequest request) {
+    public Bill checkoutGuestBill(chez1s.assignment.dto.CheckoutRequest request, Guest guest) {
         EntityManager em = JpaUtil.getEntityManager();
         EntityTransaction trans = em.getTransaction();
         try {
@@ -194,8 +194,11 @@ public class BillService {
             bill.setGuestPhone(request.getGuestPhone());
             bill.setCode("GUEST-" + System.currentTimeMillis());
             bill.setCreatedAt(new Date());
-            bill.setStatus(BillStatus.PENDING);
+            bill.setStatus(BillStatus.WAITING);
             bill.setPaymentMethod(request.getPaymentMethod());
+            if (guest != null) {
+                bill.setGuest(guest);
+            }
             
             if (request.getTableId() != null && request.getTableId() > 0) {
                 bill.setTable(em.find(CoffeeTable.class, request.getTableId()));
@@ -238,8 +241,8 @@ public class BillService {
         try {
             trans.begin();
             Bill bill = em.find(Bill.class, billId);
-            if (bill != null && bill.getStatus() == BillStatus.PENDING) {
-                bill.setStatus(BillStatus.PAID);
+            if (bill != null && bill.getStatus() == BillStatus.WAITING) {
+                bill.setStatus(BillStatus.FINISHED);
                 em.merge(bill);
             }
             trans.commit();

@@ -76,13 +76,13 @@ public class GuestOrderPosTest {
         when(em.find(Drink.class, 10)).thenReturn(mockDrink);
 
         // Act
-        Bill resultBill = billService.checkoutGuestBill(request);
+        Bill resultBill = billService.checkoutGuestBill(request, null);
 
         // Assert
         assertNotNull(resultBill, "Bill should not be null");
         assertEquals("Test Guest", resultBill.getGuestName());
         assertEquals("0901234567", resultBill.getGuestPhone());
-        assertEquals(BillStatus.PENDING, resultBill.getStatus()); // Guest POS orders begin as PENDING
+        assertEquals(BillStatus.WAITING, resultBill.getStatus()); // Guest POS orders begin as WAITING
         assertEquals("CASH", resultBill.getPaymentMethod());
         assertEquals(50000, resultBill.getTotal()); // 25000 * 2
         assertNull(resultBill.getTable(), "Table should be null if not requested");
@@ -125,7 +125,7 @@ public class GuestOrderPosTest {
         when(em.find(Drink.class, 1)).thenReturn(mockDrink);
 
         // Act
-        Bill resultBill = billService.checkoutGuestBill(request);
+        Bill resultBill = billService.checkoutGuestBill(request, null);
 
         // Assert
         assertNotNull(resultBill);
@@ -133,7 +133,7 @@ public class GuestOrderPosTest {
         assertEquals(5, resultBill.getTable().getId());
         assertEquals("VIETQR", resultBill.getPaymentMethod());
         assertEquals(30000, resultBill.getTotal());
-        assertEquals(BillStatus.PENDING, resultBill.getStatus());
+        assertEquals(BillStatus.WAITING, resultBill.getStatus());
 
         verify(trans).begin();
         verify(em).persist(any(Bill.class));
@@ -153,7 +153,7 @@ public class GuestOrderPosTest {
         when(trans.isActive()).thenReturn(true); 
 
         // Act & Assert
-        Exception exception = assertThrows(RuntimeException.class, () -> billService.checkoutGuestBill(request));
+        Exception exception = assertThrows(RuntimeException.class, () -> billService.checkoutGuestBill(request, null));
 
         assertEquals("Database Offline!", exception.getMessage());
         

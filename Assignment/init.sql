@@ -98,13 +98,16 @@ CREATE TABLE IF NOT EXISTS `bills` (
   `code` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total` int DEFAULT '0',
-  `status` enum('WAITING','FINISHED','CANCELLED') DEFAULT 'WAITING',
+  `status` enum('PENDING','WAITING','PAID','FINISHED','CANCELLED') DEFAULT 'WAITING',
   `guest_name` varchar(255) DEFAULT NULL,
   `guest_phone` varchar(255) DEFAULT NULL,
+  `guest_id` int DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`),
   KEY `fk_bill_user` (`user_id`),
-  CONSTRAINT `fk_bill_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+  KEY `fk_bill_guest` (`guest_id`),
+  CONSTRAINT `fk_bill_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+  CONSTRAINT `fk_bill_guest` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Dumping data for table jav202_assignment.bills: ~22 rows (approximately)
@@ -251,3 +254,16 @@ INSERT INTO `users` (`id`, `email`, `password`, `full_name`, `phone`, `role`, `a
 /*!40014 SET FOREIGN_KEY_CHECKS=IFNULL(@OLD_FOREIGN_KEY_CHECKS, 1) */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40111 SET SQL_NOTES=IFNULL(@OLD_SQL_NOTES, 1) */;
+
+-- Dumping structure for table jav202_assignment.guests
+CREATE TABLE IF NOT EXISTS `guests` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `fullname` varchar(255) NOT NULL,
+  `phone_number` varchar(255) NOT NULL,
+  `point` int DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_phone_number` (`phone_number`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+

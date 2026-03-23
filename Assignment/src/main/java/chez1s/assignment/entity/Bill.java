@@ -20,6 +20,10 @@ public class Bill {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "guest_id")
+    private Guest guest;
+
     @Column(name = "guest_name")
     private String guestName;
 
