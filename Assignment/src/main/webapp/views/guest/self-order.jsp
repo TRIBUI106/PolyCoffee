@@ -202,8 +202,13 @@
                     <!-- Populated dynamically -->
                 </div>
 
-                <div class="flex justify-between items-end py-1">
-                    <span class="text-slate-500 font-medium text-sm">Tổng cộng</span>
+                <div class="flex justify-between items-center py-1">
+                    <div class="flex flex-col">
+                        <span class="text-slate-500 font-medium text-xs">Tổng cộng</span>
+                        <div class="flex items-center gap-1.5 text-amber-600 font-bold text-[10px] mt-0.5">
+                            <i data-lucide="award" class="w-3 h-3"></i> Tích lũy +<span id="pointsPreview">0</span> điểm
+                        </div>
+                    </div>
                     <span class="text-3xl font-black text-slate-900 tabular-nums" id="cartTotal">0 ₫</span>
                 </div>
 
@@ -267,47 +272,59 @@
     </div>
 
     <script>
-        lucide.createIcons();
-        let cart = [];
-        let subtotalAmt = 0;
-        let activeVoucherId = null;
-        let activeVoucherDiscount = 0;
-        let currentShopPhone = "";
-        let currentShopPoints = 0;
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            
+            // Initial render
+            renderCart();
+        });
+
+        const cartState = {
+            items: [],
+            subtotal: 0,
+            activeVoucher: { id: null, name: '', discount: 0 }
+        };
 
         function strPrice(val) {
             return new Intl.NumberFormat('vi-VN').format(val) + " ₫";
         }
         
         setInterval(() => {
-            const d = new Date();
-            document.getElementById('clock').innerText = d.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+            const clockEl = document.getElementById('clock');
+            if (clockEl) {
+                const d = new Date();
+                clockEl.innerText = d.toLocaleTimeString('vi-VN', {hour: '2-digit', minute:'2-digit'});
+            }
         }, 1000);
 
         // -- Cart Logic --
         function addToCart(id, name, price, img) {
-            let item = cart.find(i => i.drinkId === id);
+            let item = cartState.items.find(i => i.drinkId === id);
             if (item) {
                 item.quantity++;
             } else {
-                cart.push({ drinkId: id, name, price, quantity: 1, note: '' });
+                cartState.items.push({ drinkId: id, name, price, quantity: 1, note: '' });
             }
             renderCart();
         }
 
+        window.addToCart = addToCart; // Ensure global access for onclick
+        window.updateQty = updateQty;
+        window.clearCart = clearCart;
+
         function updateQty(id, change) {
-            let item = cart.find(i => i.drinkId === id);
+            let item = cartState.items.find(i => i.drinkId === id);
             if (item) {
                 item.quantity += change;
                 if (item.quantity <= 0) {
-                    cart = cart.filter(i => i.drinkId !== id);
+                    cartState.items = cartState.items.filter(i => i.drinkId !== id);
                 }
                 renderCart();
             }
         }
 
         function clearCart() {
-            cart = [];
+            cartState.items = [];
             removeVoucher();
             renderCart();
         }
@@ -319,9 +336,11 @@
             const pointsPreview = document.getElementById('pointsPreview');
             const listContainer = document.getElementById('voucherListContainer');
 
+            if (!container || !totalEl || !checkoutBtn) return;
+
             let total = 0;
 
-            if (cart.length === 0) {
+            if (cartState.items.length === 0) {
                 container.innerHTML = `
                     <div class="h-full flex flex-col items-center justify-center text-slate-300">
                         <div class="bg-slate-100 p-4 rounded-full mb-4 ring-8 ring-white">
@@ -331,43 +350,42 @@
                         <p class="text-xs text-slate-400 mt-1">Chọn thức uống từ menu để đặt hàng</p>
                     </div>
                 `;
-                lucide.createIcons();
+                if (typeof lucide !== 'undefined') lucide.createIcons();
                 totalEl.innerText = "0 ₫";
-                pointsPreview.innerText = "0";
+                if (pointsPreview) pointsPreview.innerText = "0";
                 checkoutBtn.disabled = true;
-                listContainer.classList.add('hidden');
+                if (listContainer) listContainer.classList.add('hidden');
                 return;
             }
 
             checkoutBtn.disabled = false;
 
             let html = '';
-            cart.forEach(item => {
+            cartState.items.forEach(item => {
                 total += item.price * item.quantity;
-                html += `
-                <div class="bg-white p-3.5 rounded-2xl border border-gray-100/80 shadow-sm flex flex-col gap-3 group relative transform hover:-translate-y-0.5 transition-all duration-200">
-                    <div class="flex justify-between items-center gap-4">
-                        <div class="flex-grow pr-2">
-                            <h4 class="font-bold text-slate-900 text-sm line-clamp-2 leading-tight">\${item.name}</h4>
-                            <p class="text-coffee-600 font-bold mt-1 text-sm tabular-nums">\${strPrice(item.price)}</p>
-                        </div>
-                        <div class="flex items-center bg-slate-50 rounded-lg border border-slate-100 p-0.5">
-                            <button onclick="updateQty(\${item.drinkId}, -1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>
-                            <span class="w-8 text-center font-bold text-sm text-slate-900 tabular-nums">\${item.quantity}</span>
-                            <button onclick="updateQty(\${item.drinkId}, 1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>
-                        </div>
-                    </div>
-                </div>`;
+                html += '<div class="bg-white p-3.5 rounded-2xl border border-gray-100/80 shadow-sm flex flex-col gap-3 group relative transform hover:-translate-y-0.5 transition-all duration-200">' +
+                    '<div class="flex justify-between items-center gap-4">' +
+                        '<div class="flex-grow pr-2">' +
+                            '<h4 class="font-bold text-slate-900 text-sm line-clamp-2 leading-tight">' + item.name + '</h4>' +
+                            '<p class="text-coffee-600 font-bold mt-1 text-sm tabular-nums">' + strPrice(item.price) + '</p>' +
+                        '</div>' +
+                        '<div class="flex items-center bg-slate-50 rounded-lg border border-slate-100 p-0.5">' +
+                            '<button onclick="updateQty(' + item.drinkId + ', -1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="minus" class="w-3.5 h-3.5"></i></button>' +
+                            '<span class="w-8 text-center font-bold text-sm text-slate-900 tabular-nums">' + item.quantity + '</span>' +
+                            '<button onclick="updateQty(' + item.drinkId + ', 1)" class="w-8 h-8 rounded-md bg-white text-slate-500 hover:text-slate-900 hover:shadow-sm flex items-center justify-center transition-all cursor-pointer"><i data-lucide="plus" class="w-3.5 h-3.5"></i></button>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
             });
 
             container.innerHTML = html;
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
             
-            subtotalAmt = total;
-            let finalAmt = Math.max(0, subtotalAmt - activeVoucherDiscount);
+            cartState.subtotal = total;
+            let finalAmt = Math.max(0, cartState.subtotal - cartState.activeVoucher.discount);
 
             totalEl.innerText = strPrice(finalAmt);
-            pointsPreview.innerText = Math.floor(finalAmt / 1000);
+            if (pointsPreview) pointsPreview.innerText = Math.floor(finalAmt / 1000);
         }
 
         // -- Apply Vouchers in Checkout --
@@ -410,27 +428,43 @@
         }
 
         function applyVoucher(id, name, discount) {
-            activeVoucherId = id;
-            activeVoucherDiscount = discount;
-            document.getElementById('voucherListContainer').classList.add('hidden');
-            document.getElementById('activeVoucherName').innerText = name;
-            document.getElementById('activeVoucherBox').classList.remove('hidden');
-            document.getElementById('activeVoucherBox').classList.add('flex');
+            cartState.activeVoucher.id = id;
+            cartState.activeVoucher.discount = discount;
+            const container = document.getElementById('voucherListContainer');
+            if (container) container.classList.add('hidden');
+            const voucherNameEl = document.getElementById('activeVoucherName');
+            if (voucherNameEl) voucherNameEl.innerText = name;
+            const voucherBox = document.getElementById('activeVoucherBox');
+            if (voucherBox) {
+                voucherBox.classList.remove('hidden');
+                voucherBox.classList.add('flex');
+            }
             renderCart();
         }
 
         function removeVoucher() {
-            activeVoucherId = null;
-            activeVoucherDiscount = 0;
-            document.getElementById('activeVoucherBox').classList.add('hidden');
-            document.getElementById('activeVoucherBox').classList.remove('flex');
+            cartState.activeVoucher.id = null;
+            cartState.activeVoucher.discount = 0;
+            const voucherBox = document.getElementById('activeVoucherBox');
+            if (voucherBox) {
+                voucherBox.classList.add('hidden');
+                voucherBox.classList.remove('flex');
+            }
             renderCart();
         }
 
+        window.applyVoucher = applyVoucher;
+        window.removeVoucher = removeVoucher;
+
         function checkout() {
-            if (cart.length === 0) return;
-            const name = document.getElementById('guestName').value.trim();
-            const phone = document.getElementById('guestPhone').value.trim();
+            if (cartState.items.length === 0) return;
+            const nameEl = document.getElementById('guestName');
+            const phoneEl = document.getElementById('guestPhone');
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (!nameEl || !phoneEl || !checkoutBtn) return;
+
+            const name = nameEl.value.trim();
+            const phone = phoneEl.value.trim();
 
             if (!name || !phone) {
                 Swal.fire({
@@ -445,14 +479,14 @@
 
             checkoutBtn.disabled = true;
             checkoutBtn.innerHTML = '<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i> Đang xử lý...';
-            lucide.createIcons();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
 
             const payload = {
                 guestName: name,
                 guestPhone: phone,
-                guestVoucherId: activeVoucherId,
+                guestVoucherId: cartState.activeVoucher.id,
                 paymentMethod: 'CASH', // Guest mostly pays at desk
-                items: cart.map(c => ({ drinkId: c.drinkId, quantity: c.quantity, note: c.note }))
+                items: cartState.items.map(c => ({ drinkId: c.drinkId, quantity: c.quantity, note: c.note }))
             };
 
             fetch('${pageContext.request.contextPath}/guest/order/checkout', {
@@ -578,6 +612,9 @@
                 });
                 document.getElementById('shopCatalogGrid').innerHTML = html || '<div class="col-span-2 text-center text-slate-500 py-6 font-semibold">Chưa có voucher nào.</div>';
                 lucide.createIcons();
+            }).catch(e => {
+                console.error("Voucher catalog error:", e);
+                document.getElementById('shopCatalogGrid').innerHTML = '<div class="col-span-2 text-center text-red-500 py-6 font-semibold">Lỗi tải danh sách voucher. Vui lòng thử lại sau.</div>';
             });
         }
 

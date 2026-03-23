@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `bills` (
   CONSTRAINT `FK3m8cewyw2n3mh24hbrwigmxd5` FOREIGN KEY (`guest_voucher_id`) REFERENCES `guest_vouchers` (`id`),
   CONSTRAINT `fk_bill_table` FOREIGN KEY (`table_id`) REFERENCES `coffee_tables` (`id`),
   CONSTRAINT `fk_bill_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `bills`;
 INSERT INTO `bills` (`id`, `user_id`, `code`, `created_at`, `total`, `status`, `guest_name`, `guest_phone`, `table_id`, `payment_method`, `discount_amount`, `guest_id`, `guest_voucher_id`) VALUES
@@ -63,7 +63,12 @@ INSERT INTO `bills` (`id`, `user_id`, `code`, `created_at`, `total`, `status`, `
 	(23, 1, 'BILL-1774191965872', '2026-03-22 22:06:06', 138000, 'FINISHED', NULL, NULL, NULL, NULL, NULL, NULL, NULL),
 	(24, NULL, 'GUEST-1774235179269', '2026-03-23 10:06:19', 113000, 'WAITING', '0911532866', 'Bui Duc Tri', NULL, 'CASH', 0, 1, NULL),
 	(25, 1, 'BILL-1774235640079', '2026-03-23 10:14:00', 110000, 'WAITING', NULL, NULL, NULL, NULL, 0, NULL, NULL),
-	(26, 1, 'BILL-1774271187301', '2026-03-23 20:06:27', 30000, 'WAITING', NULL, NULL, NULL, NULL, 0, NULL, NULL);
+	(26, 1, 'BILL-1774271187301', '2026-03-23 20:06:27', 30000, 'WAITING', NULL, NULL, NULL, NULL, 0, NULL, NULL),
+	(27, NULL, 'GUEST-1774272151492', '2026-03-23 20:22:31', 236000, 'WAITING', 'Tri Duc Bui', '0911532866', NULL, 'CASH', 0, 2, NULL),
+	(28, NULL, 'GUEST-1774272165662', '2026-03-23 20:22:46', 148000, 'WAITING', 'Tri Duc Bui', '0911532866', NULL, 'CASH', 0, 2, NULL),
+	(29, NULL, 'GUEST-1774272196873', '2026-03-23 20:23:17', 196000, 'WAITING', 'Tri Hehe', '0911532866', NULL, 'CASH', 0, 2, NULL),
+	(30, NULL, 'GUEST-1774272208050', '2026-03-23 20:23:28', 165000, 'WAITING', 'Tri Ne', '0911532866', NULL, 'CASH', 0, 2, NULL),
+	(31, NULL, 'GUEST-1774272223592', '2026-03-23 20:23:44', 633000, 'WAITING', 'Trí', '0911532866', NULL, 'CASH', 0, 2, NULL);
 
 CREATE TABLE IF NOT EXISTS `bill_details` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -77,7 +82,7 @@ CREATE TABLE IF NOT EXISTS `bill_details` (
   KEY `fk_detail_drink` (`drink_id`),
   CONSTRAINT `fk_detail_bill` FOREIGN KEY (`bill_id`) REFERENCES `bills` (`id`) ON DELETE CASCADE,
   CONSTRAINT `fk_detail_drink` FOREIGN KEY (`drink_id`) REFERENCES `drinks` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `bill_details`;
 INSERT INTO `bill_details` (`id`, `bill_id`, `drink_id`, `quantity`, `price`, `note`) VALUES
@@ -144,7 +149,27 @@ INSERT INTO `bill_details` (`id`, `bill_id`, `drink_id`, `quantity`, `price`, `n
 	(61, 24, 8, 1, 49000, ''),
 	(62, 25, 22, 1, 55000, NULL),
 	(63, 25, 11, 1, 55000, NULL),
-	(64, 26, 2, 1, 30000, NULL);
+	(64, 26, 2, 1, 30000, NULL),
+	(65, 27, 5, 1, 49000, ''),
+	(66, 27, 10, 1, 39000, ''),
+	(67, 27, 9, 1, 19000, ''),
+	(68, 27, 4, 1, 45000, ''),
+	(69, 27, 3, 1, 35000, ''),
+	(70, 27, 8, 1, 49000, ''),
+	(71, 28, 4, 1, 45000, ''),
+	(72, 28, 9, 1, 19000, ''),
+	(73, 28, 8, 1, 49000, ''),
+	(74, 28, 3, 1, 35000, ''),
+	(75, 29, 5, 4, 49000, ''),
+	(76, 30, 2, 1, 30000, ''),
+	(77, 30, 7, 1, 55000, ''),
+	(78, 30, 6, 1, 45000, ''),
+	(79, 30, 1, 1, 35000, ''),
+	(80, 31, 1, 11, 35000, ''),
+	(81, 31, 2, 2, 30000, ''),
+	(82, 31, 7, 1, 55000, ''),
+	(83, 31, 8, 2, 49000, ''),
+	(84, 31, 3, 1, 35000, '');
 
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -252,11 +277,12 @@ CREATE TABLE IF NOT EXISTS `guests` (
   `point` int DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_phone_number` (`phone_number`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `guests`;
 INSERT INTO `guests` (`id`, `fullname`, `phone_number`, `point`) VALUES
-	(1, '0911532866', 'Bui Duc Tri', 226);
+	(1, 'Bui Duc Tri', '0911532866', 226),
+	(2, 'Trí', '0911532866', 2756);
 
 CREATE TABLE IF NOT EXISTS `guest_vouchers` (
   `id` int NOT NULL AUTO_INCREMENT,

@@ -26,10 +26,12 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
     class="bg-white font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-coffee-200 selection:text-coffee-900 text-slate-900 antialiased"
   >
     <!-- 3D Background Canvas -->
-    <canvas
-      id="canvas-3d"
-      class="fixed inset-0 pointer-events-none z-0"
-    ></canvas>
+    <div data-aos="zoom-in" data-aos-delay="100">
+      <canvas
+        id="canvas-3d"
+        class="fixed inset-0 pointer-events-none z-0"
+      ></canvas>
+    </div>
 
     <!-- Premium Background Effects -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
@@ -56,16 +58,16 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"
         ></div>
 
-        <div
+        <!-- <div
           data-aos="fade-down"
           class="inline-flex items-center gap-2 bg-gradient-to-r from-coffee-50 to-orange-50 border border-coffee-200/50 px-5 py-2 rounded-full text-coffee-700 text-xs font-black mb-10 shadow-sm uppercase tracking-widest cursor-default hover:scale-105 transition-transform"
         >
           Trải nghiệm Phục vụ Cà phê Hiện đại
-        </div>
+        </div> -->
 
         <h1
           data-aos="fade-up"
-          data-aos-delay="200"
+          data-aos-delay="100"
           class="text-6xl md:text-[6.5rem] font-black text-slate-900 mb-8 leading-[1.05] tracking-tighter"
         >
           Nâng Tầm Kết Nối <br />
@@ -137,10 +139,6 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
         <div
           class="mt-20 flex items-center justify-center gap-8 opacity-60 grayscale filter hover:grayscale-0 transition-all duration-500"
         >
-          <span
-            class="text-sm font-bold tracking-widest uppercase text-slate-400"
-            >Trust Partners</span
-          >
           <i data-lucide="coffee" class="w-8 h-8 text-coffee-600"></i>
           <i data-lucide="croissant" class="w-8 h-8 text-amber-600"></i>
           <i data-lucide="cup-soda" class="w-8 h-8 text-rose-500"></i>
@@ -454,13 +452,13 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           <div class="flex flex-col sm:flex-row gap-6 justify-center">
             <a
               href="${pageContext.request.contextPath}/guest/order"
-              class="px-12 py-5 bg-white text-slate-900 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl"
+              class="px-12 py-4 bg-white text-slate-900 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl"
             >
               Đặt Món Ngay
             </a>
             <a
               href="#"
-              class="px-12 py-5 border-2 border-white/20 text-white rounded-2xl font-black text-xl hover:bg-white/10 transition-colors"
+              class="px-12 py-4 border-2 border-white/20 text-white rounded-2xl font-black text-xl hover:bg-white/10 transition-colors"
             >
               Liên Hệ Hợp Tác
             </a>
@@ -499,266 +497,293 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
         mirror: true,
       });
 
-      // --- 3D Realistic Coffee Cup (Three.js + AnimeJS) ---
+      // --- 3D Coffee Scene (Three.js + AnimeJS) ---
       const init3D = () => {
         const canvas = document.getElementById("canvas-3d");
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-          60,
-          window.innerWidth / window.innerHeight,
-          0.1,
-          1000,
-        );
-        const renderer = new THREE.WebGLRenderer({
-          canvas,
-          alpha: true,
-          antialias: true,
-        });
 
+        // Scene & Renderer
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x06020a, 0.026);
+
+        const camera = new THREE.PerspectiveCamera(
+          55, window.innerWidth / window.innerHeight, 0.1, 200,
+        );
+        camera.position.set(0, 2.5, 11);
+        camera.lookAt(0, 0, 0);
+
+        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.2;
+        renderer.toneMappingExposure = 1.1;
 
+        // Latte-art canvas texture
+        const latteCanvas = document.createElement("canvas");
+        latteCanvas.width = latteCanvas.height = 512;
+        const lc = latteCanvas.getContext("2d");
+        lc.fillStyle = "#060200";
+        lc.fillRect(0, 0, 512, 512);
+
+        const cremaGrad = lc.createRadialGradient(256, 256, 8, 256, 256, 248);
+        cremaGrad.addColorStop(0,    "rgba(210,135,42,1)");
+        cremaGrad.addColorStop(0.28, "rgba(155,82,22,1)");
+        cremaGrad.addColorStop(0.62, "rgba(75,32,8,1)");
+        cremaGrad.addColorStop(1,    "rgba(14,5,1,0)");
+        lc.fillStyle = cremaGrad;
+        lc.beginPath(); lc.arc(256, 256, 248, 0, Math.PI * 2); lc.fill();
+
+        for (let i = 0; i < 10; i++) {
+          const a = (i / 10) * Math.PI * 2;
+          const cx = 256 + Math.cos(a) * 95, cy = 256 + Math.sin(a) * 95;
+          const lg = lc.createRadialGradient(cx, cy, 0, cx, cy, 40);
+          lg.addColorStop(0,   "rgba(255,238,185,0.8)");
+          lg.addColorStop(0.5, "rgba(195,140,70,0.35)");
+          lg.addColorStop(1,   "rgba(150,95,30,0)");
+          lc.fillStyle = lg;
+          lc.beginPath(); lc.ellipse(cx, cy, 32, 18, a + Math.PI / 2, 0, Math.PI * 2); lc.fill();
+        }
+        lc.beginPath();
+        lc.strokeStyle = "rgba(245,210,155,0.55)"; lc.lineWidth = 2.2;
+        for (let t = 0.15; t < Math.PI * 5; t += 0.04) {
+          const r = 18 * t * 0.22;
+          const x = 256 + r * Math.cos(-t), y = 256 + r * Math.sin(-t);
+          t < 0.2 ? lc.moveTo(x, y) : lc.lineTo(x, y);
+        }
+        lc.stroke();
+        const cg = lc.createRadialGradient(256, 256, 0, 256, 256, 55);
+        cg.addColorStop(0, "rgba(255,245,210,0.55)"); cg.addColorStop(1, "rgba(0,0,0,0)");
+        lc.fillStyle = cg; lc.beginPath(); lc.arc(256, 256, 55, 0, Math.PI * 2); lc.fill();
+        const latteTexture = new THREE.CanvasTexture(latteCanvas);
+
+        // Materials
+        const ceramicMat = new THREE.MeshPhysicalMaterial({
+          color: 0xf8f5f0, roughness: 0.06, metalness: 0.0,
+          clearcoat: 1.0, clearcoatRoughness: 0.03, reflectivity: 0.9,
+        });
+        const beanMat = new THREE.MeshPhysicalMaterial({
+          color: 0x221004, roughness: 0.48, metalness: 0.04,
+          clearcoat: 0.4, clearcoatRoughness: 0.18,
+        });
+
+        // Cup group
         const cupGroup = new THREE.Group();
 
-        // ── 1. Ceramic Material ──────────────────────────────────────────
-        const ceramicMaterial = new THREE.MeshPhysicalMaterial({
-          color: 0xfaf8f5,
-          roughness: 0.08,
-          metalness: 0.0,
-          clearcoat: 0.95,
-          clearcoatRoughness: 0.04,
-          reflectivity: 0.85,
-        });
-
-        // ── 2. Cup body – dense lathe profile ───────────────────────────
-        const cupPoints = [
-          new THREE.Vector2(0.0, 0.0), // base centre
-          new THREE.Vector2(0.8, 0.0), // base outer flat
-          new THREE.Vector2(0.86, 0.06), // base fillet
-          new THREE.Vector2(0.92, 0.2), // lower taper start
-          new THREE.Vector2(1.02, 0.55),
-          new THREE.Vector2(1.14, 1.1),
-          new THREE.Vector2(1.26, 1.7),
-          new THREE.Vector2(1.36, 2.2),
-          new THREE.Vector2(1.42, 2.55),
-          new THREE.Vector2(1.46, 2.72), // lip outer edge
-          new THREE.Vector2(1.5, 2.76), // lip top
-          new THREE.Vector2(1.42, 2.76), // lip inner top
-          new THREE.Vector2(1.38, 2.72), // lip inner edge → wall inside
+        // Cup body — 14-pt lathe with wall thickness
+        const cupPts = [
+          new THREE.Vector2(0.00, 0.00), new THREE.Vector2(0.78, 0.00),
+          new THREE.Vector2(0.85, 0.06), new THREE.Vector2(0.91, 0.20),
+          new THREE.Vector2(1.00, 0.50), new THREE.Vector2(1.13, 1.05),
+          new THREE.Vector2(1.25, 1.60), new THREE.Vector2(1.35, 2.10),
+          new THREE.Vector2(1.42, 2.50), new THREE.Vector2(1.46, 2.68),
+          new THREE.Vector2(1.50, 2.74), new THREE.Vector2(1.54, 2.78),
+          new THREE.Vector2(1.46, 2.78), new THREE.Vector2(1.38, 2.70),
         ];
-        const cupGeometry = new THREE.LatheGeometry(cupPoints, 128);
-        const cup = new THREE.Mesh(cupGeometry, ceramicMaterial);
-        cup.castShadow = true;
-        cup.position.y = -1.38;
-        cupGroup.add(cup);
+        const cupMesh = new THREE.Mesh(new THREE.LatheGeometry(cupPts, 128), ceramicMat);
+        cupMesh.castShadow = true; cupMesh.position.y = -1.39;
+        cupGroup.add(cupMesh);
 
-        // ── 3. Handle – bezier tube for natural curve ────────────────────
-        const handleCurve = new THREE.QuadraticBezierCurve3(
-          new THREE.Vector3(1.44, 0.9, 0),
-          new THREE.Vector3(2.3, 0.6, 0),
-          new THREE.Vector3(1.44, -0.1, 0),
+        // Handle — bezier tube
+        const hCurve = new THREE.QuadraticBezierCurve3(
+          new THREE.Vector3(1.43,  0.92, 0),
+          new THREE.Vector3(2.32,  0.50, 0),
+          new THREE.Vector3(1.43, -0.10, 0),
         );
-        const handleGeometry = new THREE.TubeGeometry(
-          handleCurve,
-          48,
-          0.1,
-          16,
-          false,
+        const handleMesh = new THREE.Mesh(
+          new THREE.TubeGeometry(hCurve, 48, 0.092, 16, false), ceramicMat,
         );
-        const handle = new THREE.Mesh(handleGeometry, ceramicMaterial);
-        handle.castShadow = true;
-        cupGroup.add(handle);
+        handleMesh.castShadow = true;
+        cupGroup.add(handleMesh);
 
-        // ── 4. Coffee liquid surface ─────────────────────────────────────
-        const liquidGeometry = new THREE.CircleGeometry(1.36, 128);
-        const liquidMaterial = new THREE.MeshPhysicalMaterial({
-          color: 0x120600,
-          roughness: 0.03,
-          metalness: 0.05,
-          reflectivity: 0.95,
-        });
-        const liquid = new THREE.Mesh(liquidGeometry, liquidMaterial);
-        liquid.position.y = 1.36;
-        liquid.rotation.x = -Math.PI / 2;
-        cupGroup.add(liquid);
+        // Liquid with latte-art texture
+        const liquidMesh = new THREE.Mesh(
+          new THREE.CircleGeometry(1.34, 128),
+          new THREE.MeshPhysicalMaterial({
+            map: latteTexture, roughness: 0.04, metalness: 0.04, reflectivity: 0.92,
+          }),
+        );
+        liquidMesh.rotation.x = -Math.PI / 2; liquidMesh.position.y = 1.38;
+        cupGroup.add(liquidMesh);
 
-        // ── 5. Crema layer (ring) ────────────────────────────────────────
-        const cremaGeometry = new THREE.RingGeometry(0.3, 1.28, 128);
-        const cremaMaterial = new THREE.MeshStandardMaterial({
-          color: 0x7a3d10,
-          roughness: 0.95,
-          transparent: true,
-          opacity: 0.82,
-        });
-        const crema = new THREE.Mesh(cremaGeometry, cremaMaterial);
-        crema.position.y = 1.37;
-        crema.rotation.x = -Math.PI / 2;
-        cupGroup.add(crema);
-
-        // ── 6. Saucer – concave dish with rim ridge ──────────────────────
-        const saucerPoints = [
-          new THREE.Vector2(0.0, 0.0),
-          new THREE.Vector2(0.6, 0.0),
-          new THREE.Vector2(0.95, 0.08),
-          new THREE.Vector2(1.2, 0.18), // cup‑rest indent
-          new THREE.Vector2(1.5, 0.14),
-          new THREE.Vector2(2.0, 0.06),
-          new THREE.Vector2(2.6, 0.0),
-          new THREE.Vector2(2.9, 0.1), // outer rim start
-          new THREE.Vector2(3.1, 0.26), // rim shoulder
-          new THREE.Vector2(3.18, 0.34), // rim top
-          new THREE.Vector2(3.1, 0.36),
-          new THREE.Vector2(2.9, 0.3),
+        // Saucer — 12-pt with cup-rest groove and rim ridge
+        const sPts = [
+          new THREE.Vector2(0.00, 0.00), new THREE.Vector2(0.52, 0.00),
+          new THREE.Vector2(0.82, 0.07), new THREE.Vector2(1.12, 0.17),
+          new THREE.Vector2(1.48, 0.13), new THREE.Vector2(2.08, 0.05),
+          new THREE.Vector2(2.62, 0.00), new THREE.Vector2(2.92, 0.13),
+          new THREE.Vector2(3.12, 0.29), new THREE.Vector2(3.20, 0.40),
+          new THREE.Vector2(3.12, 0.42), new THREE.Vector2(2.92, 0.33),
         ];
-        const saucerGeometry = new THREE.LatheGeometry(saucerPoints, 128);
-        const saucer = new THREE.Mesh(saucerGeometry, ceramicMaterial);
-        saucer.castShadow = true;
-        saucer.receiveShadow = true;
-        saucer.position.y = -1.38;
-        cupGroup.add(saucer);
+        const saucerMesh = new THREE.Mesh(new THREE.LatheGeometry(sPts, 128), ceramicMat);
+        saucerMesh.castShadow = true; saucerMesh.receiveShadow = true;
+        saucerMesh.position.y = -1.39;
+        cupGroup.add(saucerMesh);
 
         scene.add(cupGroup);
 
-        // ── 7. Steam – sphere meshes driven by AnimeJS ───────────────────
-        const steamParticles = [];
-        const steamCount = 28;
-
-        for (let i = 0; i < steamCount; i++) {
-          const radius = 0.04 + Math.random() * 0.07;
-          const geo = new THREE.SphereGeometry(radius, 8, 8);
-          const mat = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            transparent: true,
-            opacity: 0,
-          });
-          const p = new THREE.Mesh(geo, mat);
-          const startX = (Math.random() - 0.5) * 1.1;
-          const startY = 1.55 + Math.random() * 0.6;
-          const startZ = (Math.random() - 0.5) * 1.1;
-          p.position.set(startX, startY, startZ);
-          p.userData = {
-            startX,
-            startY,
-            startZ,
-            riseSpeed: 0.006 + Math.random() * 0.009,
-            swayAmp: 0.004 + Math.random() * 0.006,
-            swayFreq: 0.8 + Math.random() * 1.2,
-            phase: Math.random() * Math.PI * 2,
+        // Orbiting coffee beans
+        const beans = [];
+        for (let i = 0; i < 14; i++) {
+          const geo = new THREE.SphereGeometry(0.19, 16, 12);
+          geo.applyMatrix4(new THREE.Matrix4().makeScale(1, 0.58, 0.46));
+          const bean = new THREE.Mesh(geo, beanMat);
+          const angle = (i / 14) * Math.PI * 2;
+          const dist  = 3.6 + Math.random() * 1.6;
+          const ht    = (Math.random() - 0.5) * 4.5;
+          bean.position.set(Math.cos(angle) * dist, ht, Math.sin(angle) * dist * 0.55 - 1);
+          bean.rotation.set(Math.random() * Math.PI, angle, Math.random() * Math.PI);
+          bean.userData = {
+            angle, dist, ht,
+            speed:   0.003 + Math.random() * 0.004,
+            bobAmp:  0.14  + Math.random() * 0.18,
+            bobFreq: 0.5   + Math.random() * 0.9,
+            phase:   Math.random() * Math.PI * 2,
           };
-          cupGroup.add(p);
-          steamParticles.push(p);
+          scene.add(bean); beans.push(bean);
+          bean.scale.set(0, 0, 0);
+          anime({ targets: bean.scale, x: 1, y: 1, z: 1,
+            duration: 700, delay: 300 + i * 70, easing: "easeOutBack" });
+        }
 
-          // AnimeJS handles the opacity fade loop per particle
-          anime({
-            targets: p.material,
+        // Steam sprites — AnimeJS opacity loops
+        const steamSprite = (() => {
+          const sc = document.createElement("canvas"); sc.width = sc.height = 64;
+          const sx = sc.getContext("2d");
+          const g = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
+          g.addColorStop(0,   "rgba(255,255,255,1)");
+          g.addColorStop(0.4, "rgba(255,255,255,0.3)");
+          g.addColorStop(1,   "rgba(255,255,255,0)");
+          sx.fillStyle = g; sx.beginPath(); sx.arc(32, 32, 32, 0, Math.PI * 2); sx.fill();
+          return new THREE.CanvasTexture(sc);
+        })();
+
+        const steamParticles = [];
+        for (let i = 0; i < 36; i++) {
+          const mat = new THREE.SpriteMaterial({
+            map: steamSprite, transparent: true, opacity: 0,
+            blending: THREE.AdditiveBlending, depthWrite: false,
+          });
+          const sp = new THREE.Sprite(mat);
+          const sc = 0.14 + Math.random() * 0.26;
+          sp.scale.set(sc, sc, 1);
+          const sx = (Math.random() - 0.5) * 0.85;
+          const sy = 1.55 + Math.random() * 0.55;
+          sp.position.set(sx, sy, (Math.random() - 0.5) * 0.85);
+          sp.userData = { sx, sy,
+            rise:     0.007 + Math.random() * 0.009,
+            swayAmp:  0.003 + Math.random() * 0.005,
+            swayFreq: 1.0   + Math.random() * 1.4,
+            phase:    Math.random() * Math.PI * 2,
+          };
+          cupGroup.add(sp); steamParticles.push(sp);
+          anime({ targets: mat,
             opacity: [
-              { value: 0, duration: 0 },
-              { value: 0.28, duration: 600 + Math.random() * 400 },
-              { value: 0, duration: 1200 + Math.random() * 800 },
+              { value: 0,    duration: 0 },
+              { value: 0.38, duration: 550 + Math.random() * 400 },
+              { value: 0,    duration: 1100 + Math.random() * 700 },
             ],
-            delay: Math.random() * 2400,
-            loop: true,
-            easing: "easeInOutSine",
+            delay: Math.random() * 2600, loop: true, easing: "easeInOutSine",
           });
         }
 
-        // ── 8. Lighting ──────────────────────────────────────────────────
-        scene.add(new THREE.AmbientLight(0xfff5e8, 0.55));
+        // Warm particle starfield
+        const bgCount = 900;
+        const bgPos = new Float32Array(bgCount * 3);
+        const bgCol = new Float32Array(bgCount * 3);
+        for (let i = 0; i < bgCount; i++) {
+          bgPos[i*3]   = (Math.random() - 0.5) * 80;
+          bgPos[i*3+1] = (Math.random() - 0.5) * 50;
+          bgPos[i*3+2] = (Math.random() - 0.5) * 40 - 15;
+          const t = Math.random();
+          bgCol[i*3]   = 0.38 + t * 0.38;
+          bgCol[i*3+1] = 0.18 + t * 0.18;
+          bgCol[i*3+2] = 0.04 + t * 0.04;
+        }
+        const bgGeo = new THREE.BufferGeometry();
+        bgGeo.setAttribute("position", new THREE.BufferAttribute(bgPos, 3));
+        bgGeo.setAttribute("color",    new THREE.BufferAttribute(bgCol, 3));
+        const bgMesh = new THREE.Points(bgGeo, new THREE.PointsMaterial({
+          size: 0.055, vertexColors: true, transparent: true, opacity: 0.55,
+          blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
+        }));
+        scene.add(bgMesh);
 
-        const keyLight = new THREE.SpotLight(0xffffff, 2.8);
-        keyLight.position.set(8, 14, 10);
-        keyLight.angle = Math.PI / 7;
-        keyLight.penumbra = 0.35;
-        keyLight.castShadow = true;
-        scene.add(keyLight);
+        // Lighting
+        scene.add(new THREE.AmbientLight(0xfff3e0, 0.5));
 
-        const fillLight = new THREE.PointLight(0xffd4a0, 0.9);
-        fillLight.position.set(-9, 4, 7);
-        scene.add(fillLight);
+        const key = new THREE.SpotLight(0xffffff, 3.6);
+        key.position.set(7, 16, 11); key.angle = Math.PI / 6.5; key.penumbra = 0.4;
+        key.castShadow = true; key.shadow.mapSize.width = key.shadow.mapSize.height = 2048;
+        scene.add(key);
 
-        const rimLight = new THREE.DirectionalLight(0xffccaa, 1.4);
-        rimLight.position.set(-3, 9, -10);
-        scene.add(rimLight);
+        const fill = new THREE.PointLight(0xff9050, 1.3);
+        fill.position.set(-11, 3, 9); scene.add(fill);
 
-        const bounceLight = new THREE.PointLight(0xffeedd, 0.35);
-        bounceLight.position.set(0, -6, 6);
-        scene.add(bounceLight);
+        const rim = new THREE.DirectionalLight(0xffc875, 1.8);
+        rim.position.set(-5, 12, -13); scene.add(rim);
 
-        camera.position.set(0, 2, 10);
-        camera.lookAt(0, 0, 0);
+        const under = new THREE.PointLight(0xff6622, 0.45);
+        under.position.set(0, -9, 5); scene.add(under);
 
-        // ── 9. AnimeJS – cup float loop ──────────────────────────────────
-        const floatState = { y: 1.0 };
-        anime({
-          targets: floatState,
-          y: [0.7, 1.3],
-          duration: 3200,
-          direction: "alternate",
-          loop: true,
-          easing: "easeInOutSine",
-        });
+        // AnimeJS entry: scale + spin in
+        cupGroup.scale.set(0.01, 0.01, 0.01);
+        cupGroup.rotation.y = -Math.PI * 1.5;
+        anime.timeline({ easing: "easeOutExpo" })
+          .add({ targets: cupGroup.scale,    x: 1, y: 1, z: 1, duration: 1600 })
+          .add({ targets: cupGroup.rotation, y: 0,              duration: 1600 }, 0);
 
-        // ── 10. Input state ──────────────────────────────────────────────
-        let scrollY = window.scrollY;
-        let mouseX = 0;
-        let mouseY = 0;
-        let curRotX = 0;
-        let curRotZ = 0;
+        // AnimeJS float loop
+        const fl = { y: 0.8 };
+        anime({ targets: fl, y: [0.55, 1.05],
+          duration: 3400, direction: "alternate", loop: true, easing: "easeInOutSine" });
 
-        window.addEventListener("scroll", () => {
-          scrollY = window.scrollY;
-        });
+        // Input
+        let scrollY = window.scrollY, mouseX = 0, mouseY = 0, rotX = 0, rotZ = 0;
+        window.addEventListener("scroll",    () => { scrollY = window.scrollY; });
         window.addEventListener("mousemove", (e) => {
-          mouseX = e.clientX / window.innerWidth - 0.5;
+          mouseX = e.clientX / window.innerWidth  - 0.5;
           mouseY = e.clientY / window.innerHeight - 0.5;
         });
 
         const clock = new THREE.Clock();
 
-        // ── 11. Render loop ──────────────────────────────────────────────
-        const animate = () => {
-          requestAnimationFrame(animate);
-
+        // Render loop
+        const renderLoop = () => {
+          requestAnimationFrame(renderLoop);
           const elapsed = clock.getElapsedTime();
-          const scrollFactor = scrollY * 0.003;
+          const sf = scrollY * 0.003;
 
-          // Slow auto‑spin
-          cupGroup.rotation.y += 0.0035;
+          cupGroup.rotation.y += 0.0038;
+          rotX += (sf * 0.18 + mouseY * 0.12 - rotX) * 0.055;
+          rotZ += (mouseX * 0.12             - rotZ) * 0.055;
+          cupGroup.rotation.x = rotX; cupGroup.rotation.z = rotZ;
+          cupGroup.position.y = fl.y - sf * 1.5;
+          cupGroup.position.x = Math.cos(sf * 0.42) * 1.2;
 
-          // Smooth mouse tilt (lerp)
-          const targetRotX = Math.sin(scrollFactor) * 0.22 + mouseY * 0.14;
-          const targetRotZ = mouseX * 0.14;
-          curRotX += (targetRotX - curRotX) * 0.06;
-          curRotZ += (targetRotZ - curRotZ) * 0.06;
-          cupGroup.rotation.x = curRotX;
-          cupGroup.rotation.z = curRotZ;
+          beans.forEach((b) => {
+            const d = b.userData;
+            d.angle += d.speed;
+            b.position.x = Math.cos(d.angle) * d.dist;
+            b.position.z = Math.sin(d.angle) * d.dist * 0.55 - 1;
+            b.position.y = d.ht + Math.sin(elapsed * d.bobFreq + d.phase) * d.bobAmp;
+            b.rotation.y += d.speed * 1.6; b.rotation.x += d.speed * 0.4;
+          });
 
-          // Position: anime float + scroll parallax
-          cupGroup.position.y = floatState.y - scrollFactor * 1.6;
-          cupGroup.position.x = Math.cos(scrollFactor * 0.5) * 1.4;
-
-          // Steam drift (sway + rise, reset at top)
           steamParticles.forEach((p) => {
             const d = p.userData;
-            p.position.y += d.riseSpeed;
-            p.position.x =
-              d.startX +
-              Math.sin(elapsed * d.swayFreq + d.phase) * d.swayAmp * 60;
-
-            if (p.position.y > d.startY + 3.2) {
-              p.position.y = d.startY;
-              p.position.x = d.startX;
-            }
+            p.position.y += d.rise;
+            p.position.x = d.sx + Math.sin(elapsed * d.swayFreq + d.phase) * d.swayAmp * 55;
+            if (p.position.y > d.sy + 3.8) p.position.y = d.sy;
           });
+
+          bgMesh.rotation.y += 0.00028;
+          bgMesh.rotation.x  = sf * 0.04;
 
           renderer.render(scene, camera);
         };
 
-        animate();
+        renderLoop();
 
         window.addEventListener("resize", () => {
           camera.aspect = window.innerWidth / window.innerHeight;
@@ -769,63 +794,25 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
       // --- AnimeJS Micro-Animations ---
       const initAnime = () => {
-        // Floating animation for partner icons in Hero
         anime({
-          targets: ".mt-20 i",
-          translateY: [-8, 8],
-          duration: 2200,
-          direction: "alternate",
-          loop: true,
-          easing: "easeInOutSine",
-          delay: anime.stagger(240),
+          targets: ".mt-20 i", translateY: [-8, 8],
+          duration: 2200, direction: "alternate", loop: true,
+          easing: "easeInOutSine", delay: anime.stagger(240),
         });
 
-        // Pulse ring on feature cards when they enter view
-        document
-          .querySelectorAll("[data-aos='fade-up'] .w-16")
-          .forEach((icon) => {
-            icon.addEventListener("mouseenter", () => {
-              anime({
-                targets: icon,
-                scale: [1, 1.18, 1],
-                rotate: [0, 8, 0],
-                duration: 500,
-                easing: "easeOutBack",
-              });
-            });
-          });
-
-        // CTA primary button – magnetic feel
-        const primaryCTAs = document.querySelectorAll(
-          'a[href*="guest/order"], a[href*="employee/pos"]',
-        );
-        primaryCTAs.forEach((btn) => {
-          btn.addEventListener("mouseenter", () => {
-            anime({
-              targets: btn,
-              scale: 1.05,
-              duration: 280,
-              easing: "easeOutQuad",
-            });
-          });
-          btn.addEventListener("mouseleave", () => {
-            anime({
-              targets: btn,
-              scale: 1.0,
-              duration: 280,
-              easing: "easeOutQuad",
-            });
-          });
+        document.querySelectorAll(".w-16.h-16").forEach((icon) => {
+          icon.addEventListener("mouseenter", () =>
+            anime({ targets: icon, scale: [1, 1.2, 1], rotate: [0, 8, 0], duration: 480, easing: "easeOutBack" })
+          );
         });
 
-        // Review cards staggered entrance
-        anime({
-          targets: "[data-aos='fade-up']",
-          opacity: [0, 1],
-          translateY: [30, 0],
-          duration: 700,
-          delay: anime.stagger(120, { start: 200 }),
-          easing: "easeOutCubic",
+        document.querySelectorAll('a[href*="guest/order"], a[href*="employee/pos"]').forEach((btn) => {
+          btn.addEventListener("mouseenter", () =>
+            anime({ targets: btn, scale: 1.05, duration: 260, easing: "easeOutQuad" })
+          );
+          btn.addEventListener("mouseleave", () =>
+            anime({ targets: btn, scale: 1,    duration: 260, easing: "easeOutQuad" })
+          );
         });
       };
 

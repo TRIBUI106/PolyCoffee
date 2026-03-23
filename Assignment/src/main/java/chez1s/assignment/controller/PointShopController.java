@@ -47,8 +47,17 @@ public class PointShopController extends HttpServlet {
                 resp.getWriter().write("{\"success\":false,\"message\":\"Không tìm thấy số điện thoại.\"}");
             }
         } else if (uri.endsWith("/vouchers")) {
-            // Get all catalog
-            resp.getWriter().write(gson.toJson(pointShopService.getAvailableVouchers()));
+            java.util.List<chez1s.assignment.entity.Voucher> vouchers = pointShopService.getAvailableVouchers();
+            java.util.List<java.util.Map<String, Object>> catalog = new java.util.ArrayList<>();
+            for (var v : vouchers) {
+                java.util.Map<String, Object> item = new java.util.HashMap<>();
+                item.put("id", v.getId());
+                item.put("name", v.getName());
+                item.put("requiredPoints", v.getRequiredPoints());
+                item.put("discountAmount", v.getDiscountAmount());
+                catalog.add(item);
+            }
+            resp.getWriter().write(gson.toJson(catalog));
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
