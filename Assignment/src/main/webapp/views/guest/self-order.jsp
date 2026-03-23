@@ -596,27 +596,67 @@
                 let html = '';
                 data.forEach(v => {
                     html += `
-                        <div class="bg-white rounded-2xl border border-dashed border-coffee-300 p-5 flex items-center justify-between group hover:border-coffee-500 hover:shadow-lg transition-all">
-                            <div class="flex items-center gap-4">
-                                <div class="bg-coffee-50 text-coffee-600 p-3 rounded-full group-hover:bg-coffee-600 group-hover:text-white transition-colors duration-300">
-                                    <i data-lucide="ticket" class="w-6 h-6"></i>
+                        <div class="relative group cursor-default">
+                            <!-- Ticket Punch Hole Decoration -->
+                            <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50/50 rounded-full z-10 hidden sm:block border-r border-slate-100"></div>
+                            <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50/50 rounded-full z-10 hidden sm:block border-l border-slate-100"></div>
+                            
+                            <div class="bg-white rounded-3xl border border-slate-100 p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between shadow-sm hover:shadow-2xl hover:shadow-coffee-500/10 transition-all duration-500 gap-2 relative overflow-hidden">
+                                <div class="flex items-center gap-5 p-4 flex-grow bg-slate-50/30 rounded-2xl group-hover:bg-white transition-colors duration-500">
+                                    <div class="relative">
+                                        <div class="bg-gradient-to-br from-coffee-600 to-coffee-800 text-white p-4 rounded-2xl shadow-lg shadow-coffee-200 group-hover:rotate-12 transition-transform duration-500">
+                                            <i data-lucide="ticket" class="w-7 h-7"></i>
+                                        </div>
+                                        <div class="absolute -top-1.5 -right-1.5 w-4 h-4 bg-amber-400 rounded-full border-2 border-white animate-pulse"></div>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-black text-slate-900 text-xl leading-tight mb-2 group-hover:text-coffee-700 transition-colors">\${v.name}</h4>
+                                        <div class="flex flex-wrap items-center gap-2">
+                                            <span class="inline-flex items-center gap-1.5 bg-amber-50 text-amber-700 font-black text-[12px] px-3 py-1.5 rounded-full border border-amber-100/50">
+                                                <i data-lucide="gem" class="w-3.5 h-3.5"></i> \${v.requiredPoints} Điểm
+                                            </span>
+                                            <span class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">Loyalty Reward</span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h4 class="font-black text-slate-900 text-lg leading-tight">\${v.name}</h4>
-                                    <p class="text-[12px] font-bold text-coffee-600 mt-1 flex items-center gap-1.5"><i data-lucide="award" class="w-3.5 h-3.5"></i> Yêu cầu \${v.requiredPoints} Điểm</p>
+                                
+                                <div class="flex items-center gap-3 p-4 sm:border-l border-dashed border-slate-200 sm:ml-2">
+                                    <div class="flex items-center bg-slate-100/50 hover:bg-slate-100 p-1 rounded-xl transition-colors">
+                                        <button onclick="changeVoucherQty(\${v.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-coffee-600 transition-colors active:scale-75">
+                                            <i data-lucide="minus" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                        <span id="v-qty-\${v.id}" class="w-8 text-center font-black text-slate-900 text-base tabular-nums">1</span>
+                                        <button onclick="changeVoucherQty(\${v.id}, 1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-coffee-600 transition-colors active:scale-75">
+                                            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                                        </button>
+                                    </div>
+                                    
+                                    <button onclick="redeemPoints(\${v.id}, \${v.requiredPoints})" class="group/btn relative overflow-hidden bg-slate-900 text-white font-black py-3.5 px-8 rounded-2xl transition-all hover:pr-10 active:scale-95 shadow-lg shadow-slate-200">
+                                        <span class="relative z-10 flex items-center gap-2 text-xs uppercase tracking-widest">
+                                            Đổi <i data-lucide="chevron-right" class="w-4 h-4 group-hover/btn:translate-x-1 transition-transform"></i>
+                                        </span>
+                                        <div class="absolute inset-0 bg-gradient-to-r from-coffee-600 to-coffee-400 opacity-0 group-hover/btn:opacity-100 transition-opacity duration-300"></div>
+                                    </button>
                                 </div>
                             </div>
-                            <button onclick="redeemPoints(\${v.id}, \${v.requiredPoints})" class="bg-slate-900 hover:bg-coffee-700 text-white font-bold py-2.5 px-6 rounded-xl transition-all shadow-md active:scale-95 text-sm uppercase tracking-wide">Đổi Ngay</button>
                         </div>
                     `;
                 });
-                document.getElementById('shopCatalogGrid').innerHTML = html || '<div class="col-span-2 text-center text-slate-500 py-6 font-semibold">Chưa có voucher nào.</div>';
-                lucide.createIcons();
+                document.getElementById('shopCatalogGrid').innerHTML = html || '<div class="col-span-2 text-center text-slate-500 py-12 font-semibold">Chưa có voucher nào.</div>';
+                if (typeof lucide !== 'undefined') lucide.createIcons();
             }).catch(e => {
                 console.error("Voucher catalog error:", e);
-                document.getElementById('shopCatalogGrid').innerHTML = '<div class="col-span-2 text-center text-red-500 py-6 font-semibold">Lỗi tải danh sách voucher. Vui lòng thử lại sau.</div>';
+                document.getElementById('shopCatalogGrid').innerHTML = '<div class="col-span-2 text-center text-red-500 py-12 font-semibold">Lỗi tải danh sách voucher. Vui lòng thử lại sau.</div>';
             });
         }
+
+        window.changeVoucherQty = function(id, delta) {
+            const el = document.getElementById('v-qty-' + id);
+            let val = parseInt(el.innerText) + delta;
+            if (val < 1) val = 1;
+            if (val > 10) val = 10; // limit per redeem
+            el.innerText = val;
+        };
 
         function checkPoints() {
             const p = document.getElementById('shopPhoneInput').value.trim();
@@ -646,19 +686,25 @@
                 Swal.fire({icon: 'warning', title: '<span class="font-sans">Lỗi</span>', html: 'Vui lòng tra cứu số điện thoại của bạn trước.', customClass: {popup: 'rounded-2xl'}});
                 return;
             }
-            if (currentShopPoints < reqPoints) {
-                Swal.fire({icon: 'error', title: '<span class="font-sans">Rất tiếc!</span>', html: 'Bạn không đủ điểm để đổi voucher này.', customClass: {popup: 'rounded-2xl'}});
+            
+            const qty = parseInt(document.getElementById('v-qty-' + voucherId).innerText);
+            const totalPoints = reqPoints * qty;
+
+            if (currentShopPoints < totalPoints) {
+                Swal.fire({icon: 'error', title: '<span class="font-sans">Rất tiếc!</span>', html: 'Bạn không đủ điểm để đổi ' + qty + ' voucher này. (Cần ' + totalPoints + ' điểm)', customClass: {popup: 'rounded-2xl'}});
                 return;
             }
 
             Swal.fire({
                 title: 'Xác nhận đổi?',
-                text: "Bạn sẽ dùng " + reqPoints + " điểm để lấy voucher.",
+                html: `<div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <p class="text-slate-600 text-sm">Bạn sẽ dùng <span class="text-coffee-600 font-black">\${totalPoints}</span> điểm để đổi <span class="text-slate-900 font-black">\${qty}</span> voucher.</p>
+                       </div>`,
                 icon: 'question',
                 showCancelButton: true,
                 confirmButtonColor: '#6f4e37',
                 cancelButtonColor: '#94a3b8',
-                confirmButtonText: 'Chắc chắn',
+                confirmButtonText: 'Đổi Voucher',
                 cancelButtonText: 'Hủy',
                 customClass: { popup: 'rounded-2xl font-sans' }
             }).then((result) => {
@@ -666,10 +712,10 @@
                     fetch('${pageContext.request.contextPath}/guest/pointshop/redeem', {
                         method: 'POST',
                         headers: {'Content-Type': 'application/json'},
-                        body: JSON.stringify({phone: currentShopPhone, voucherId: voucherId})
+                        body: JSON.stringify({phone: currentShopPhone, voucherId: voucherId, quantity: qty})
                     }).then(r => r.json()).then(d => {
                         if (d.success) {
-                            Swal.fire({icon: 'success', title: 'Thành công!', text: 'Voucher đã được thêm vào số điện thoại của bạn.', customClass: { popup: 'rounded-2xl font-sans' }});
+                            Swal.fire({icon: 'success', title: 'Thành công!', text: qty + ' Voucher đã được thêm vào số điện thoại của bạn.', customClass: { popup: 'rounded-2xl font-sans' }});
                             checkPoints(); // reduce points live
                         } else {
                             Swal.fire({icon: 'error', title: 'Lỗi', text: d.message, customClass: { popup: 'rounded-2xl font-sans' }});

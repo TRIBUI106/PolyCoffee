@@ -501,25 +501,34 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
       const init3D = () => {
         const canvas = document.getElementById("canvas-3d");
 
-        // Scene & Renderer
+        // ── Scene ─────────────────────────────────────────────────────────
         const scene = new THREE.Scene();
         scene.fog = new THREE.FogExp2(0x06020a, 0.026);
 
         const camera = new THREE.PerspectiveCamera(
           55, window.innerWidth / window.innerHeight, 0.1, 200,
         );
-        camera.position.set(0, 2.5, 11);
-        camera.lookAt(0, 0, 0);
-
         const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
         renderer.toneMappingExposure = 1.1;
 
-        // Latte-art canvas texture
+        // ── Responsive config ─────────────────────────────────────────────
+        const getConfig = () => {
+          const w = window.innerWidth;
+          if (w < 640)  return { camZ: 14, startX:  0.0, startY: -1.2, landX:  0.0, landY: -5.5, scale: 0.52, beanDist: 2.6 };
+          if (w < 1024) return { camZ: 13, startX:  1.6, startY:  0.5, landX:  2.8, landY: -5.0, scale: 0.78, beanDist: 3.2 };
+                        return { camZ: 11, startX:  3.2, startY:  0.8, landX:  4.8, landY: -5.5, scale: 1.00, beanDist: 3.8 };
+        };
+        let cfg = getConfig();
+
+        camera.position.set(0, 2.5, cfg.camZ);
+        camera.lookAt(0, 0, 0);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // ── Latte-art canvas texture ──────────────────────────────────────
         const latteCanvas = document.createElement("canvas");
         latteCanvas.width = latteCanvas.height = 512;
         const lc = latteCanvas.getContext("2d");
@@ -557,7 +566,7 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
         lc.fillStyle = cg; lc.beginPath(); lc.arc(256, 256, 55, 0, Math.PI * 2); lc.fill();
         const latteTexture = new THREE.CanvasTexture(latteCanvas);
 
-        // Materials
+        // ── Materials ─────────────────────────────────────────────────────
         const ceramicMat = new THREE.MeshPhysicalMaterial({
           color: 0xf8f5f0, roughness: 0.06, metalness: 0.0,
           clearcoat: 1.0, clearcoatRoughness: 0.03, reflectivity: 0.9,
@@ -567,10 +576,9 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           clearcoat: 0.4, clearcoatRoughness: 0.18,
         });
 
-        // Cup group
+        // ── Cup group ─────────────────────────────────────────────────────
         const cupGroup = new THREE.Group();
 
-        // Cup body — 14-pt lathe with wall thickness
         const cupPts = [
           new THREE.Vector2(0.00, 0.00), new THREE.Vector2(0.78, 0.00),
           new THREE.Vector2(0.85, 0.06), new THREE.Vector2(0.91, 0.20),
@@ -584,29 +592,19 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
         cupMesh.castShadow = true; cupMesh.position.y = -1.39;
         cupGroup.add(cupMesh);
 
-        // Handle — bezier tube
         const hCurve = new THREE.QuadraticBezierCurve3(
-          new THREE.Vector3(1.43,  0.92, 0),
-          new THREE.Vector3(2.32,  0.50, 0),
-          new THREE.Vector3(1.43, -0.10, 0),
+          new THREE.Vector3(1.43, 0.92, 0), new THREE.Vector3(2.32, 0.50, 0), new THREE.Vector3(1.43, -0.10, 0),
         );
-        const handleMesh = new THREE.Mesh(
-          new THREE.TubeGeometry(hCurve, 48, 0.092, 16, false), ceramicMat,
-        );
-        handleMesh.castShadow = true;
-        cupGroup.add(handleMesh);
+        const handleMesh = new THREE.Mesh(new THREE.TubeGeometry(hCurve, 48, 0.092, 16, false), ceramicMat);
+        handleMesh.castShadow = true; cupGroup.add(handleMesh);
 
-        // Liquid with latte-art texture
         const liquidMesh = new THREE.Mesh(
           new THREE.CircleGeometry(1.34, 128),
-          new THREE.MeshPhysicalMaterial({
-            map: latteTexture, roughness: 0.04, metalness: 0.04, reflectivity: 0.92,
-          }),
+          new THREE.MeshPhysicalMaterial({ map: latteTexture, roughness: 0.04, metalness: 0.04, reflectivity: 0.92 }),
         );
         liquidMesh.rotation.x = -Math.PI / 2; liquidMesh.position.y = 1.38;
         cupGroup.add(liquidMesh);
 
-        // Saucer — 12-pt with cup-rest groove and rim ridge
         const sPts = [
           new THREE.Vector2(0.00, 0.00), new THREE.Vector2(0.52, 0.00),
           new THREE.Vector2(0.82, 0.07), new THREE.Vector2(1.12, 0.17),
@@ -616,129 +614,93 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           new THREE.Vector2(3.12, 0.42), new THREE.Vector2(2.92, 0.33),
         ];
         const saucerMesh = new THREE.Mesh(new THREE.LatheGeometry(sPts, 128), ceramicMat);
-        saucerMesh.castShadow = true; saucerMesh.receiveShadow = true;
-        saucerMesh.position.y = -1.39;
+        saucerMesh.castShadow = true; saucerMesh.receiveShadow = true; saucerMesh.position.y = -1.39;
         cupGroup.add(saucerMesh);
 
         scene.add(cupGroup);
 
-        // Orbiting coffee beans
+        // ── Coffee beans ──────────────────────────────────────────────────
         const beans = [];
         for (let i = 0; i < 14; i++) {
           const geo = new THREE.SphereGeometry(0.19, 16, 12);
           geo.applyMatrix4(new THREE.Matrix4().makeScale(1, 0.58, 0.46));
           const bean = new THREE.Mesh(geo, beanMat);
           const angle = (i / 14) * Math.PI * 2;
-          const dist  = 3.6 + Math.random() * 1.6;
-          const ht    = (Math.random() - 0.5) * 4.5;
+          const dist  = cfg.beanDist + Math.random() * 1.4;
+          const ht    = (Math.random() - 0.5) * 4;
           bean.position.set(Math.cos(angle) * dist, ht, Math.sin(angle) * dist * 0.55 - 1);
           bean.rotation.set(Math.random() * Math.PI, angle, Math.random() * Math.PI);
           bean.userData = {
             angle, dist, ht,
-            speed:   0.003 + Math.random() * 0.004,
-            bobAmp:  0.14  + Math.random() * 0.18,
-            bobFreq: 0.5   + Math.random() * 0.9,
-            phase:   Math.random() * Math.PI * 2,
+            speed: 0.003 + Math.random() * 0.004,
+            bobAmp: 0.14 + Math.random() * 0.18,
+            bobFreq: 0.5 + Math.random() * 0.9,
+            phase: Math.random() * Math.PI * 2,
           };
           scene.add(bean); beans.push(bean);
           bean.scale.set(0, 0, 0);
-          anime({ targets: bean.scale, x: 1, y: 1, z: 1,
-            duration: 700, delay: 300 + i * 70, easing: "easeOutBack" });
+          anime({ targets: bean.scale, x: 1, y: 1, z: 1, duration: 700, delay: 300 + i * 70, easing: "easeOutBack" });
         }
 
-        // Steam sprites — AnimeJS opacity loops
+        // ── Steam sprites ─────────────────────────────────────────────────
         const steamSprite = (() => {
           const sc = document.createElement("canvas"); sc.width = sc.height = 64;
           const sx = sc.getContext("2d");
           const g = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
-          g.addColorStop(0,   "rgba(255,255,255,1)");
-          g.addColorStop(0.4, "rgba(255,255,255,0.3)");
-          g.addColorStop(1,   "rgba(255,255,255,0)");
+          g.addColorStop(0, "rgba(255,255,255,1)"); g.addColorStop(0.4, "rgba(255,255,255,0.3)"); g.addColorStop(1, "rgba(255,255,255,0)");
           sx.fillStyle = g; sx.beginPath(); sx.arc(32, 32, 32, 0, Math.PI * 2); sx.fill();
           return new THREE.CanvasTexture(sc);
         })();
 
         const steamParticles = [];
         for (let i = 0; i < 36; i++) {
-          const mat = new THREE.SpriteMaterial({
-            map: steamSprite, transparent: true, opacity: 0,
-            blending: THREE.AdditiveBlending, depthWrite: false,
-          });
+          const mat = new THREE.SpriteMaterial({ map: steamSprite, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
           const sp = new THREE.Sprite(mat);
           const sc = 0.14 + Math.random() * 0.26;
           sp.scale.set(sc, sc, 1);
-          const sx = (Math.random() - 0.5) * 0.85;
-          const sy = 1.55 + Math.random() * 0.55;
+          const sx = (Math.random() - 0.5) * 0.85, sy = 1.55 + Math.random() * 0.55;
           sp.position.set(sx, sy, (Math.random() - 0.5) * 0.85);
-          sp.userData = { sx, sy,
-            rise:     0.007 + Math.random() * 0.009,
-            swayAmp:  0.003 + Math.random() * 0.005,
-            swayFreq: 1.0   + Math.random() * 1.4,
-            phase:    Math.random() * Math.PI * 2,
-          };
+          sp.userData = { sx, sy, rise: 0.007 + Math.random() * 0.009, swayAmp: 0.003 + Math.random() * 0.005, swayFreq: 1.0 + Math.random() * 1.4, phase: Math.random() * Math.PI * 2 };
           cupGroup.add(sp); steamParticles.push(sp);
-          anime({ targets: mat,
-            opacity: [
-              { value: 0,    duration: 0 },
-              { value: 0.38, duration: 550 + Math.random() * 400 },
-              { value: 0,    duration: 1100 + Math.random() * 700 },
-            ],
-            delay: Math.random() * 2600, loop: true, easing: "easeInOutSine",
-          });
+          anime({ targets: mat, opacity: [{ value: 0, duration: 0 }, { value: 0.38, duration: 550 + Math.random() * 400 }, { value: 0, duration: 1100 + Math.random() * 700 }], delay: Math.random() * 2600, loop: true, easing: "easeInOutSine" });
         }
 
-        // Warm particle starfield
+        // ── Particle starfield ────────────────────────────────────────────
         const bgCount = 900;
-        const bgPos = new Float32Array(bgCount * 3);
-        const bgCol = new Float32Array(bgCount * 3);
+        const bgPos = new Float32Array(bgCount * 3), bgCol = new Float32Array(bgCount * 3);
         for (let i = 0; i < bgCount; i++) {
-          bgPos[i*3]   = (Math.random() - 0.5) * 80;
-          bgPos[i*3+1] = (Math.random() - 0.5) * 50;
-          bgPos[i*3+2] = (Math.random() - 0.5) * 40 - 15;
+          bgPos[i*3] = (Math.random()-0.5)*80; bgPos[i*3+1] = (Math.random()-0.5)*50; bgPos[i*3+2] = (Math.random()-0.5)*40-15;
           const t = Math.random();
-          bgCol[i*3]   = 0.38 + t * 0.38;
-          bgCol[i*3+1] = 0.18 + t * 0.18;
-          bgCol[i*3+2] = 0.04 + t * 0.04;
+          bgCol[i*3] = 0.38+t*0.38; bgCol[i*3+1] = 0.18+t*0.18; bgCol[i*3+2] = 0.04+t*0.04;
         }
         const bgGeo = new THREE.BufferGeometry();
         bgGeo.setAttribute("position", new THREE.BufferAttribute(bgPos, 3));
         bgGeo.setAttribute("color",    new THREE.BufferAttribute(bgCol, 3));
-        const bgMesh = new THREE.Points(bgGeo, new THREE.PointsMaterial({
-          size: 0.055, vertexColors: true, transparent: true, opacity: 0.55,
-          blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true,
-        }));
+        const bgMesh = new THREE.Points(bgGeo, new THREE.PointsMaterial({ size: 0.055, vertexColors: true, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true }));
         scene.add(bgMesh);
 
-        // Lighting
+        // ── Lighting ──────────────────────────────────────────────────────
         scene.add(new THREE.AmbientLight(0xfff3e0, 0.5));
-
         const key = new THREE.SpotLight(0xffffff, 3.6);
         key.position.set(7, 16, 11); key.angle = Math.PI / 6.5; key.penumbra = 0.4;
         key.castShadow = true; key.shadow.mapSize.width = key.shadow.mapSize.height = 2048;
         scene.add(key);
+        const fill = new THREE.PointLight(0xff9050, 1.3); fill.position.set(-11, 3, 9); scene.add(fill);
+        const rim  = new THREE.DirectionalLight(0xffc875, 1.8); rim.position.set(-5, 12, -13); scene.add(rim);
+        const under = new THREE.PointLight(0xff6622, 0.45); under.position.set(0, -9, 5); scene.add(under);
 
-        const fill = new THREE.PointLight(0xff9050, 1.3);
-        fill.position.set(-11, 3, 9); scene.add(fill);
-
-        const rim = new THREE.DirectionalLight(0xffc875, 1.8);
-        rim.position.set(-5, 12, -13); scene.add(rim);
-
-        const under = new THREE.PointLight(0xff6622, 0.45);
-        under.position.set(0, -9, 5); scene.add(under);
-
-        // AnimeJS entry: scale + spin in
-        cupGroup.scale.set(0.01, 0.01, 0.01);
+        // ── AnimeJS entry spin-in ─────────────────────────────────────────
+        cupGroup.scale.setScalar(0.01);
         cupGroup.rotation.y = -Math.PI * 1.5;
         anime.timeline({ easing: "easeOutExpo" })
-          .add({ targets: cupGroup.scale,    x: 1, y: 1, z: 1, duration: 1600 })
-          .add({ targets: cupGroup.rotation, y: 0,              duration: 1600 }, 0);
+          .add({ targets: cupGroup.scale,    x: cfg.scale, y: cfg.scale, z: cfg.scale, duration: 1600 })
+          .add({ targets: cupGroup.rotation, y: 0,                                     duration: 1600 }, 0);
 
-        // AnimeJS float loop
-        const fl = { y: 0.8 };
-        anime({ targets: fl, y: [0.55, 1.05],
-          duration: 3400, direction: "alternate", loop: true, easing: "easeInOutSine" });
+        // AnimeJS idle float (drives base Y)
+        const fl = { y: cfg.startY };
+        anime({ targets: fl, y: [cfg.startY - 0.25, cfg.startY + 0.25], duration: 3400, direction: "alternate", loop: true, easing: "easeInOutSine" });
 
-        // Input
+        // ── Scroll / mouse state ──────────────────────────────────────────
         let scrollY = window.scrollY, mouseX = 0, mouseY = 0, rotX = 0, rotZ = 0;
         window.addEventListener("scroll",    () => { scrollY = window.scrollY; });
         window.addEventListener("mousemove", (e) => {
@@ -746,30 +708,60 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           mouseY = e.clientY / window.innerHeight - 0.5;
         });
 
+        // Hero section bottom edge (fall endpoint)
+        const heroEl = document.querySelector("main > section:first-child");
+
         const clock = new THREE.Clock();
 
-        // Render loop
+        // ── Render loop ───────────────────────────────────────────────────
         const renderLoop = () => {
           requestAnimationFrame(renderLoop);
           const elapsed = clock.getElapsedTime();
-          const sf = scrollY * 0.003;
 
-          cupGroup.rotation.y += 0.0038;
-          rotX += (sf * 0.18 + mouseY * 0.12 - rotX) * 0.055;
-          rotZ += (mouseX * 0.12             - rotZ) * 0.055;
-          cupGroup.rotation.x = rotX; cupGroup.rotation.z = rotZ;
-          cupGroup.position.y = fl.y - sf * 1.5;
-          cupGroup.position.x = Math.cos(sf * 0.42) * 1.2;
+          // Scroll progress through hero → gravity fall to image
+          const heroH = heroEl ? heroEl.offsetHeight : window.innerHeight;
+          const rawProg = Math.min(1, Math.max(0, scrollY / heroH));
+          // Gravity easing: slow at top, accelerate downward, ease-out at landing
+          const gravProg = rawProg < 0.7
+            ? (rawProg / 0.7) * (rawProg / 0.7) * 0.7          // ease-in phase
+            : 0.7 + (rawProg - 0.7) / 0.3 * 0.3;               // ease-out landing
 
+          // Cup position: lerp from start → land driven by gravity progress
+          const cupX = cfg.startX + (cfg.landX - cfg.startX) * gravProg;
+          const cupY = fl.y       + (cfg.landY  - fl.y)      * gravProg;
+
+          cupGroup.position.x = cupX;
+          cupGroup.position.y = cupY;
+
+          // Gentle spin slows as cup falls
+          cupGroup.rotation.y += 0.0038 * (1 - gravProg * 0.7);
+
+          // Mouse tilt (reduced while falling)
+          rotX += (mouseY * 0.12 * (1 - gravProg * 0.5) - rotX) * 0.055;
+          rotZ += (mouseX * 0.12 * (1 - gravProg * 0.5) - rotZ) * 0.055;
+          cupGroup.rotation.x = rotX;
+          cupGroup.rotation.z = rotZ;
+
+          // Scale: subtly shrink as it "lands" (depth illusion)
+          const landScale = cfg.scale * (1 - gravProg * 0.12);
+          cupGroup.scale.setScalar(Math.max(landScale, cfg.scale * 0.88));
+
+          // Steam fades out as cup lands
+          cupGroup.children.forEach((child) => {
+            if (child instanceof THREE.Sprite) child.material.opacity *= (1 - gravProg * 0.8);
+          });
+
+          // Beans orbit + bob
           beans.forEach((b) => {
             const d = b.userData;
             d.angle += d.speed;
-            b.position.x = Math.cos(d.angle) * d.dist;
+            b.position.x = Math.cos(d.angle) * d.dist + cupX;
             b.position.z = Math.sin(d.angle) * d.dist * 0.55 - 1;
-            b.position.y = d.ht + Math.sin(elapsed * d.bobFreq + d.phase) * d.bobAmp;
+            b.position.y = cupY + d.ht + Math.sin(elapsed * d.bobFreq + d.phase) * d.bobAmp;
             b.rotation.y += d.speed * 1.6; b.rotation.x += d.speed * 0.4;
           });
 
+          // Steam wisp drift
           steamParticles.forEach((p) => {
             const d = p.userData;
             p.position.y += d.rise;
@@ -778,17 +770,20 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           });
 
           bgMesh.rotation.y += 0.00028;
-          bgMesh.rotation.x  = sf * 0.04;
-
           renderer.render(scene, camera);
         };
 
         renderLoop();
 
+        // ── Resize handler ────────────────────────────────────────────────
         window.addEventListener("resize", () => {
+          cfg = getConfig();
           camera.aspect = window.innerWidth / window.innerHeight;
+          camera.position.z = cfg.camZ;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);
+          // Re-target float base
+          fl.y = cfg.startY;
         });
       };
 

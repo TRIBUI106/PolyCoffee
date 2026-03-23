@@ -22,7 +22,9 @@ public class PointShopService {
         return guestVoucherRepo.findUnusedByGuestPhone(phone);
     }
 
-    public GuestVoucher redeemVoucher(String phone, Integer voucherId) throws Exception {
+    public void redeemVoucher(String phone, Integer voucherId, int quantity) throws Exception {
+        if (quantity <= 0) throw new Exception("Quantity must be greater than zero.");
+        
         Guest guest = guestRepo.findByPhoneNumber(phone);
         if (guest == null) {
             throw new Exception("Guest not found. Note: you need to place at least one order to create an account.");
@@ -33,21 +35,22 @@ public class PointShopService {
             throw new Exception("Voucher not found.");
         }
 
-        if (guest.getPoint() < voucher.getRequiredPoints()) {
+        int totalRequiredPoints = voucher.getRequiredPoints() * quantity;
+        if (guest.getPoint() < totalRequiredPoints) {
             throw new Exception("Not enough points.");
         }
 
-        // Deduct points
-        guest.setPoint(guest.getPoint() - voucher.getRequiredPoints());
+        // Deduct total points
+        guest.setPoint(guest.getPoint() - totalRequiredPoints);
         guestRepo.update(guest);
 
-        // Create guest voucher
-        GuestVoucher gv = new GuestVoucher();
-        gv.setGuest(guest);
-        gv.setVoucher(voucher);
-        gv.setIsUsed(false);
-        guestVoucherRepo.create(gv);
-
-        return gv;
+        // Create guest vouchers
+        for (int i = 0; i < quantity; i++) {
+            GuestVoucher gv = new GuestVoucher();
+            gv.setGuest(guest);
+            gv.setVoucher(voucher);
+            gv.setIsUsed(false);
+            guestVoucherRepo.create(gv);
+        }
     }
 }

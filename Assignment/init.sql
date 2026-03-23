@@ -281,8 +281,8 @@ CREATE TABLE IF NOT EXISTS `guests` (
 
 DELETE FROM `guests`;
 INSERT INTO `guests` (`id`, `fullname`, `phone_number`, `point`) VALUES
-	(1, 'Bui Duc Tri', '0911532866', 226),
-	(2, 'Trí', '0911532866', 2756);
+	(1, '0911532866', 'Bui Duc Tri', 226),
+	(2, 'Trí', '0911532866', 2541);
 
 CREATE TABLE IF NOT EXISTS `guest_vouchers` (
   `id` int NOT NULL AUTO_INCREMENT,
@@ -294,9 +294,16 @@ CREATE TABLE IF NOT EXISTS `guest_vouchers` (
   KEY `voucher_id` (`voucher_id`),
   CONSTRAINT `guest_vouchers_ibfk_1` FOREIGN KEY (`guest_id`) REFERENCES `guests` (`id`),
   CONSTRAINT `guest_vouchers_ibfk_2` FOREIGN KEY (`voucher_id`) REFERENCES `vouchers` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 DELETE FROM `guest_vouchers`;
+INSERT INTO `guest_vouchers` (`id`, `guest_id`, `voucher_id`, `is_used`) VALUES
+	(1, 2, 3, 0),
+	(2, 2, 2, 0),
+	(3, 2, 1, 0),
+	(4, 2, 3, 0),
+	(5, 2, 3, 0),
+	(6, 2, 3, 0);
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int NOT NULL AUTO_INCREMENT,

@@ -74,7 +74,7 @@ public class PointShopController extends HttpServlet {
                 String payload = req.getReader().lines().reduce("", (accumulator, actual) -> accumulator + actual);
                 var body = gson.fromJson(payload, RedeemRequest.class);
                 
-                pointShopService.redeemVoucher(body.phone, body.voucherId);
+                pointShopService.redeemVoucher(body.phone, body.voucherId, body.quantity);
                 
                 resp.getWriter().write("{\"success\":true}");
             } catch (Exception e) {
@@ -88,5 +88,6 @@ public class PointShopController extends HttpServlet {
     private static class RedeemRequest {
         String phone;
         Integer voucherId;
+        int quantity;
     }
 }
