@@ -43,15 +43,15 @@ public class StaffController extends HttpServlet {
         staff.setFullName(ParamUtil.getString(req, "fullName"));
         staff.setPhone(ParamUtil.getString(req, "phone"));
         staff.setActive(ParamUtil.getInt(req, "active") == 1);
+        staff.setRole(Boolean.parseBoolean(ParamUtil.getString(req, "role")));
 
         if (id == 0) {
             staff.setEmail(ParamUtil.getString(req, "email"));
             staff.setPassword(ParamUtil.getString(req, "password"));
             
             if (staffService.getStaffByEmail(staff.getEmail()) != null) {
-                req.setAttribute("error", "Email đã tồn tại!");
-                req.setAttribute("staff", staff);
-                req.getRequestDispatcher("/views/staff/staff-form.jsp").forward(req, resp);
+                req.getSession().setAttribute("error", "Email already exists!");
+                resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=users");
                 return;
             }
             staffService.createStaff(staff);

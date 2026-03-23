@@ -17,6 +17,21 @@
                         <fmt:message key="pos.title" />
                     </title>
                     <jsp:include page="/views/common/head.jsp" />
+                    <style>
+                        body {
+                            background-color: #f0f2f5;
+                            font-family: 'Inter', sans-serif;
+                            overflow: hidden;
+                        }
+
+                        .hide-scroll::-webkit-scrollbar {
+                            display: none;
+                        }
+
+                        .hide-scroll {
+                            -ms-overflow-style: none;
+                            scrollbar-width: none;
+                        }
 
                         .pos-grid-scroll::-webkit-scrollbar {
                             width: 6px;
@@ -221,11 +236,11 @@
                                                     <input type="text" id="drinkSearch" placeholder="Tìm kiếm món..." 
                                                            class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
                                                 </div>
-                                                <a href="${pageContext.request.contextPath}/manager/drinks/form"
+                                                <button type="button" onclick="openDrinkModal()"
                                                     class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
                                                     <i class="bi bi-plus-lg"></i>
                                                     <fmt:message key="admin.drink.btn.add" />
-                                                </a>
+                                                </button>
                                             </div>
                                         </div>
                                         <div
@@ -296,9 +311,17 @@
                                                                     </span>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-right space-x-2">
-                                                                    <a href="${pageContext.request.contextPath}/manager/drinks/form?id=${item.id}"
-                                                                        class="text-pos-accent hover:text-blue-700 bg-blue-50 p-2 rounded-lg transition-colors"><i
-                                                                            class="bi bi-pencil-square"></i></a>
+                                                                    <button type="button" 
+                                                                        class="edit-drink-trigger text-pos-accent hover:text-blue-700 bg-blue-50 p-2 rounded-lg transition-colors"
+                                                                        data-id="${item.id}"
+                                                                        data-name="${fn:escapeXml(item.name)}"
+                                                                        data-cat-id="${item.category.id}"
+                                                                        data-price="${item.price}"
+                                                                        data-active="${item.active}"
+                                                                        data-desc="${fn:escapeXml(item.description)}"
+                                                                        data-img="${item.image}">
+                                                                        <i class="bi bi-pencil-square"></i>
+                                                                    </button>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
@@ -314,11 +337,11 @@
                                             <h2 class="text-2xl font-black text-gray-900">
                                                 <fmt:message key="admin.category.title" />
                                             </h2>
-                                            <a href="${pageContext.request.contextPath}/manager/categories/form"
+                                            <button type="button" onclick="openCategoryModal()"
                                                 class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100">
                                                 <i class="bi bi-plus-lg"></i>
                                                 <fmt:message key="admin.category.btn.add" />
-                                            </a>
+                                            </button>
                                             <div class="relative w-64">
                                                 <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
                                                 <input type="text" id="categorySearch" placeholder="Tìm kiếm danh mục..." 
@@ -347,9 +370,13 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-2">
-                                                        <a href="${pageContext.request.contextPath}/manager/categories/form?id=${item.id}"
-                                                            class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg"><i
-                                                                class="bi bi-pencil"></i></a>
+                                                        <button type="button" 
+                                                            class="edit-category-trigger text-pos-accent hover:bg-blue-50 p-2 rounded-lg"
+                                                            data-id="${item.id}"
+                                                            data-name="${fn:escapeXml(item.name)}"
+                                                            data-active="${item.active}">
+                                                            <i class="bi bi-pencil"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </c:forEach>
@@ -362,11 +389,11 @@
                                             <h2 class="text-2xl font-black text-gray-900">
                                                 <fmt:message key="admin.staff.title" />
                                             </h2>
-                                            <a href="${pageContext.request.contextPath}/manager/staff/form"
+                                            <button type="button" onclick="openStaffModal()"
                                                 class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-coffee-100 flex items-center gap-2">
                                                 <i class="bi bi-person-plus"></i>
                                                 <fmt:message key="admin.staff.btn.add" />
-                                            </a>
+                                            </button>
                                             <div class="relative w-64">
                                                 <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
                                                 <input type="text" id="staffSearch" placeholder="Tìm kiếm nhân viên..." 
@@ -424,9 +451,16 @@
                                                                     </div>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-right">
-                                                                    <a href="${pageContext.request.contextPath}/manager/staff/form?id=${item.id}"
-                                                                        class="text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors"><i
-                                                                            class="bi bi-pencil-square"></i></a>
+                                                                    <button type="button" 
+                                                                        class="edit-staff-trigger text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                                                                        data-id="${item.id}"
+                                                                        data-name="${fn:escapeXml(item.fullName)}"
+                                                                        data-email="${item.email}"
+                                                                        data-phone="${item.phone}"
+                                                                        data-role="${item.role}"
+                                                                        data-active="${item.active}">
+                                                                        <i class="bi bi-pencil-square"></i>
+                                                                    </button>
                                                                 </td>
                                                             </tr>
                                                         </c:forEach>
@@ -1339,7 +1373,7 @@
                                 </p>
                                 <div
                                     class="flex flex-col items-center gap-3 bg-white py-2">
-                                    <img id="vietqr-img" src="" alt="QR Code" class="w-32 h-32 object-contain mx-auto">
+                                    <img id="vietqr-img" src="" alt="QR Code" class="w-75 h-75 object-contain mx-auto">
                                 </div>
                                 <!-- <div class="text-center">
                                     <p class="text-[11px] font-bold text-blue-800">
@@ -1548,6 +1582,203 @@
                             display: none !important;
                         }
                     </style>
+                    
+                    <!-- Management Modals -->
+                    <!-- Drink Modal -->
+                    <div class="modal fade" id="drinkModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
+                                <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
+                                    <h5 class="text-xl font-black text-gray-900" id="drinkModalLabel">Modify Product</h5>
+                                    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                <form id="drinkModalForm" action="${pageContext.request.contextPath}/manager/drinks/save" method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" id="mDrinkId">
+                                    <div class="modal-body p-8 lg:p-10">
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                                            <!-- Info -->
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Product Identity</label>
+                                                    <input type="text" name="name" id="mDrinkName" required placeholder="Enter drink name..."
+                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                </div>
+                                                <div class="grid grid-cols-2 gap-4">
+                                                    <div>
+                                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Category</label>
+                                                        <select name="categoryId" id="mDrinkCat" class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer" required>
+                                                            <c:forEach var="cat" items="${categories}">
+                                                                <option value="${cat.id}">${cat.name}</option>
+                                                            </c:forEach>
+                                                        </select>
+                                                    </div>
+                                                    <div>
+                                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Market Price</label>
+                                                        <div class="relative">
+                                                            <input type="number" name="price" id="mDrinkPrice" required placeholder="0"
+                                                                   class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all font-black text-coffee-700">
+                                                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs uppercase">VND</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Product Essence</label>
+                                                    <textarea name="description" id="mDrinkDesc" class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all min-h-[120px] font-medium text-gray-600 resize-none" placeholder="Describe this masterpiece..."></textarea>
+                                                </div>
+                                            </div>
+                                            <!-- Media -->
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Visual Asset</label>
+                                                    <div onclick="document.getElementById('mDrinkImgInput').click()" 
+                                                         class="relative border-4 border-dashed border-slate-100 rounded-[32px] p-2 flex flex-col items-center justify-center min-h-[240px] bg-slate-50 hover:bg-white hover:border-coffee-200 transition-all cursor-pointer group overflow-hidden">
+                                                        <input type="file" name="image" id="mDrinkImgInput" onchange="previewDrinkImage(this)" class="hidden" accept="image/*">
+                                                        <img id="mDrinkImgPreview" src="" class="hidden w-full h-[240px] rounded-[28px] object-cover absolute inset-0">
+                                                        <div id="mDrinkImgPlaceholder" class="text-center">
+                                                            <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-slate-300 shadow-sm mb-4 mx-auto group-hover:scale-110 group-hover:bg-coffee-50 group-hover:text-coffee-600 transition-all">
+                                                                <i class="bi bi-camera text-2xl"></i>
+                                                            </div>
+                                                            <p class="font-black text-slate-400 text-xs uppercase tracking-widest">Capture Visual</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
+                                                    <div class="flex items-center justify-between">
+                                                        <div>
+                                                            <h4 class="font-black text-gray-900 text-xs uppercase tracking-widest">Active Status</h4>
+                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Make visible to consumers</p>
+                                                        </div>
+                                                        <div class="relative inline-block w-14 h-7">
+                                                            <input type="checkbox" name="active" value="1" id="mDrinkActive" class="peer hidden" checked>
+                                                            <label for="mDrinkActive" class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
+                                                            <div class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
+                                        <button type="button" class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all" data-bs-dismiss="modal">Abandon</button>
+                                        <button type="submit" class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Commit Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Category Modal -->
+                    <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
+                                <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
+                                    <h5 class="text-xl font-black text-gray-900" id="categoryModalLabel">Category Logic</h5>
+                                    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                <form id="categoryModalForm" action="${pageContext.request.contextPath}/manager/categories/save" method="post">
+                                    <input type="hidden" name="id" id="mCatId">
+                                    <div class="modal-body p-8 lg:p-10 space-y-8">
+                                        <div>
+                                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Classification Name</label>
+                                            <input type="text" name="name" id="mCatName" required placeholder="e.g., Espresso Series"
+                                                   class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                        </div>
+                                        <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
+                                            <div class="flex items-center justify-between">
+                                                <div>
+                                                    <h4 class="font-black text-gray-900 text-xs uppercase tracking-widest">Visibility state</h4>
+                                                    <p class="text-[10px] text-slate-400 font-bold mt-1">Show this group in the menu</p>
+                                                </div>
+                                                <div class="relative inline-block w-14 h-7">
+                                                    <input type="checkbox" name="active" value="1" id="mCatActive" class="peer hidden" checked>
+                                                    <label for="mCatActive" class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
+                                                    <div class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
+                                        <button type="button" class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all" data-bs-dismiss="modal">Abandon</button>
+                                        <button type="submit" class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Synchronize</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Staff Modal -->
+                    <div class="modal fade" id="staffModal" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
+                                <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
+                                    <h5 class="text-xl font-black text-gray-900" id="staffModalLabel">Human Resources Portfolio</h5>
+                                    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all" data-bs-dismiss="modal">
+                                        <i class="bi bi-x-lg"></i>
+                                    </button>
+                                </div>
+                                <form id="staffModalForm" action="${pageContext.request.contextPath}/manager/staff/save" method="post">
+                                    <input type="hidden" name="id" id="mStaffId">
+                                    <div class="modal-body p-8 lg:p-10">
+                                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Legal Identity</label>
+                                                    <input type="text" name="fullName" id="mStaffName" required placeholder="Full name..."
+                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Secure Email</label>
+                                                    <input type="email" name="email" id="mStaffEmail" required placeholder="email@polycoffee.com"
+                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                </div>
+                                                <div id="mStaffPasswordRow">
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Access Credential</label>
+                                                    <input type="password" name="password" id="mStaffPassword" placeholder="Minimum 6 characters..."
+                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                </div>
+                                            </div>
+                                            <div class="space-y-6">
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Network Contact</label>
+                                                    <input type="text" name="phone" id="mStaffPhone" required placeholder="098xxxxxxxx"
+                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                </div>
+                                                <div>
+                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Hierarchical Role</label>
+                                                    <select name="role" id="mStaffRole" class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer" required>
+                                                        <option value="false">Staff Member</option>
+                                                        <option value="true">Executive Manager</option>
+                                                    </select>
+                                                </div>
+                                                <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
+                                                    <div class="flex items-center justify-between">
+                                                        <div>
+                                                            <h4 class="font-black text-gray-900 text-xs uppercase tracking-widest">Active state</h4>
+                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Grant system permissions</p>
+                                                        </div>
+                                                        <div class="relative inline-block w-14 h-7">
+                                                            <input type="checkbox" name="active" value="1" id="mStaffActive" class="peer hidden" checked>
+                                                            <label for="mStaffActive" class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
+                                                            <div class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
+                                        <button type="button" class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all" data-bs-dismiss="modal">Abandon</button>
+                                        <button type="submit" class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Grant Clearance</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
 
                     <script>
                         function toggleNoteDropdown(id) {
@@ -1633,6 +1864,144 @@
                             location.href = '${pageContext.request.contextPath}/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note);
                         }
 
+                        // Management Modals Logic
+                        function openDrinkModal(data = null) {
+                            const modal = new bootstrap.Modal(document.getElementById('drinkModal'));
+                            const form = document.getElementById('drinkModalForm');
+                            const label = document.getElementById('drinkModalLabel');
+                            
+                            // Reset form
+                            form.reset();
+                            document.getElementById('mDrinkImgPreview').classList.add('hidden');
+                            document.getElementById('mDrinkImgPlaceholder').classList.remove('hidden');
+                            
+                            if (data) {
+                                label.innerText = 'Edit Product: ' + data.name;
+                                document.getElementById('mDrinkId').value = data.id;
+                                document.getElementById('mDrinkName').value = data.name;
+                                document.getElementById('mDrinkCat').value = data.catId;
+                                document.getElementById('mDrinkPrice').value = data.price;
+                                document.getElementById('mDrinkDesc').value = data.desc;
+                                document.getElementById('mDrinkActive').checked = data.active === 'true';
+                                
+                                if (data.img) {
+                                    const imgUrl = data.img.startsWith('http') ? data.img : '${pageContext.request.contextPath}/uploads/' + data.img;
+                                    document.getElementById('mDrinkImgPreview').src = imgUrl;
+                                    document.getElementById('mDrinkImgPreview').classList.remove('hidden');
+                                    document.getElementById('mDrinkImgPlaceholder').classList.add('hidden');
+                                }
+                            } else {
+                                label.innerText = 'Launch New Product';
+                                document.getElementById('mDrinkId').value = '';
+                                document.getElementById('mDrinkActive').checked = true;
+                            }
+                            
+                            modal.show();
+                        }
+
+                        function previewDrinkImage(input) {
+                            if (input.files && input.files[0]) {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    document.getElementById('mDrinkImgPreview').src = e.target.result;
+                                    document.getElementById('mDrinkImgPreview').classList.remove('hidden');
+                                    document.getElementById('mDrinkImgPlaceholder').classList.add('hidden');
+                                }
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                        }
+
+                        function openCategoryModal(data = null) {
+                            const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
+                            const form = document.getElementById('categoryModalForm');
+                            const label = document.getElementById('categoryModalLabel');
+                            
+                            form.reset();
+                            
+                            if (data) {
+                                label.innerText = 'Update Category: ' + data.name;
+                                document.getElementById('mCatId').value = data.id;
+                                document.getElementById('mCatName').value = data.name;
+                                document.getElementById('mCatActive').checked = data.active === 'true';
+                            } else {
+                                label.innerText = 'Define New Category';
+                                document.getElementById('mCatId').value = '';
+                                document.getElementById('mCatActive').checked = true;
+                            }
+                            
+                            modal.show();
+                        }
+
+                        function openStaffModal(data = null) {
+                            const modal = new bootstrap.Modal(document.getElementById('staffModal'));
+                            const form = document.getElementById('staffModalForm');
+                            const label = document.getElementById('staffModalLabel');
+                            
+                            form.reset();
+                            
+                            if (data) {
+                                label.innerText = 'Manage Identity: ' + data.name;
+                                document.getElementById('mStaffId').value = data.id;
+                                document.getElementById('mStaffName').value = data.name;
+                                document.getElementById('mStaffEmail').value = data.email;
+                                document.getElementById('mStaffPhone').value = data.phone;
+                                document.getElementById('mStaffRole').value = data.role === 'true' ? 'true' : 'false';
+                                document.getElementById('mStaffActive').checked = data.active === 'true';
+                                document.getElementById('mStaffPasswordRow').classList.add('hidden');
+                                document.getElementById('mStaffPassword').required = false;
+                            } else {
+                                label.innerText = 'Onboard New Staff';
+                                document.getElementById('mStaffId').value = '';
+                                document.getElementById('mStaffActive').checked = true;
+                                document.getElementById('mStaffPasswordRow').classList.remove('hidden');
+                                document.getElementById('mStaffPassword').required = true;
+                            }
+                            
+                            modal.show();
+                        }
+
+                        // Event Delegation for Edit Triggers
+                        document.addEventListener('click', (e) => {
+                            const drinkBtn = e.target.closest('.edit-drink-trigger');
+                            if (drinkBtn) openDrinkModal(drinkBtn.dataset);
+                            
+                            const catBtn = e.target.closest('.edit-category-trigger');
+                            if (catBtn) openCategoryModal(catBtn.dataset);
+                            
+                            const staffBtn = e.target.closest('.edit-staff-trigger');
+                            if (staffBtn) openStaffModal(staffBtn.dataset);
+                        });
+
+                        // Initialize Animations
+                        document.addEventListener('DOMContentLoaded', () => {
+                            if (typeof AOS !== 'undefined') {
+                                AOS.init({
+                                    duration: 800,
+                                    once: true,
+                                    offset: 50
+                                });
+                            }
+                            
+                            // Modal Entrance Animations
+                            const managementModals = ['drinkModal', 'categoryModal', 'staffModal', 'addTableModal', 'qrModal'];
+                            managementModals.forEach(id => {
+                                const el = document.getElementById(id);
+                                if (el) {
+                                    el.addEventListener('show.bs.modal', function () {
+                                        anime({
+                                            targets: this.querySelector('.modal-content'),
+                                            opacity: [0, 1],
+                                            translateY: [30, 0],
+                                            scale: [0.9, 1],
+                                            rotateX: [10, 0],
+                                            easing: 'easeOutElastic(1, .8)',
+                                            duration: 800
+                                        });
+                                    });
+                                }
+                            });
+                        });
+                        
                         function handleCustomNoteInput(input, billId, drinkId) {
                             handleCustomNote(billId, drinkId, input.value);
                         }
