@@ -13,38 +13,85 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
   <head>
     <title><fmt:message key="app.name" /> - PolyCoffee</title>
     <jsp:include page="/views/common/head.jsp" />
+    <!-- Premium Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+      rel="stylesheet"
+    />
+
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Animation Libraries -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <!-- GSAP for more advanced depth control -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <!-- Three.js for 3D -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+    <style type="text/tailwindcss">
+      @layer theme {
+        .font-serif-majestic {
+          font-family: "Cormorant Garamond", serif;
+        }
+      }
+      @layer utilities {
+        .bg-nocturnal {
+          background-color: #0d0705;
+        }
+        .text-amber-glow {
+          @apply text-amber-500;
+          text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+        }
+        .glass-card-deep {
+          @apply bg-white/5 backdrop-blur-[40px] border border-white/10;
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.82);
+        }
+        .text-balance {
+          text-wrap: balance;
+        }
+      }
+    </style>
   </head>
 
   <body
-    class="bg-white font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-coffee-200 selection:text-coffee-900 text-slate-900 antialiased"
+    class="bg-nocturnal font-sans min-h-screen flex flex-col overflow-x-hidden selection:bg-amber-500/30 selection:text-white text-slate-200 antialiased"
   >
-    <!-- 3D Background Canvas -->
-    <div data-aos="zoom-in" data-aos-delay="100">
-      <canvas
-        id="canvas-3d"
-        class="fixed inset-0 pointer-events-none z-0"
-      ></canvas>
+    <!-- Cinematic Texture Overlay -->
+    <div
+      class="fixed inset-0 pointer-events-none z-[100] opacity-[0.03] mix-blend-overlay"
+    >
+      <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <filter id="noiseFilter">
+          <feTurbulence
+            type="fractalNoise"
+            baseFrequency="0.65"
+            numOctaves="3"
+            stitchTiles="stitch"
+          />
+        </filter>
+        <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+      </svg>
     </div>
 
-    <!-- Premium Background Effects -->
+    <!-- 3D Background Canvas -->
+    <div class="fixed inset-0 pointer-events-none z-0">
+      <canvas id="canvas-3d" class="w-full h-full"></canvas>
+    </div>
+
+    <!-- Premium Background Glows -->
     <div class="fixed inset-0 pointer-events-none overflow-hidden z-[1]">
       <div
-        class="absolute -top-[10%] -left-[10%] w-[50vw] h-[50vh] bg-coffee-100/40 rounded-full blur-[120px] mix-blend-multiply"
+        class="absolute top-[-10%] left-[-10%] w-[60vw] h-[60vh] bg-amber-900/20 rounded-full blur-[120px]"
       ></div>
       <div
-        class="absolute top-[30%] -right-[10%] w-[40vw] h-[60vh] bg-orange-50/50 rounded-full blur-[100px] mix-blend-multiply"
+        class="absolute bottom-[20%] right-[-5%] w-[50vw] h-[50vh] bg-orange-900/10 rounded-full blur-[100px]"
       ></div>
     </div>
 
     <div
-      class="relative z-50 shadow-sm border-b border-gray-100/50 bg-white/80 backdrop-blur-xl"
+      class="relative z-50 border-b border-white/5 bg-black/20 backdrop-blur-md"
     >
       <jsp:include page="/views/common/header.jsp" />
     </div>
@@ -52,313 +99,356 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
     <main class="flex-grow flex flex-col relative z-20">
       <!-- Hero Section -->
       <section
-        class="max-w-[85rem] mx-auto px-6 py-24 md:py-48 w-full flex flex-col items-center text-center relative overflow-hidden"
+        class="min-h-[90vh] flex flex-col items-center justify-center text-center px-6 relative"
       >
-        <div
-          class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-20 mix-blend-overlay pointer-events-none"
-        ></div>
-
-        <!-- <div
-          data-aos="fade-down"
-          class="inline-flex items-center gap-2 bg-gradient-to-r from-coffee-50 to-orange-50 border border-coffee-200/50 px-5 py-2 rounded-full text-coffee-700 text-xs font-black mb-10 shadow-sm uppercase tracking-widest cursor-default hover:scale-105 transition-transform"
-        >
-          Trải nghiệm Phục vụ Cà phê Hiện đại
-        </div> -->
-
-        <h1
-          data-aos="fade-up"
-          data-aos-delay="100"
-          class="text-6xl md:text-[6.5rem] font-black text-slate-900 mb-8 leading-[1.05] tracking-tighter"
-        >
-          Nâng Tầm Kết Nối <br />
-          Đậm Vị
-          <span
-            class="bg-gradient-to-r from-coffee-600 to-orange-500 bg-clip-text text-transparent drop-shadow-sm"
-            >Sáng Tạo</span
-          >.
-        </h1>
-
-        <p
-          data-aos="fade-up"
-          data-aos-delay="400"
-          class="text-slate-500 text-xl max-w-2xl mx-auto mb-14 leading-relaxed font-medium"
-        >
-          Sự hòa quyện giữa hương vị truyền thống và nền tảng công nghệ số, mang
-          đến trải nghiệm thưởng thức cà phê tinh tế bậc nhất.
-        </p>
-
-        <div
-          data-aos="fade-up"
-          data-aos-delay="600"
-          class="flex flex-col sm:flex-row gap-5 justify-center items-center w-full sm:w-auto"
-        >
-          <c:choose>
-            <c:when test="${empty sessionScope.user}">
-              <a
-                href="${pageContext.request.contextPath}/guest/order"
-                class="group relative inline-flex items-center justify-center gap-3 bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold shadow-[0_8px_30px_rgb(15,23,42,0.2)] hover:shadow-[0_8px_30px_rgb(15,23,42,0.3)] hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto text-lg overflow-hidden"
-              >
-                <div
-                  class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"
-                ></div>
-                <span>Bắt Đầu Thưởng Thức</span>
-                <i
-                  data-lucide="arrow-right"
-                  class="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                ></i>
-              </a>
-            </c:when>
-            <c:otherwise>
-              <a
-                href="${pageContext.request.contextPath}/employee/pos"
-                class="group relative inline-flex items-center justify-center gap-3 bg-slate-900 text-white px-10 py-4 rounded-2xl font-bold shadow-[0_8px_30px_rgb(15,23,42,0.2)] hover:shadow-[0_8px_30px_rgb(15,23,42,0.3)] hover:-translate-y-1 transition-all duration-300 w-full sm:w-auto text-lg overflow-hidden"
-              >
-                <div
-                  class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-[150%] skew-x-[-20deg] group-hover:animate-[shimmer_1.5s_infinite]"
-                ></div>
-                <span>Truy Cập Hệ Thống POS</span>
-                <i
-                  data-lucide="layout-dashboard"
-                  class="w-5 h-5 group-hover:scale-110 transition-transform"
-                ></i>
-              </a>
-            </c:otherwise>
-          </c:choose>
-          <a
-            href="#about"
-            class="group bg-white hover:bg-slate-50 text-slate-700 border border-gray-200 px-10 py-4 rounded-2xl font-bold shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center gap-2 w-full sm:w-auto text-lg hover:-translate-y-0.5"
+        <div class="max-w-5xl mx-auto py-20">
+          <div
+            data-aos="fade-down"
+            class="inline-flex items-center gap-2 bg-white/5 border border-white/10 px-4 py-1.5 rounded-full text-amber-500/80 text-[10px] uppercase tracking-[0.3em] font-bold mb-8 backdrop-blur-sm"
           >
-            Câu Chuyện PolyCoffee
-            <i
-              data-lucide="chevron-down"
-              class="w-5 h-5 text-slate-400 group-hover:translate-y-1 transition-transform"
-            ></i>
-          </a>
+            <span class="relative flex h-2 w-2">
+              <span
+                class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"
+              ></span>
+            </span>
+            Hành Trình Hương Vị Thủ Công
+          </div>
+
+          <h1
+            class="text-7xl md:text-[9rem] font-serif-majestic text-white leading-[0.9] tracking-tighter mb-10 select-none"
+            id="hero-title"
+          >
+            Đậm Vị <br />
+            <span class="text-amber-glow italic">Nghệ Thuật</span>
+          </h1>
+
+          <p
+            data-aos="fade-up"
+            data-aos-delay="400"
+            class="text-slate-400 text-xl md:text-2xl max-w-2xl mx-auto mb-16 leading-relaxed font-light font-outfit text-balance"
+          >
+            Khám phá sự giao thoa hoàn hảo giữa kỹ thuật rang xay truyền thống
+            và trải nghiệm không gian công nghệ hiện đại.
+          </p>
+
+          <div
+            data-aos="fade-up"
+            data-aos-delay="600"
+            class="flex flex-col sm:flex-row gap-6 justify-center items-center"
+          >
+            <c:choose>
+              <c:when test="${empty sessionScope.user}">
+                <a
+                  href="${pageContext.request.contextPath}/guest/order"
+                  class="group relative px-12 py-5 bg-amber-600 text-white rounded-full font-bold text-lg overflow-hidden transition-all hover:bg-amber-500 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(217,119,6,0.2)]"
+                >
+                  <span class="relative z-10 flex items-center gap-2">
+                    Bắt Đầu Thưởng Thức
+                    <i
+                      data-lucide="arrow-right"
+                      class="w-5 h-5 group-hover:translate-x-1 transition-transform"
+                    ></i>
+                  </span>
+                  <div
+                    class="absolute inset-0 bg-gradient-to-r from-amber-400/0 via-white/20 to-amber-400/0 -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-700"
+                  ></div>
+                </a>
+              </c:when>
+              <c:otherwise>
+                <a
+                  href="${pageContext.request.contextPath}/employee/pos"
+                  class="group relative px-12 py-5 bg-white text-black rounded-full font-bold text-lg overflow-hidden transition-all hover:scale-105 active:scale-95 shadow-xl"
+                >
+                  <span class="relative z-10 flex items-center gap-2">
+                    Truy Cập POS
+                    <i data-lucide="layout-dashboard" class="w-5 h-5"></i>
+                  </span>
+                </a>
+              </c:otherwise>
+            </c:choose>
+
+            <a
+              href="#about"
+              class="px-12 py-5 bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-full font-bold text-lg transition-all backdrop-blur-md"
+            >
+              Tìm hiểu thêm
+            </a>
+          </div>
         </div>
 
+        <!-- Scroll Indicator -->
         <div
-          class="mt-20 flex items-center justify-center gap-8 opacity-60 grayscale filter hover:grayscale-0 transition-all duration-500"
+          class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-40"
         >
-          <i data-lucide="coffee" class="w-8 h-8 text-coffee-600"></i>
-          <i data-lucide="croissant" class="w-8 h-8 text-amber-600"></i>
-          <i data-lucide="cup-soda" class="w-8 h-8 text-rose-500"></i>
+          <div
+            class="w-[1px] h-20 bg-gradient-to-b from-white to-transparent"
+          ></div>
+          <span
+            class="text-[10px] tracking-[0.4em] uppercase font-bold vertical-rl"
+            >Scroll</span
+          >
         </div>
       </section>
 
       <!-- About Section -->
-      <section id="about" class="py-24 relative overflow-hidden">
+      <section id="about" class="py-32 relative overflow-hidden bg-black/40">
         <div
-          class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-16 items-center"
+          class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-24 items-center"
         >
           <div data-aos="fade-right">
             <span
-              class="text-coffee-600 font-black uppercase tracking-[0.2em] text-sm mb-4 block"
-              >Hành trình hương vị</span
+              class="text-amber-500 font-bold uppercase tracking-[0.4em] text-xs mb-6 block"
+              >Kỹ Nghệ Rang Xay</span
             >
             <h2
-              class="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight"
+              class="text-5xl md:text-7xl font-serif-majestic text-white mb-10 leading-none"
             >
-              Cội nguồn của từng hạt cà phê tinh tuyển.
+              Tuyển chọn từ những <br />
+              <span class="italic text-amber-glow">Cao Nguyên</span> trù phú.
             </h2>
-            <p class="text-slate-500 text-lg mb-8 leading-relaxed font-medium">
-              Chúng tôi tin rằng mỗi tách cà phê không chỉ là thức uống, mà là
-              một tác phẩm nghệ thuật khởi nguồn từ những vùng cao nguyên trù
-              phú. Từng công đoạn từ canh tác đến rang xay đều được kiểm soát
-              nghiêm ngặt bằng công nghệ hiện đại.
+            <p class="text-slate-400 text-lg mb-10 leading-relaxed font-light">
+              Chúng tôi không chỉ pha chế cà phê, chúng tôi kể câu chuyện về đất
+              trời và con người qua từng giọt đắng tinh túy. Mỗi hạt cà phê đều
+              được nâng niu và kiểm soát bằng hệ thống cảm biến nhiệt độ thông
+              minh.
             </p>
-            <div class="grid grid-cols-2 gap-6">
+            <div class="grid grid-cols-2 gap-8">
               <div
-                class="p-6 bg-coffee-50/50 rounded-2xl border border-coffee-100"
+                class="p-8 glass-card-deep rounded-3xl group hover:-translate-y-2 transition-transform"
               >
-                <div class="text-coffee-600 font-black text-3xl mb-2">100%</div>
-                <div class="text-slate-600 font-bold text-sm uppercase">
-                  Nguyên bản
+                <div class="text-amber-500 font-serif-majestic text-4xl mb-2">
+                  100%
+                </div>
+                <div
+                  class="text-slate-300 font-bold text-[10px] uppercase tracking-widest"
+                >
+                  Arabica Nguyên Bản
                 </div>
               </div>
               <div
-                class="p-6 bg-orange-50/50 rounded-2xl border border-orange-100"
+                class="p-8 glass-card-deep rounded-3xl group hover:-translate-y-2 transition-transform"
               >
-                <div class="text-orange-600 font-black text-3xl mb-2">24/7</div>
-                <div class="text-slate-600 font-bold text-sm uppercase">
-                  Phục vụ tận tâm
+                <div class="text-amber-500 font-serif-majestic text-4xl mb-2">
+                  Artisan
+                </div>
+                <div
+                  class="text-slate-300 font-bold text-[10px] uppercase tracking-widest"
+                >
+                  Rang Củi Truyền Thống
                 </div>
               </div>
             </div>
           </div>
-          <div
-            class="relative h-[400px] md:h-[600px] rounded-[3rem] overflow-hidden group shadow-2xl"
-            data-aos="zoom-in"
-            data-aos-delay="200"
-          >
-            <img
-              src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
-              alt="Coffee Craft"
-              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            />
+          <div class="relative group" data-aos="zoom-in">
             <div
-              class="absolute inset-0 bg-gradient-to-t from-slate-900/40 to-transparent"
+              class="absolute -inset-4 bg-amber-500/10 blur-3xl rounded-full opacity-50 group-hover:opacity-100 transition-opacity"
             ></div>
+            <div
+              class="relative aspect-[4/5] rounded-[4rem] overflow-hidden shadow-2xl"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=80&w=2070&auto=format&fit=crop"
+                alt="Coffee Craft"
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"
+              ></div>
+              <div class="absolute bottom-10 left-10 right-10">
+                <p class="text-white text-sm font-medium italic opacity-70">
+                  "Nghệ thuật bắt nguồn từ sự tĩnh lặng và kiên nhẫn."
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      <!-- Features Grid -->
-      <section
-        id="features"
-        class="bg-slate-50 py-32 border-y border-gray-100 relative"
-      >
-        <div class="max-w-7xl mx-auto px-6 h-full flex flex-col items-center">
+      <!-- Features Grid (Bento Style) -->
+      <section id="features" class="py-32 relative">
+        <div class="max-w-7xl mx-auto px-6">
           <div class="text-center mb-24" data-aos="fade-up">
             <h2
-              class="text-4xl md:text-6xl font-black text-slate-900 mb-6 tracking-tight"
+              class="text-5xl md:text-7xl font-serif-majestic text-white mb-6"
             >
-              Công Nghệ Đi Đầu
+              Trải Nghiệm
+              <span class="italic text-amber-glow">Không Giới Hạn</span>
             </h2>
-            <p class="text-slate-500 text-xl max-w-2xl mx-auto font-medium">
-              Một hệ sinh thái thông minh, an toàn và tinh tế, giúp bạn kết nối
-              với khách hàng theo cách hoàn toàn mới.
+            <p class="text-slate-400 text-xl max-w-2xl mx-auto font-light">
+              Tận hưởng tiện ích công nghệ đỉnh cao trong không gian đậm chất
+              thủ công.
             </p>
-          </div>
-
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-10 w-full">
-            <!-- Feature 1 -->
-            <div
-              data-aos="fade-up"
-              data-aos-delay="100"
-              class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 group"
-            >
-              <div
-                class="w-16 h-16 bg-gradient-to-br from-amber-100 to-amber-50 rounded-2xl flex items-center justify-center text-amber-600 mb-10 border border-amber-100/50 group-hover:scale-110 group-hover:rotate-6 transition-transform"
-              >
-                <i data-lucide="zap" class="w-8 h-8 fill-amber-500/20"></i>
-              </div>
-              <h3
-                class="text-2xl font-black text-slate-900 mb-5 tracking-tight"
-              >
-                Tốc Độ Phản Hồi
-              </h3>
-              <p class="text-slate-500 leading-relaxed font-semibold">
-                Tối ưu hóa quy trình order chỉ trong 3 bước, giúp nhân viên phục
-                vụ nhanh chóng ngay cả giờ cao điểm.
-              </p>
-            </div>
-
-            <!-- Feature 2 -->
-            <div
-              data-aos="fade-up"
-              data-aos-delay="200"
-              class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 group"
-            >
-              <div
-                class="w-16 h-16 bg-gradient-to-br from-blue-100 to-blue-50 rounded-2xl flex items-center justify-center text-blue-600 mb-10 border border-blue-100/50 group-hover:scale-110 group-hover:rotate-6 transition-transform"
-              >
-                <i
-                  data-lucide="bar-chart-3"
-                  class="w-8 h-8 fill-blue-500/20"
-                ></i>
-              </div>
-              <h3
-                class="text-2xl font-black text-slate-900 mb-5 tracking-tight"
-              >
-                Dữ Liệu Thời Gian Thực
-              </h3>
-              <p class="text-slate-500 leading-relaxed font-semibold">
-                Báo cáo doanh số và tồn kho được cập nhật ngay lập tức, hỗ trợ
-                đưa ra các quyết định kinh doanh chính xác.
-              </p>
-            </div>
-
-            <!-- Feature 3 -->
-            <div
-              data-aos="fade-up"
-              data-aos-delay="300"
-              class="bg-white p-12 rounded-[2.5rem] border border-gray-100 shadow-[0_4px_20px_rgb(0,0,0,0.02)] hover:shadow-[0_20px_60px_rgb(0,0,0,0.08)] hover:-translate-y-2 transition-all duration-500 group"
-            >
-              <div
-                class="w-16 h-16 bg-gradient-to-br from-emerald-100 to-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600 mb-10 border border-emerald-100/50 group-hover:scale-110 group-hover:rotate-6 transition-transform"
-              >
-                <i
-                  data-lucide="shield-check"
-                  class="w-8 h-8 fill-emerald-500/20"
-                ></i>
-              </div>
-              <h3
-                class="text-2xl font-black text-slate-900 mb-5 tracking-tight"
-              >
-                An Toàn Tuyệt Đối
-              </h3>
-              <p class="text-slate-500 leading-relaxed font-semibold">
-                Hệ thống phân quyền chi tiết và lớp bảo mật đa tầng, đảm bảo mọi
-                giao dịch đều minh bạch và an toàn.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Testimonials Section -->
-      <section id="reviews" class="py-24 bg-white relative">
-        <div class="max-w-7xl mx-auto px-6">
-          <div
-            class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8"
-          >
-            <div data-aos="fade-right">
-              <span
-                class="text-coffee-600 font-black uppercase tracking-[0.2em] text-sm mb-4 block"
-                >Đánh giá khách hàng</span
-              >
-              <h2
-                class="text-4xl md:text-5xl font-black text-slate-900 leading-tight"
-              >
-                Cảm hứng từ <br />
-                cộng đồng yêu cà phê.
-              </h2>
-            </div>
-            <div data-aos="fade-left" class="flex gap-4">
-              <button
-                class="w-12 h-12 rounded-full border border-gray-200 flex items-center justify-center hover:bg-slate-50 transition-colors shadow-sm"
-              >
-                <i
-                  data-lucide="chevron-left"
-                  class="w-6 h-6 text-slate-400"
-                ></i>
-              </button>
-              <button
-                class="w-12 h-12 rounded-full bg-slate-900 flex items-center justify-center hover:bg-slate-800 transition-colors shadow-lg"
-              >
-                <i data-lucide="chevron-right" class="w-6 h-6 text-white"></i>
-              </button>
-            </div>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Review 1 -->
+            <!-- Large Feature -->
+            <div
+              data-aos="fade-up"
+              class="md:col-span-2 p-12 glass-card-deep rounded-[3rem] group relative overflow-hidden"
+            >
+              <div
+                class="absolute top-0 right-0 p-10 opacity-10 group-hover:opacity-20 transition-opacity"
+              >
+                <i data-lucide="zap" class="w-48 h-48 text-amber-500"></i>
+              </div>
+              <div
+                class="relative z-10 h-full flex flex-col justify-between min-h-[300px]"
+              >
+                <div>
+                  <div
+                    class="w-14 h-14 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-500 mb-8 border border-amber-500/20"
+                  >
+                    <i data-lucide="zap" class="w-7 h-7"></i>
+                  </div>
+                  <h3 class="text-3xl font-serif-majestic text-white mb-4">
+                    Tốc Độ & Chính Xác
+                  </h3>
+                  <p class="text-slate-400 text-lg max-w-md leading-relaxed">
+                    Hệ thống gọi món tại bàn giúp bạn tận hưởng trọn vẹn từng
+                    khoảnh khắc mà không cần chờ đợi lâu tại quầy.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vertical Feature -->
             <div
               data-aos="fade-up"
               data-aos-delay="100"
-              class="p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl transition-all duration-500 group"
+              class="p-12 glass-card-deep rounded-[3rem] flex flex-col justify-between"
             >
-              <div class="flex gap-1 mb-6 text-amber-500">
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-              </div>
-              <p class="text-slate-600 text-lg mb-8 font-medium italic">
-                "Hương vị cà phê thực sự khác biệt, đậm đà và nguyên bản. Không
-                gian thiết kế tinh tế giúp mình giải tỏa mọi áp lực sau giờ
-                làm."
-              </p>
-              <div class="flex items-center gap-4">
+              <div>
                 <div
-                  class="w-12 h-12 rounded-full bg-coffee-200 overflow-hidden"
+                  class="w-14 h-14 bg-blue-500/20 rounded-2xl flex items-center justify-center text-blue-400 mb-8 border border-blue-500/20"
+                >
+                  <i data-lucide="bar-chart-3" class="w-7 h-7"></i>
+                </div>
+                <h3 class="text-3xl font-serif-majestic text-white mb-4">
+                  Thống Kê <br />Thông Minh
+                </h3>
+                <p class="text-slate-400 leading-relaxed">
+                  Theo dõi sở thích và thói quen thưởng thức để nhận những ưu
+                  đãi riêng biệt.
+                </p>
+              </div>
+              <div class="mt-8 pt-8 border-t border-white/5">
+                <div class="flex items-center gap-3">
+                  <div
+                    class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center"
+                  >
+                    <i
+                      data-lucide="trending-up"
+                      class="w-4 h-4 text-blue-400"
+                    ></i>
+                  </div>
+                  <span
+                    class="text-xs text-blue-400 font-bold uppercase tracking-widest"
+                    >Tăng trải nghiệm người dùng</span
+                  >
+                </div>
+              </div>
+            </div>
+
+            <!-- Small Feature -->
+            <div
+              data-aos="fade-up"
+              data-aos-delay="200"
+              class="p-12 glass-card-deep rounded-[3rem]"
+            >
+              <div
+                class="w-14 h-14 bg-emerald-500/20 rounded-2xl flex items-center justify-center text-emerald-400 mb-8 border border-emerald-500/20"
+              >
+                <i data-lucide="shield-check" class="w-7 h-7"></i>
+              </div>
+              <h3 class="text-3xl font-serif-majestic text-white mb-4">
+                An Tâm Tuyệt Đối
+              </h3>
+              <p class="text-slate-400 leading-relaxed">
+                Bảo mật giao dịch đa tầng, minh bạch trong từng hóa đơn và điểm
+                thưởng tích lũy.
+              </p>
+            </div>
+
+            <!-- Large Feature Image -->
+            <div
+              data-aos="fade-up"
+              data-aos-delay="300"
+              class="md:col-span-2 rounded-[3rem] overflow-hidden relative group aspect-[21/9]"
+            >
+              <img
+                src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?q=80&w=2000&auto=format&fit=crop"
+                class="absolute inset-0 w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+              />
+              <div
+                class="absolute inset-0 bg-gradient-to-r from-black/80 to-transparent flex items-center px-12"
+              >
+                <div class="max-w-sm">
+                  <h4 class="text-white text-2xl font-serif-majestic mb-4">
+                    Chất Lượng Là Kim Chỉ Nam
+                  </h4>
+                  <p class="text-slate-400 text-sm">
+                    Mọi quy trình đều hướng tới sự hài lòng của thực khách khó
+                    tính nhất.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section id="reviews" class="py-32 relative bg-black/40">
+        <div class="max-w-7xl mx-auto px-6">
+          <div
+            class="flex flex-col md:flex-row justify-between items-end mb-24 gap-8"
+          >
+            <div data-aos="fade-right">
+              <span
+                class="text-amber-500 font-bold uppercase tracking-[0.4em] text-xs mb-6 block"
+                >Tiếng nói cộng đồng</span
+              >
+              <h2
+                class="text-5xl md:text-7xl font-serif-majestic text-white leading-none"
+              >
+                Cảm hứng từ <br />
+                <span class="italic text-amber-glow">Sự Hài Lòng</span>.
+              </h2>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <!-- Review 1 -->
+            <div
+              data-aos="fade-up"
+              class="p-10 rounded-[3rem] glass-card-deep group hover:-translate-y-4 transition-all duration-500"
+            >
+              <div class="flex gap-1 mb-8 text-amber-500/40">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+              </div>
+              <p
+                class="text-slate-300 text-xl mb-10 font-light italic leading-relaxed"
+              >
+                "Hương vị cà phê thực sự khác biệt, đậm đà và nguyên bản. Không
+                gian thiết kế tinh tế giúp mình giải tỏa mọi áp lực."
+              </p>
+              <div class="flex items-center gap-4 pt-8 border-t border-white/5">
+                <div
+                  class="w-12 h-12 rounded-full bg-amber-500/20 overflow-hidden grayscale group-hover:grayscale-0 transition-all"
                 >
                   <img src="https://i.pravatar.cc/150?u=1" alt="User" />
                 </div>
                 <div>
-                  <h4 class="font-black text-slate-900">Minh Anh</h4>
-                  <p class="text-slate-400 text-sm">Gourmet Lover</p>
+                  <h4 class="font-bold text-white">Minh Anh</h4>
+                  <p
+                    class="text-slate-500 text-[10px] uppercase tracking-widest"
+                  >
+                    Gourmet Lover
+                  </p>
                 </div>
               </div>
             </div>
@@ -366,29 +456,35 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
             <!-- Review 2 -->
             <div
               data-aos="fade-up"
-              data-aos-delay="200"
-              class="p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl transition-all duration-500 group"
+              data-aos-delay="100"
+              class="p-10 rounded-[3rem] glass-card-deep mt-12 md:mt-0 group hover:-translate-y-4 transition-all duration-500 border-amber-500/20"
             >
-              <div class="flex gap-1 mb-6 text-amber-500">
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
+              <div class="flex gap-1 mb-8 text-amber-500/40">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
               </div>
-              <p class="text-slate-600 text-lg mb-8 font-medium italic">
+              <p
+                class="text-slate-300 text-xl mb-10 font-light italic leading-relaxed"
+              >
                 "Hệ thống order tại bàn rất tiện lợi, không phải đợi lâu. Nhân
                 viên phục vụ chuyên nghiệp và cực kỳ thân thiện."
               </p>
-              <div class="flex items-center gap-4">
+              <div class="flex items-center gap-4 pt-8 border-t border-white/5">
                 <div
-                  class="w-12 h-12 rounded-full bg-coffee-200 overflow-hidden"
+                  class="w-12 h-12 rounded-full bg-amber-500/20 overflow-hidden grayscale group-hover:grayscale-0 transition-all"
                 >
                   <img src="https://i.pravatar.cc/150?u=2" alt="User" />
                 </div>
                 <div>
-                  <h4 class="font-black text-slate-900">Khánh Linh</h4>
-                  <p class="text-slate-400 text-sm">Tech Enthusiast</p>
+                  <h4 class="font-bold text-white">Khánh Linh</h4>
+                  <p
+                    class="text-slate-500 text-[10px] uppercase tracking-widest"
+                  >
+                    Tech Enthusiast
+                  </p>
                 </div>
               </div>
             </div>
@@ -396,29 +492,35 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
             <!-- Review 3 -->
             <div
               data-aos="fade-up"
-              data-aos-delay="300"
-              class="p-8 rounded-[2.5rem] bg-slate-50 border border-slate-100 hover:bg-white hover:shadow-xl transition-all duration-500 group"
+              data-aos-delay="200"
+              class="p-10 rounded-[3rem] glass-card-deep group hover:-translate-y-4 transition-all duration-500"
             >
-              <div class="flex gap-1 mb-6 text-amber-500">
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
-                <i data-lucide="star" class="w-5 h-5 fill-amber-500"></i>
+              <div class="flex gap-1 mb-8 text-amber-500/40">
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-amber-500"></i>
               </div>
-              <p class="text-slate-600 text-lg mb-8 font-medium italic">
+              <p
+                class="text-slate-300 text-xl mb-10 font-light italic leading-relaxed"
+              >
                 "Món Signature Cold Brew ở đây đỉnh thực sự. Rất phù hợp để ngồi
                 làm việc hoặc tiếp khách hàng đối tác."
               </p>
-              <div class="flex items-center gap-4">
+              <div class="flex items-center gap-4 pt-8 border-t border-white/5">
                 <div
-                  class="w-12 h-12 rounded-full bg-coffee-200 overflow-hidden"
+                  class="w-12 h-12 rounded-full bg-amber-500/20 overflow-hidden grayscale group-hover:grayscale-0 transition-all"
                 >
                   <img src="https://i.pravatar.cc/150?u=3" alt="User" />
                 </div>
                 <div>
-                  <h4 class="font-black text-slate-900">Tuấn Hải</h4>
-                  <p class="text-slate-400 text-sm">Digital Nomad</p>
+                  <h4 class="font-bold text-white">Tuấn Hải</h4>
+                  <p
+                    class="text-slate-500 text-[10px] uppercase tracking-widest"
+                  >
+                    Digital Nomad
+                  </p>
                 </div>
               </div>
             </div>
@@ -428,41 +530,48 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
 
       <!-- CTA Section -->
       <section
-        class="py-32 relative overflow-hidden flex items-center justify-center"
+        class="py-48 relative overflow-hidden flex items-center justify-center"
       >
-        <div class="absolute inset-0 bg-slate-900 overflow-hidden">
+        <div class="absolute inset-0 bg-black">
           <div
-            class="absolute top-0 right-0 w-[60vw] h-[60vw] bg-coffee-800/20 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"
+            class="absolute top-0 right-0 w-[80vw] h-[80vw] bg-amber-900/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2"
           ></div>
           <div
-            class="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-orange-800/20 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"
+            class="absolute bottom-0 left-0 w-[60vw] h-[60vw] bg-amber-600/5 rounded-full blur-[100px] translate-y-1/2 -translate-x-1/2"
           ></div>
         </div>
 
         <div
-          class="relative z-10 max-w-4xl mx-auto px-6 text-center"
+          class="relative z-10 max-w-5xl mx-auto px-6 text-center"
           data-aos="zoom-in"
         >
           <h2
-            class="text-5xl md:text-7xl font-black text-white mb-10 leading-none"
+            class="text-6xl md:text-[8rem] font-serif-majestic text-white mb-16 leading-none tracking-tighter"
           >
-            Cùng viết tiếp câu chuyện <br />
-            của bạn.
+            Trải nghiệm <br />
+            <span class="italic text-amber-glow">Sự Khác Biệt</span>.
           </h2>
-          <div class="flex flex-col sm:flex-row gap-6 justify-center">
+          <div
+            class="flex flex-col sm:flex-row gap-8 justify-center items-center"
+          >
             <a
               href="${pageContext.request.contextPath}/guest/order"
-              class="px-12 py-4 bg-white text-slate-900 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl"
+              class="px-16 py-6 bg-amber-600 text-white rounded-full font-black text-2xl hover:bg-amber-500 hover:scale-110 transition-all shadow-[0_0_50px_rgba(217,119,6,0.2)]"
             >
               Đặt Món Ngay
             </a>
             <a
               href="#"
-              class="px-12 py-4 border-2 border-white/20 text-white rounded-2xl font-black text-xl hover:bg-white/10 transition-colors"
+              class="px-16 py-6 border border-white/20 text-white rounded-full font-bold text-xl hover:bg-white/10 transition-all backdrop-blur-md"
             >
-              Liên Hệ Hợp Tác
+              Hợp Tác Kinh Doanh
             </a>
           </div>
+          <p
+            class="mt-16 text-slate-500 text-sm uppercase tracking-[0.5em] font-bold"
+          >
+            PolyCoffee &middot; Est 2024
+          </p>
         </div>
       </section>
     </main>
@@ -471,349 +580,335 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
       <jsp:include page="/views/common/footer.jsp" />
     </div>
 
-    <style>
-      body {
-        scroll-behavior: smooth;
-      }
-      @keyframes shimmer {
-        0% {
-          transform: translateX(-150%) skewX(-20deg);
-        }
-        100% {
-          transform: translateX(200%) skewX(-20deg);
-        }
-      }
-      canvas {
-        display: block;
-      }
-    </style>
-
     <script>
       // Initialize Libraries
       lucide.createIcons();
-      AOS.init({
-        duration: 1000,
-        once: false,
-        mirror: true,
-      });
+      AOS.init({ duration: 1000, once: false, mirror: true });
 
-      // --- 3D Coffee Scene (Three.js + AnimeJS) ---
+      // --- 3D Coffee Scene (Three.js + GSAP Integration) ---
       const init3D = () => {
         const canvas = document.getElementById("canvas-3d");
-
-        // ── Scene ─────────────────────────────────────────────────────────
         const scene = new THREE.Scene();
-        scene.fog = new THREE.FogExp2(0x06020a, 0.026);
+        scene.fog = new THREE.FogExp2(0x0d0705, 0.05);
 
         const camera = new THREE.PerspectiveCamera(
-          55, window.innerWidth / window.innerHeight, 0.1, 200,
+          55,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          200,
         );
-        const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+        const renderer = new THREE.WebGLRenderer({
+          canvas,
+          alpha: true,
+          antialias: true,
+        });
         renderer.shadowMap.enabled = true;
-        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         renderer.toneMapping = THREE.ACESFilmicToneMapping;
-        renderer.toneMappingExposure = 1.1;
+        renderer.toneMappingExposure = 1.2;
 
-        // ── Responsive config ─────────────────────────────────────────────
         const getConfig = () => {
           const w = window.innerWidth;
-          if (w < 640)  return { camZ: 14, startX:  0.0, startY: -1.2, landX:  0.0, landY: -5.5, scale: 0.52, beanDist: 2.6 };
-          if (w < 1024) return { camZ: 13, startX:  1.6, startY:  0.5, landX:  2.8, landY: -5.0, scale: 0.78, beanDist: 3.2 };
-                        return { camZ: 11, startX:  3.2, startY:  0.8, landX:  4.8, landY: -5.5, scale: 1.00, beanDist: 3.8 };
+          if (w < 640)
+            return {
+              camZ: 14,
+              startX: 0,
+              startY: -1.2,
+              landX: 0,
+              landY: -5.5,
+              scale: 0.52,
+              beanDist: 2.6,
+            };
+          if (w < 1024)
+            return {
+              camZ: 13,
+              startX: 1.6,
+              startY: 0.5,
+              landX: 2.8,
+              landY: -5.0,
+              scale: 0.78,
+              beanDist: 3.2,
+            };
+          return {
+            camZ: 11,
+            startX: 3.2,
+            startY: 0.8,
+            landX: 4.5,
+            landY: -5.5,
+            scale: 1.05,
+            beanDist: 3.8,
+          };
         };
         let cfg = getConfig();
 
-        camera.position.set(0, 2.5, cfg.camZ);
-        camera.lookAt(0, 0, 0);
+        camera.position.set(0, 2, cfg.camZ);
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-        // ── Latte-art canvas texture ──────────────────────────────────────
+        // Materials
+        const ceramicMat = new THREE.MeshPhysicalMaterial({
+          color: 0x111111,
+          roughness: 0.1,
+          metalness: 0.2,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.05,
+          reflectivity: 1.0,
+        });
+        const beanMat = new THREE.MeshPhysicalMaterial({
+          color: 0x3e2723,
+          roughness: 0.3,
+          metalness: 0.1,
+          clearcoat: 0.5,
+          clearcoatRoughness: 0.2,
+        });
+
+        // Latte Art
         const latteCanvas = document.createElement("canvas");
         latteCanvas.width = latteCanvas.height = 512;
         const lc = latteCanvas.getContext("2d");
-        lc.fillStyle = "#060200";
+        lc.fillStyle = "#1a0f0a";
         lc.fillRect(0, 0, 512, 512);
-
-        const cremaGrad = lc.createRadialGradient(256, 256, 8, 256, 256, 248);
-        cremaGrad.addColorStop(0,    "rgba(210,135,42,1)");
-        cremaGrad.addColorStop(0.28, "rgba(155,82,22,1)");
-        cremaGrad.addColorStop(0.62, "rgba(75,32,8,1)");
-        cremaGrad.addColorStop(1,    "rgba(14,5,1,0)");
+        const cremaGrad = lc.createRadialGradient(256, 256, 10, 256, 256, 250);
+        cremaGrad.addColorStop(0, "#9c6644");
+        cremaGrad.addColorStop(0.5, "#4e342e");
+        cremaGrad.addColorStop(1, "#1a0f0a");
         lc.fillStyle = cremaGrad;
-        lc.beginPath(); lc.arc(256, 256, 248, 0, Math.PI * 2); lc.fill();
-
-        for (let i = 0; i < 10; i++) {
-          const a = (i / 10) * Math.PI * 2;
-          const cx = 256 + Math.cos(a) * 95, cy = 256 + Math.sin(a) * 95;
-          const lg = lc.createRadialGradient(cx, cy, 0, cx, cy, 40);
-          lg.addColorStop(0,   "rgba(255,238,185,0.8)");
-          lg.addColorStop(0.5, "rgba(195,140,70,0.35)");
-          lg.addColorStop(1,   "rgba(150,95,30,0)");
-          lc.fillStyle = lg;
-          lc.beginPath(); lc.ellipse(cx, cy, 32, 18, a + Math.PI / 2, 0, Math.PI * 2); lc.fill();
-        }
         lc.beginPath();
-        lc.strokeStyle = "rgba(245,210,155,0.55)"; lc.lineWidth = 2.2;
-        for (let t = 0.15; t < Math.PI * 5; t += 0.04) {
-          const r = 18 * t * 0.22;
-          const x = 256 + r * Math.cos(-t), y = 256 + r * Math.sin(-t);
-          t < 0.2 ? lc.moveTo(x, y) : lc.lineTo(x, y);
-        }
-        lc.stroke();
-        const cg = lc.createRadialGradient(256, 256, 0, 256, 256, 55);
-        cg.addColorStop(0, "rgba(255,245,210,0.55)"); cg.addColorStop(1, "rgba(0,0,0,0)");
-        lc.fillStyle = cg; lc.beginPath(); lc.arc(256, 256, 55, 0, Math.PI * 2); lc.fill();
+        lc.arc(256, 256, 248, 0, Math.PI * 2);
+        lc.fill();
         const latteTexture = new THREE.CanvasTexture(latteCanvas);
 
-        // ── Materials ─────────────────────────────────────────────────────
-        const ceramicMat = new THREE.MeshPhysicalMaterial({
-          color: 0xf8f5f0, roughness: 0.06, metalness: 0.0,
-          clearcoat: 1.0, clearcoatRoughness: 0.03, reflectivity: 0.9,
-        });
-        const beanMat = new THREE.MeshPhysicalMaterial({
-          color: 0x221004, roughness: 0.48, metalness: 0.04,
-          clearcoat: 0.4, clearcoatRoughness: 0.18,
-        });
-
-        // ── Cup group ─────────────────────────────────────────────────────
         const cupGroup = new THREE.Group();
-
         const cupPts = [
-          new THREE.Vector2(0.00, 0.00), new THREE.Vector2(0.78, 0.00),
-          new THREE.Vector2(0.85, 0.06), new THREE.Vector2(0.91, 0.20),
-          new THREE.Vector2(1.00, 0.50), new THREE.Vector2(1.13, 1.05),
-          new THREE.Vector2(1.25, 1.60), new THREE.Vector2(1.35, 2.10),
-          new THREE.Vector2(1.42, 2.50), new THREE.Vector2(1.46, 2.68),
-          new THREE.Vector2(1.50, 2.74), new THREE.Vector2(1.54, 2.78),
-          new THREE.Vector2(1.46, 2.78), new THREE.Vector2(1.38, 2.70),
+          new THREE.Vector2(0, 0),
+          new THREE.Vector2(0.78, 0),
+          new THREE.Vector2(0.85, 0.06),
+          new THREE.Vector2(0.91, 0.2),
+          new THREE.Vector2(1, 0.5),
+          new THREE.Vector2(1.13, 1.05),
+          new THREE.Vector2(1.25, 1.6),
+          new THREE.Vector2(1.35, 2.1),
+          new THREE.Vector2(1.42, 2.5),
+          new THREE.Vector2(1.46, 2.68),
+          new THREE.Vector2(1.5, 2.74),
+          new THREE.Vector2(1.54, 2.78),
+          new THREE.Vector2(1.46, 2.78),
+          new THREE.Vector2(1.38, 2.7),
         ];
-        const cupMesh = new THREE.Mesh(new THREE.LatheGeometry(cupPts, 128), ceramicMat);
-        cupMesh.castShadow = true; cupMesh.position.y = -1.39;
+        const cupMesh = new THREE.Mesh(
+          new THREE.LatheGeometry(cupPts, 128),
+          ceramicMat,
+        );
+        cupMesh.castShadow = true;
+        cupMesh.position.y = -1.39;
         cupGroup.add(cupMesh);
 
         const hCurve = new THREE.QuadraticBezierCurve3(
-          new THREE.Vector3(1.43, 0.92, 0), new THREE.Vector3(2.32, 0.50, 0), new THREE.Vector3(1.43, -0.10, 0),
+          new THREE.Vector3(1.43, 0.92, 0),
+          new THREE.Vector3(2.32, 0.5, 0),
+          new THREE.Vector3(1.43, -0.1, 0),
         );
-        const handleMesh = new THREE.Mesh(new THREE.TubeGeometry(hCurve, 48, 0.092, 16, false), ceramicMat);
-        handleMesh.castShadow = true; cupGroup.add(handleMesh);
+        const handleMesh = new THREE.Mesh(
+          new THREE.TubeGeometry(hCurve, 48, 0.092, 16, false),
+          ceramicMat,
+        );
+        handleMesh.castShadow = true;
+        cupGroup.add(handleMesh);
 
         const liquidMesh = new THREE.Mesh(
           new THREE.CircleGeometry(1.34, 128),
-          new THREE.MeshPhysicalMaterial({ map: latteTexture, roughness: 0.04, metalness: 0.04, reflectivity: 0.92 }),
+          new THREE.MeshPhysicalMaterial({
+            map: latteTexture,
+            roughness: 0.04,
+            metalness: 0.04,
+            reflectivity: 0.92,
+          }),
         );
-        liquidMesh.rotation.x = -Math.PI / 2; liquidMesh.position.y = 1.38;
+        liquidMesh.rotation.x = -Math.PI / 2;
+        liquidMesh.position.y = 1.38;
         cupGroup.add(liquidMesh);
 
         const sPts = [
-          new THREE.Vector2(0.00, 0.00), new THREE.Vector2(0.52, 0.00),
-          new THREE.Vector2(0.82, 0.07), new THREE.Vector2(1.12, 0.17),
-          new THREE.Vector2(1.48, 0.13), new THREE.Vector2(2.08, 0.05),
-          new THREE.Vector2(2.62, 0.00), new THREE.Vector2(2.92, 0.13),
-          new THREE.Vector2(3.12, 0.29), new THREE.Vector2(3.20, 0.40),
-          new THREE.Vector2(3.12, 0.42), new THREE.Vector2(2.92, 0.33),
+          new THREE.Vector2(0, 0),
+          new THREE.Vector2(0.52, 0),
+          new THREE.Vector2(0.82, 0.07),
+          new THREE.Vector2(1.12, 0.17),
+          new THREE.Vector2(1.48, 0.13),
+          new THREE.Vector2(2.08, 0.05),
+          new THREE.Vector2(2.62, 0),
+          new THREE.Vector2(2.92, 0.13),
+          new THREE.Vector2(3.12, 0.29),
+          new THREE.Vector2(3.2, 0.4),
+          new THREE.Vector2(3.12, 0.42),
+          new THREE.Vector2(2.92, 0.33),
         ];
-        const saucerMesh = new THREE.Mesh(new THREE.LatheGeometry(sPts, 128), ceramicMat);
-        saucerMesh.castShadow = true; saucerMesh.receiveShadow = true; saucerMesh.position.y = -1.39;
+        const saucerMesh = new THREE.Mesh(
+          new THREE.LatheGeometry(sPts, 128),
+          ceramicMat,
+        );
+        saucerMesh.castShadow = true;
+        saucerMesh.receiveShadow = true;
+        saucerMesh.position.y = -1.39;
         cupGroup.add(saucerMesh);
-
         scene.add(cupGroup);
 
-        // ── Coffee beans ──────────────────────────────────────────────────
         const beans = [];
-        for (let i = 0; i < 14; i++) {
-          const geo = new THREE.SphereGeometry(0.19, 16, 12);
-          geo.applyMatrix4(new THREE.Matrix4().makeScale(1, 0.58, 0.46));
+        for (let i = 0; i < 15; i++) {
+          const geo = new THREE.SphereGeometry(0.18, 16, 12);
+          geo.applyMatrix4(new THREE.Matrix4().makeScale(1, 0.6, 0.5));
           const bean = new THREE.Mesh(geo, beanMat);
-          const angle = (i / 14) * Math.PI * 2;
-          const dist  = cfg.beanDist + Math.random() * 1.4;
-          const ht    = (Math.random() - 0.5) * 4;
-          bean.position.set(Math.cos(angle) * dist, ht, Math.sin(angle) * dist * 0.55 - 1);
-          bean.rotation.set(Math.random() * Math.PI, angle, Math.random() * Math.PI);
+          const angle = (i / 15) * Math.PI * 2;
+          const dist = cfg.beanDist + Math.random() * 2;
+          const ht = (Math.random() - 0.5) * 6;
+          bean.position.set(
+            Math.cos(angle) * dist,
+            ht,
+            Math.sin(angle) * dist * 0.5,
+          );
           bean.userData = {
-            angle, dist, ht,
-            speed: 0.003 + Math.random() * 0.004,
-            bobAmp: 0.14 + Math.random() * 0.18,
-            bobFreq: 0.5 + Math.random() * 0.9,
-            phase: Math.random() * Math.PI * 2,
+            angle,
+            dist,
+            ht,
+            speed: 0.002 + Math.random() * 0.003,
           };
-          scene.add(bean); beans.push(bean);
-          bean.scale.set(0, 0, 0);
-          anime({ targets: bean.scale, x: 1, y: 1, z: 1, duration: 700, delay: 300 + i * 70, easing: "easeOutBack" });
+          scene.add(bean);
+          beans.push(bean);
         }
 
-        // ── Steam sprites ─────────────────────────────────────────────────
-        const steamSprite = (() => {
-          const sc = document.createElement("canvas"); sc.width = sc.height = 64;
-          const sx = sc.getContext("2d");
-          const g = sx.createRadialGradient(32, 32, 0, 32, 32, 32);
-          g.addColorStop(0, "rgba(255,255,255,1)"); g.addColorStop(0.4, "rgba(255,255,255,0.3)"); g.addColorStop(1, "rgba(255,255,255,0)");
-          sx.fillStyle = g; sx.beginPath(); sx.arc(32, 32, 32, 0, Math.PI * 2); sx.fill();
-          return new THREE.CanvasTexture(sc);
-        })();
-
-        const steamParticles = [];
-        for (let i = 0; i < 36; i++) {
-          const mat = new THREE.SpriteMaterial({ map: steamSprite, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false });
-          const sp = new THREE.Sprite(mat);
-          const sc = 0.14 + Math.random() * 0.26;
-          sp.scale.set(sc, sc, 1);
-          const sx = (Math.random() - 0.5) * 0.85, sy = 1.55 + Math.random() * 0.55;
-          sp.position.set(sx, sy, (Math.random() - 0.5) * 0.85);
-          sp.userData = { sx, sy, rise: 0.007 + Math.random() * 0.009, swayAmp: 0.003 + Math.random() * 0.005, swayFreq: 1.0 + Math.random() * 1.4, phase: Math.random() * Math.PI * 2 };
-          cupGroup.add(sp); steamParticles.push(sp);
-          anime({ targets: mat, opacity: [{ value: 0, duration: 0 }, { value: 0.38, duration: 550 + Math.random() * 400 }, { value: 0, duration: 1100 + Math.random() * 700 }], delay: Math.random() * 2600, loop: true, easing: "easeInOutSine" });
-        }
-
-        // ── Particle starfield ────────────────────────────────────────────
-        const bgCount = 900;
-        const bgPos = new Float32Array(bgCount * 3), bgCol = new Float32Array(bgCount * 3);
-        for (let i = 0; i < bgCount; i++) {
-          bgPos[i*3] = (Math.random()-0.5)*80; bgPos[i*3+1] = (Math.random()-0.5)*50; bgPos[i*3+2] = (Math.random()-0.5)*40-15;
-          const t = Math.random();
-          bgCol[i*3] = 0.38+t*0.38; bgCol[i*3+1] = 0.18+t*0.18; bgCol[i*3+2] = 0.04+t*0.04;
-        }
-        const bgGeo = new THREE.BufferGeometry();
-        bgGeo.setAttribute("position", new THREE.BufferAttribute(bgPos, 3));
-        bgGeo.setAttribute("color",    new THREE.BufferAttribute(bgCol, 3));
-        const bgMesh = new THREE.Points(bgGeo, new THREE.PointsMaterial({ size: 0.055, vertexColors: true, transparent: true, opacity: 0.55, blending: THREE.AdditiveBlending, depthWrite: false, sizeAttenuation: true }));
-        scene.add(bgMesh);
-
-        // ── Lighting ──────────────────────────────────────────────────────
-        scene.add(new THREE.AmbientLight(0xfff3e0, 0.5));
-        const key = new THREE.SpotLight(0xffffff, 3.6);
-        key.position.set(7, 16, 11); key.angle = Math.PI / 6.5; key.penumbra = 0.4;
-        key.castShadow = true; key.shadow.mapSize.width = key.shadow.mapSize.height = 2048;
+        scene.add(new THREE.AmbientLight(0xfff3e0, 0.2));
+        const key = new THREE.SpotLight(0xffcc88, 5);
+        key.position.set(5, 15, 10);
+        key.castShadow = true;
         scene.add(key);
-        const fill = new THREE.PointLight(0xff9050, 1.3); fill.position.set(-11, 3, 9); scene.add(fill);
-        const rim  = new THREE.DirectionalLight(0xffc875, 1.8); rim.position.set(-5, 12, -13); scene.add(rim);
-        const under = new THREE.PointLight(0xff6622, 0.45); under.position.set(0, -9, 5); scene.add(under);
+        const rim = new THREE.DirectionalLight(0xffffff, 2);
+        rim.position.set(-5, 5, -10);
+        scene.add(rim);
+        const accent = new THREE.PointLight(0xf59e0b, 2);
+        accent.position.set(0, -2, 5);
+        scene.add(accent);
 
-        // ── AnimeJS entry spin-in ─────────────────────────────────────────
-        cupGroup.scale.setScalar(0.01);
-        cupGroup.rotation.y = -Math.PI * 1.5;
-        anime.timeline({ easing: "easeOutExpo" })
-          .add({ targets: cupGroup.scale,    x: cfg.scale, y: cfg.scale, z: cfg.scale, duration: 1600 })
-          .add({ targets: cupGroup.rotation, y: 0,                                     duration: 1600 }, 0);
+        const starCount = 400;
+        const starGeo = new THREE.BufferGeometry();
+        const starPos = new Float32Array(starCount * 3);
+        const starCol = new Float32Array(starCount * 3);
+        for (let i = 0; i < starCount; i++) {
+          starPos[i * 3] = (Math.random() - 0.5) * 50;
+          starPos[i * 3 + 1] = (Math.random() - 0.5) * 30;
+          starPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+          starCol[i * 3] = 0.9;
+          starCol[i * 3 + 1] = 0.5;
+          starCol[i * 3 + 2] = 0.2;
+        }
+        starGeo.setAttribute("position", new THREE.BufferAttribute(starPos, 3));
+        starGeo.setAttribute("color", new THREE.BufferAttribute(starCol, 3));
+        const stars = new THREE.Points(
+          starGeo,
+          new THREE.PointsMaterial({
+            size: 0.05,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.4,
+          }),
+        );
+        scene.add(stars);
 
-        // AnimeJS idle float (drives base Y)
-        const fl = { y: cfg.startY };
-        anime({ targets: fl, y: [cfg.startY - 0.25, cfg.startY + 0.25], duration: 3400, direction: "alternate", loop: true, easing: "easeInOutSine" });
-
-        // ── Scroll / mouse state ──────────────────────────────────────────
-        let scrollY = window.scrollY, mouseX = 0, mouseY = 0, rotX = 0, rotZ = 0;
-        window.addEventListener("scroll",    () => { scrollY = window.scrollY; });
-        window.addEventListener("mousemove", (e) => {
-          mouseX = e.clientX / window.innerWidth  - 0.5;
-          mouseY = e.clientY / window.innerHeight - 0.5;
+        let scrollY = window.scrollY;
+        window.addEventListener("scroll", () => {
+          scrollY = window.scrollY;
         });
 
-        // Hero section bottom edge (fall endpoint)
-        const heroEl = document.querySelector("main > section:first-child");
-
         const clock = new THREE.Clock();
-
-        // ── Render loop ───────────────────────────────────────────────────
-        const renderLoop = () => {
-          requestAnimationFrame(renderLoop);
+        const render = () => {
+          requestAnimationFrame(render);
           const elapsed = clock.getElapsedTime();
+          const rawProg = Math.min(1, scrollY / (window.innerHeight * 0.8));
+          const gravProg =
+            rawProg < 0.7
+              ? (rawProg / 0.7) ** 2 * 0.7
+              : 0.7 + ((rawProg - 0.7) / 0.3) * 0.3;
 
-          // Scroll progress through hero → gravity fall to image
-          const heroH = heroEl ? heroEl.offsetHeight : window.innerHeight;
-          const rawProg = Math.min(1, Math.max(0, scrollY / heroH));
-          // Gravity easing: slow at top, accelerate downward, ease-out at landing
-          const gravProg = rawProg < 0.7
-            ? (rawProg / 0.7) * (rawProg / 0.7) * 0.7          // ease-in phase
-            : 0.7 + (rawProg - 0.7) / 0.3 * 0.3;               // ease-out landing
+          cupGroup.position.x =
+            cfg.startX + (cfg.landX - cfg.startX) * gravProg;
+          cupGroup.position.y =
+            cfg.startY +
+            Math.sin(elapsed) * 0.1 +
+            (cfg.landY - cfg.startY) * gravProg;
+          cupGroup.rotation.y += 0.005 * (1 - gravProg);
+          cupGroup.scale.setScalar(cfg.scale * (1 - gravProg * 0.1));
 
-          // Cup position: lerp from start → land driven by gravity progress
-          const cupX = cfg.startX + (cfg.landX - cfg.startX) * gravProg;
-          const cupY = fl.y       + (cfg.landY  - fl.y)      * gravProg;
-
-          cupGroup.position.x = cupX;
-          cupGroup.position.y = cupY;
-
-          // Gentle spin slows as cup falls
-          cupGroup.rotation.y += 0.0038 * (1 - gravProg * 0.7);
-
-          // Mouse tilt (reduced while falling)
-          rotX += (mouseY * 0.12 * (1 - gravProg * 0.5) - rotX) * 0.055;
-          rotZ += (mouseX * 0.12 * (1 - gravProg * 0.5) - rotZ) * 0.055;
-          cupGroup.rotation.x = rotX;
-          cupGroup.rotation.z = rotZ;
-
-          // Scale: subtly shrink as it "lands" (depth illusion)
-          const landScale = cfg.scale * (1 - gravProg * 0.12);
-          cupGroup.scale.setScalar(Math.max(landScale, cfg.scale * 0.88));
-
-          // Steam fades out as cup lands
-          cupGroup.children.forEach((child) => {
-            if (child instanceof THREE.Sprite) child.material.opacity *= (1 - gravProg * 0.8);
-          });
-
-          // Beans orbit + bob
           beans.forEach((b) => {
-            const d = b.userData;
-            d.angle += d.speed;
-            b.position.x = Math.cos(d.angle) * d.dist + cupX;
-            b.position.z = Math.sin(d.angle) * d.dist * 0.55 - 1;
-            b.position.y = cupY + d.ht + Math.sin(elapsed * d.bobFreq + d.phase) * d.bobAmp;
-            b.rotation.y += d.speed * 1.6; b.rotation.x += d.speed * 0.4;
+            b.userData.angle += b.userData.speed;
+            b.position.x =
+              Math.cos(b.userData.angle) * b.userData.dist +
+              cupGroup.position.x;
+            b.position.y =
+              cupGroup.position.y +
+              b.userData.ht +
+              Math.sin(elapsed + b.userData.angle) * 0.2;
+            b.position.z = Math.sin(b.userData.angle) * b.userData.dist * 0.5;
+            b.rotation.y += 0.01;
           });
 
-          // Steam wisp drift
-          steamParticles.forEach((p) => {
-            const d = p.userData;
-            p.position.y += d.rise;
-            p.position.x = d.sx + Math.sin(elapsed * d.swayFreq + d.phase) * d.swayAmp * 55;
-            if (p.position.y > d.sy + 3.8) p.position.y = d.sy;
-          });
-
-          bgMesh.rotation.y += 0.00028;
+          stars.rotation.y += 0.0005;
           renderer.render(scene, camera);
         };
+        render();
 
-        renderLoop();
-
-        // ── Resize handler ────────────────────────────────────────────────
         window.addEventListener("resize", () => {
           cfg = getConfig();
           camera.aspect = window.innerWidth / window.innerHeight;
-          camera.position.z = cfg.camZ;
           camera.updateProjectionMatrix();
           renderer.setSize(window.innerWidth, window.innerHeight);
-          // Re-target float base
-          fl.y = cfg.startY;
         });
       };
 
-      // --- AnimeJS Micro-Animations ---
-      const initAnime = () => {
-        anime({
-          targets: ".mt-20 i", translateY: [-8, 8],
-          duration: 2200, direction: "alternate", loop: true,
-          easing: "easeInOutSine", delay: anime.stagger(240),
+      const initAnimations = () => {
+        // Hero Title Magnetic Effect (GSAP)
+        gsap.to("#hero-title", {
+          scrollTrigger: {
+            trigger: "#hero-title",
+            start: "top center",
+            end: "bottom top",
+            scrub: 1,
+          },
+          y: -50,
+          opacity: 0.5,
+          scale: 0.9,
         });
 
-        document.querySelectorAll(".w-16.h-16").forEach((icon) => {
-          icon.addEventListener("mouseenter", () =>
-            anime({ targets: icon, scale: [1, 1.2, 1], rotate: [0, 8, 0], duration: 480, easing: "easeOutBack" })
-          );
-        });
+        // Glass Cards Magnetic Reveal
+        document.querySelectorAll(".glass-card-deep").forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
 
-        document.querySelectorAll('a[href*="guest/order"], a[href*="employee/pos"]').forEach((btn) => {
-          btn.addEventListener("mouseenter", () =>
-            anime({ targets: btn, scale: 1.05, duration: 260, easing: "easeOutQuad" })
-          );
-          btn.addEventListener("mouseleave", () =>
-            anime({ targets: btn, scale: 1,    duration: 260, easing: "easeOutQuad" })
-          );
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            gsap.to(card, {
+              rotateX,
+              rotateY,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          });
+          card.addEventListener("mouseleave", () => {
+            gsap.to(card, {
+              rotateX: 0,
+              rotateY: 0,
+              duration: 0.5,
+              ease: "power2.out",
+            });
+          });
         });
       };
 
       window.onload = () => {
         init3D();
-        initAnime();
+        initAnimations();
       };
     </script>
   </body>
