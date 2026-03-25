@@ -21,7 +21,7 @@ public class DatabaseConfig {
     public static String getUrl() {
         switch (DB_TYPE) {
             case "MYSQL":
-                return "jdbc:mysql://localhost:3306/PolyCoffee?useSSL=false&serverTimezone=UTC";
+                return "jdbc:mysql://localhost:3307/PolyCoffee?useSSL=false&serverTimezone=UTC";
 
             case "SQLSERVER":
                 return "jdbc:sqlserver://localhost:1433;databaseName=PolyCoffee";
@@ -36,6 +36,6 @@ public class DatabaseConfig {
     }
 
     public static String getPassword() {
-        return "123";
+        return "minh12345";
     }
 }

@@ -55,25 +55,25 @@
 <div class="container">
 
     <div class="menu-box">
-        <a href="order">
+        <a href="manager/order">
             🛒 Order Drink
         </a>
     </div>
 
     <div class="menu-box">
-        <a href="drink">
+        <a href="manager/drink">
             🍹 Manage Drinks
         </a>
     </div>
 
     <div class="menu-box">
-        <a href="category">
+        <a href="manager/category">
             📂 Manage Category
         </a>
     </div>
 
     <div class="menu-box">
-        <a href="user">
+        <a href="manager/user">
             👤 Manage Users
         </a>
     </div>
