@@ -115,7 +115,9 @@ taglib uri="jakarta.tags.fmt" prefix="fmt" %>
           </div>
 
           <h1
-            class="text-7xl md:text-[9rem] font-serif-majestic text-white leading-[0.9] tracking-tighter mb-10 select-none"
+            data-aos="fade-up"
+            data-aos-delay="400"
+            class="text-7xl md:text-[9rem] font-serif-majestic text-white tracking-tighter mb-10 select-none"
             id="hero-title"
           >
             Đậm Vị <br />
