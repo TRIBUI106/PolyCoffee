@@ -90,7 +90,8 @@
             Hành Trình Hương Vị Thủ Công
           </div> -->
 
-              <h1 class="text-7xl md:text-[9rem] font-serif-majestic text-white tracking-tighter mb-2 select-none"
+              <h1 data-aos="fade-up" data-aos-delay="200"
+                class="text-7xl md:text-[9rem] font-serif-majestic text-white tracking-tighter mb-24 select-none"
                 id="hero-title">
                 Đậm Vị <br />
                 <span class="text-amber-glow italic">Nghệ Thuật</span>
