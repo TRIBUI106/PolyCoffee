@@ -428,7 +428,7 @@
                 </a>
               </div>
               <p class="mt-16 text-slate-500 text-sm uppercase tracking-[0.5em] font-bold">
-                PolyCoffee &middot; Est 2024
+                PolyCoffee &middot; Est 2026
               </p>
             </div>
           </section>
@@ -482,9 +482,9 @@
 
             const getCfg = () => {
               const w = canvas.width, h = canvas.height;
-              if (w < 640)  return { cx: w * 0.5,  bcy: h * 0.32, scale: 0.52, beanR: 100 };
+              if (w < 640) return { cx: w * 0.5, bcy: h * 0.32, scale: 0.52, beanR: 100 };
               if (w < 1024) return { cx: w * 0.62, bcy: h * 0.34, scale: 0.75, beanR: 135 };
-              return             { cx: w * 0.73, bcy: h * 0.36, scale: 1.05, beanR: 165 };
+              return { cx: w * 0.73, bcy: h * 0.36, scale: 1.05, beanR: 165 };
             };
             let cfg = getCfg();
             window.addEventListener('resize', () => { cfg = getCfg(); }, { passive: true });
@@ -535,7 +535,7 @@
             };
 
             const drawCup = (cx, cy, sc) => {
-              const S    = sc * 52;
+              const S = sc * 52;
               const rimR = S * 1.5;
               const botR = S * 0.78;
               const cupH = S * 2.78;
@@ -548,10 +548,10 @@
               ctx.shadowColor = 'rgba(0,0,0,0.65)';
               ctx.shadowBlur = S * 0.85;
               const sGrad = ctx.createLinearGradient(cx - S * 2.4, saucerY, cx + S * 2.4, saucerY);
-              sGrad.addColorStop(0,    '#141414');
+              sGrad.addColorStop(0, '#141414');
               sGrad.addColorStop(0.42, '#2a2a2a');
               sGrad.addColorStop(0.58, '#303030');
-              sGrad.addColorStop(1,    '#0e0e0e');
+              sGrad.addColorStop(1, '#0e0e0e');
               ctx.fillStyle = sGrad;
               ctx.beginPath();
               ctx.ellipse(cx, saucerY, S * 2.35, S * 0.3, 0, 0, Math.PI * 2);
@@ -563,11 +563,11 @@
               ctx.shadowColor = 'rgba(245,158,11,0.1)';
               ctx.shadowBlur = S * 1.6;
               const bGrad = ctx.createLinearGradient(cx - rimR, 0, cx + rimR, 0);
-              bGrad.addColorStop(0,    '#111');
+              bGrad.addColorStop(0, '#111');
               bGrad.addColorStop(0.25, '#252525');
               bGrad.addColorStop(0.52, '#1c1c1c');
               bGrad.addColorStop(0.75, '#181818');
-              bGrad.addColorStop(1,    '#0a0a0a');
+              bGrad.addColorStop(1, '#0a0a0a');
               ctx.fillStyle = bGrad;
               ctx.beginPath();
               ctx.moveTo(cx - botR, botY);
@@ -583,9 +583,9 @@
               // Rim ellipse
               ctx.save();
               const rGrad = ctx.createLinearGradient(cx - rimR, rimY - S * 0.22, cx + rimR, rimY + S * 0.22);
-              rGrad.addColorStop(0,   '#202020');
+              rGrad.addColorStop(0, '#202020');
               rGrad.addColorStop(0.5, '#3c3c3c');
-              rGrad.addColorStop(1,   '#161616');
+              rGrad.addColorStop(1, '#161616');
               ctx.fillStyle = rGrad;
               ctx.beginPath();
               ctx.ellipse(cx, rimY, rimR, S * 0.22, 0, 0, Math.PI * 2);
@@ -595,9 +595,9 @@
               // Coffee liquid
               ctx.save();
               const lGrad = ctx.createRadialGradient(cx - S * 0.3, rimY - S * 0.06, 0, cx, rimY, S * 1.2);
-              lGrad.addColorStop(0,   '#a07850');
+              lGrad.addColorStop(0, '#a07850');
               lGrad.addColorStop(0.4, '#6b4226');
-              lGrad.addColorStop(1,   '#1a0c07');
+              lGrad.addColorStop(1, '#1a0c07');
               ctx.fillStyle = lGrad;
               ctx.beginPath();
               ctx.ellipse(cx, rimY, rimR - S * 0.12, S * 0.18, 0, 0, Math.PI * 2);
@@ -640,7 +640,7 @@
               ctx.clearRect(0, 0, W, H);
               t += 0.012;
 
-              const rawProg  = Math.min(1, scrollY / (H * 0.8));
+              const rawProg = Math.min(1, scrollY / (H * 0.8));
               const gravProg = rawProg < 0.7
                 ? (rawProg / 0.7) ** 2 * 0.7
                 : 0.7 + ((rawProg - 0.7) / 0.3) * 0.3;
