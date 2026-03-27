@@ -17,6 +17,8 @@
                         <fmt:message key="pos.title" />
                     </title>
                     <jsp:include page="/views/common/head.jsp" />
+                    <!-- Bootstrap CSS required for modal components -->
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
                     <style>
                         body {
                             background-color: #f0f2f5;
@@ -192,7 +194,7 @@
                                                 </c:if>
                                                 <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group drink-item"
                                                     data-cat-id="${d.category.id}"
-                                                    onclick="location.href='${pageContext.request.contextPath}/employee/pos/add?${urlParams}'">
+                                                    onclick="addDrinkAjax(${d.id})">
                                                     <div class="aspect-[4/3] bg-pos-bg relative overflow-hidden">
                                                         <c:choose>
                                                             <c:when test="${not empty d.image}">
@@ -905,7 +907,7 @@
 
                         <!-- Right Side: Order/Cart or Detail View -->
                         <c:if test="${activeTab == 'pos' || (activeTab == 'bills' && not empty currentBill)}">
-                            <div
+                            <div id="billPanel"
                                 class="w-[380px] xl:w-[420px] bg-white border-l border-pos-border flex flex-col shrink-0 relative z-20 shadow-[-5px_0_15px_-5px_rgba(0,0,0,0.05)]">
 
                                 <!-- Cart Header -->
@@ -1002,7 +1004,7 @@
                                                                     </div>
                                                                     <c:forEach var="n"
                                                                         items="${['50% Sugar', '70% Sugar', '100% Sugar', 'No Ice', 'No Sugar']}">
-                                                                        <a href="${pageContext.request.contextPath}/employee/pos/note?billId=${currentBill.id}&drinkId=${item.drink.id}&note=${n}"
+                                                                        <a href="javascript:void(0)" onclick="updateNoteAjax(${currentBill.id}, ${item.drink.id}, '${n}')"
                                                                             class="block px-4 py-1.5 text-xs hover:bg-coffee-50 hover:text-coffee-700 text-pos-text transition-all">
                                                                             ${n}
                                                                         </a>
@@ -1028,7 +1030,7 @@
                                                                     <c:when test="${currentBill.status == 'WAITING'}">
                                                                         <button
                                                                             class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-r border-pos-border shrink-0 active:bg-gray-200"
-                                                                            onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity - 1}'">
+                                                                            onclick="updateQtyAjax(${currentBill.id}, ${item.drink.id}, ${item.quantity - 1})">
                                                                             <i class="bi bi-dash"></i>
                                                                         </button>
                                                                         <input type="text" value="${item.quantity}"
@@ -1036,7 +1038,7 @@
                                                                             class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
                                                                         <button
                                                                             class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
-                                                                            onclick="location.href='${pageContext.request.contextPath}/employee/pos/update?billId=${currentBill.id}&drinkId=${item.drink.id}&quantity=${item.quantity + 1}'">
+                                                                            onclick="updateQtyAjax(${currentBill.id}, ${item.drink.id}, ${item.quantity + 1})">
                                                                             <i class="bi bi-plus"></i>
                                                                         </button>
                                                                     </c:when>
@@ -1795,9 +1797,43 @@
                             }
                         }
 
+                        // POS AJAX helpers - prevent full page reload on cart operations
+                        const _posCtxPath = '${pageContext.request.contextPath}';
+                        let _currentBillId = ${not empty currentBill ? currentBill.id : 0};
+
+                        async function _refreshBillPanel(url) {
+                            try {
+                                const resp = await fetch(url, { redirect: 'follow' });
+                                const html = await resp.text();
+                                const doc = new DOMParser().parseFromString(html, 'text/html');
+                                const newPanel = doc.getElementById('billPanel');
+                                const panel = document.getElementById('billPanel');
+                                if (newPanel && panel) {
+                                    panel.innerHTML = newPanel.innerHTML;
+                                    const match = resp.url.match(/[?&]billId=(\d+)/);
+                                    if (match) _currentBillId = parseInt(match[1]);
+                                }
+                            } catch(e) {
+                                console.error('POS AJAX error:', e);
+                                window.location.href = url;
+                            }
+                        }
+
+                        function addDrinkAjax(drinkId) {
+                            _refreshBillPanel(_posCtxPath + '/employee/pos/add?drinkId=' + drinkId + '&billId=' + _currentBillId);
+                        }
+
+                        function updateQtyAjax(billId, drinkId, qty) {
+                            _refreshBillPanel(_posCtxPath + '/employee/pos/update?billId=' + billId + '&drinkId=' + drinkId + '&quantity=' + qty);
+                        }
+
+                        function updateNoteAjax(billId, drinkId, note) {
+                            _refreshBillPanel(_posCtxPath + '/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note));
+                        }
+
                         function showQR(tableId, tableNum, tableCode) {
                             const baseUrl = window.location.origin + '${pageContext.request.contextPath}';
-                            const orderUrl = baseUrl + '/guest/pos?tableId=' + tableId;
+                            const orderUrl = baseUrl + '/guest/order?tableId=' + tableId;
                             const qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(orderUrl);
 
                             document.getElementById('qrImage').src = qrUrl;
@@ -1861,7 +1897,7 @@
                         }
 
                         function handleCustomNote(billId, drinkId, note) {
-                            location.href = '${pageContext.request.contextPath}/employee/pos/note?billId=' + billId + '&drinkId=' + drinkId + '&note=' + encodeURIComponent(note);
+                            updateNoteAjax(billId, drinkId, note);
                         }
 
                         // Management Modals Logic

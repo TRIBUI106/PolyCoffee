@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet({"/auth/login", "/auth/logout"})
+@WebServlet({"/auth/login", "/auth/logout", "/auth/profile"})
 public class AuthController extends HttpServlet {
     private final AuthService authService = new AuthService();
 
@@ -21,6 +21,13 @@ public class AuthController extends HttpServlet {
         if (uri.contains("/logout")) {
             AuthUtil.clear(req);
             resp.sendRedirect(req.getContextPath() + "/auth/login");
+        } else if (uri.contains("/profile")) {
+            User user = AuthUtil.getUser(req);
+            if (user == null) {
+                resp.sendRedirect(req.getContextPath() + "/auth/login");
+                return;
+            }
+            req.getRequestDispatcher("/views/auth/profile.jsp").forward(req, resp);
         } else {
             req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
         }

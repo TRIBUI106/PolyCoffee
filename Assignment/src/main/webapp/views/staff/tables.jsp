@@ -50,7 +50,7 @@
                                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-5M16.5 3.5a2.121 2.121 0 113 3L13 19l-4 1 1-4L16.5 3.5z"/></svg>
                              </button>
                              <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${t.id}" 
-                                onclick="return confirm('Silmek istediğinize emin misiniz?')"
+                                onclick="return confirm('Are you sure you want to delete this table?')"
                                 class="p-2 text-gray-400 hover:text-red-600 transition-colors">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
                              </a>
@@ -61,14 +61,14 @@
                     <p class="text-sm text-gray-500 mb-4 font-medium">Tracking Code: <span class="text-indigo-600 font-bold">${t.code}</span></p>
 
                     <div class="bg-gray-50 rounded-2xl p-4 flex flex-col items-center">
+                        <c:set var="selfOrderUrl" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}/guest/order?tableId=${t.id}" />
                         <c:url var="qrUrl" value="https://api.qrserver.com/v1/create-qr-code/">
                             <c:param name="size" value="200x200" />
-                            <c:set var="fullUrl" value="${pageContext.request.getScheme()}://${pageContext.request.getServerName()}:${pageContext.request.getServerPort()}${pageContext.request.contextPath}/guest/pos?tableId=${t.id}" />
-                            <c:param name="data" value="${fullUrl}" />
+                            <c:param name="data" value="${selfOrderUrl}" />
                         </c:url>
                         <img src="${qrUrl}" alt="QR Code" class="w-32 h-32 mb-3 bg-white p-2 rounded-xl border border-gray-100">
                         <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mb-2">Scan to Order</p>
-                        <button onclick="printQR('${qrUrl}', '${t.tableNumber}')"
+                        <button onclick="printQR('${qrUrl}', '${t.tableNumber}', '${selfOrderUrl}')"
                                 class="w-full py-2.5 bg-white border border-gray-200 text-gray-700 text-sm font-bold rounded-xl hover:bg-gray-50 transition-all">
                             Print Label
                         </button>
@@ -118,7 +118,7 @@
             document.getElementById('tableModal').classList.remove('hidden');
         }
         
-        function printQR(url, name) {
+        function printQR(url, name, orderUrl) {
             const win = window.open('', '_blank');
             win.document.write(`
                 <html>
@@ -126,6 +126,7 @@
                     <h1 style="font-size: 32px; margin-bottom: 20px;">${name}</h1>
                     <img src="${url}" style="width: 300px; height: 300px; border: 1px solid #eee; padding: 20px; border-radius: 20px;">
                     <p style="margin-top: 20px; font-weight: bold; color: #6366f1;">SCAN TO ORDER</p>
+                    <p style="font-size: 12px; color: #888; word-break: break-all;">${orderUrl || ''}</p>
                     <script>window.onload = () => { window.print(); window.close(); }<\/script>
                 </body>
                 </html>

@@ -32,12 +32,19 @@ public class SelfOrderController extends HttpServlet {
         String uri = req.getRequestURI();
 
         if (uri.endsWith("/order")) {
+            // Persist tableId in session when arriving via QR scan
+            String tableIdParam = req.getParameter("tableId");
+            if (tableIdParam != null && !tableIdParam.isEmpty()) {
+                req.getSession().setAttribute("selfOrderTableId", tableIdParam);
+            }
+            req.setAttribute("tableId", req.getSession().getAttribute("selfOrderTableId"));
+
             List<Category> categories = categoryService.getAllCategories();
             List<Drink> drinks = drinkService.getActiveDrinks();
-            
+
             req.setAttribute("categories", categories);
             req.setAttribute("drinks", drinks);
-            
+
             req.getRequestDispatcher("/views/guest/self-order.jsp").forward(req, resp);
         } else {
             resp.sendError(HttpServletResponse.SC_NOT_FOUND);
@@ -51,6 +58,13 @@ public class SelfOrderController extends HttpServlet {
         if (uri.endsWith("/checkout")) {
             try {
                 CheckoutRequest checkoutRequest = gson.fromJson(req.getReader(), CheckoutRequest.class);
+                // Attach tableId from session if not provided in request
+                if (checkoutRequest.getTableId() == null) {
+                    Object sessionTableId = req.getSession().getAttribute("selfOrderTableId");
+                    if (sessionTableId != null) {
+                        try { checkoutRequest.setTableId(Integer.parseInt(sessionTableId.toString())); } catch (NumberFormatException ignored) {}
+                    }
+                }
                 
                 String fullname = checkoutRequest.getGuestName();
                 String phone = checkoutRequest.getGuestPhone();

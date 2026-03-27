@@ -62,8 +62,8 @@
                     </a>
                 </c:when>
                 <c:otherwise>
-                    <div class="relative group">
-                        <button class="flex items-center gap-3 bg-white/5 pl-2 pr-4 py-1.5 rounded-full border border-white/10 hover:border-amber-500/50 transition-all duration-300 active:scale-95 group">
+                    <div class="relative group" id="userMenuWrapper">
+                        <button onclick="toggleUserMenu()" class="flex items-center gap-3 bg-white/5 pl-2 pr-4 py-1.5 rounded-full border border-white/10 hover:border-amber-500/50 transition-all duration-300 active:scale-95 group">
                             <div class="w-9 h-9 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 text-black flex items-center justify-center font-bold text-sm shadow-inner overflow-hidden">
                                 <span class="relative z-10">${fn:substring(sessionScope.user.fullName, 0, 1)}</span>
                             </div>
@@ -75,7 +75,7 @@
                         </button>
                         
                         <!-- Premium User Dropdown -->
-                        <div class="absolute top-full right-0 mt-3 w-64 translate-y-4 opacity-0 pointer-events-none group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-500 ease-out z-[110]">
+                        <div id="userDropdown" class="absolute top-full right-0 mt-3 w-64 translate-y-4 opacity-0 pointer-events-none group-hover:translate-y-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-500 ease-out z-[110]">
                             <div class="bg-[#111] border border-white/10 p-2 rounded-2xl shadow-2xl backdrop-blur-2xl ring-1 ring-white/5">
                                 <div class="px-4 py-4 border-b border-white/5 mb-2 bg-white/5 rounded-xl">
                                     <p class="text-[9px] uppercase text-amber-500/60 font-bold mb-1 tracking-widest leading-none">
@@ -85,7 +85,7 @@
                                         ${sessionScope.user.fullName}
                                     </p>
                                 </div>
-                                <a href="${pageContext.request.contextPath}/auth/profile" 
+                                <a href="${pageContext.request.contextPath}/auth/profile"
                                    class="flex items-center gap-3 px-4 py-3 text-sm text-gray-400 hover:text-white hover:bg-white/5 rounded-xl transition-all duration-200">
                                     <i class="bi bi-person-circle text-amber-500/70"></i>
                                     <fmt:message key="header.profile" />
@@ -106,6 +106,30 @@
 </header>
 
 <script>
+    // Mobile-compatible dropdown toggle
+    function toggleUserMenu() {
+        const dropdown = document.getElementById('userDropdown');
+        if (!dropdown) return;
+        const isOpen = dropdown.classList.contains('opacity-100') && dropdown.classList.contains('pointer-events-auto');
+        if (isOpen) {
+            dropdown.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            dropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        } else {
+            dropdown.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-4');
+            dropdown.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
+        }
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(e) {
+        const wrapper = document.getElementById('userMenuWrapper');
+        const dropdown = document.getElementById('userDropdown');
+        if (wrapper && dropdown && !wrapper.contains(e.target)) {
+            dropdown.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+            dropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-4');
+        }
+    });
+
     // Header Scroll Effect
     window.addEventListener('scroll', () => {
         const header = document.getElementById('main-header');
