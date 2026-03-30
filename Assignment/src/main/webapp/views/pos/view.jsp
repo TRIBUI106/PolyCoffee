@@ -84,10 +84,10 @@
                                     class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">EN</a>
                             </div> -->
 
-                            ${sessionScope.user.role != admin ? '<a
-                                href="${pageContext.request.contextPath}/auth/logout"
-                                class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">Đăng
-                                xuất</a>' : ''}
+                            <a href="${pageContext.request.contextPath}/auth/logout"
+                                class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.user.role == true ? 'hidden' : ''} ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">Đăng
+                                xuất</a>
+
                             <div class="flex items-center gap-3 border-l border-pos-border pl-6">
                                 <div class="text-right hidden sm:block">
                                     <p class="text-sm font-bold leading-tight">${sessionScope.user.fullName}</p>
