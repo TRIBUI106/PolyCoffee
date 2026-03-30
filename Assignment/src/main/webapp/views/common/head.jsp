@@ -10,10 +10,15 @@
                 rel="stylesheet" />
             <script src="https://cdn.tailwindcss.com"></script>
 
-            <!-- Google Fonts (Inter & Outfit) -->
+            <!-- Google Fonts (Inter, Outfit & Cormorant Garamond) -->
             <link
                 href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap"
                 rel="stylesheet" />
+            <link
+                href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+                rel="stylesheet" />
+
+            <script src="https://unpkg.com/lucide@latest"></script>
 
             <!-- Animation Libraries -->
             <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
@@ -55,6 +60,27 @@
 
             <!-- Global Component Styles (Tailwind) -->
             <style type="text/tailwindcss">
+                @layer theme {
+                    .font-serif-majestic {
+                        font-family: "Cormorant Garamond", serif;
+                    }
+                }
+                @layer utilities {
+                    .bg-nocturnal {
+                        background-color: #0d0705;
+                    }
+                    .text-amber-glow {
+                        @apply text-amber-500;
+                        text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
+                    }
+                    .glass-card-deep {
+                        @apply bg-white/5 backdrop-blur-[40px] border border-white/10;
+                        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.82);
+                    }
+                    .text-balance {
+                        text-wrap: balance;
+                    }
+                }
                 @layer components {
         .btn-coffee { @apply bg-coffee-700 text-white px-6 py-2 rounded-lg font-medium transition-colors hover:bg-coffee-800 active:bg-coffee-900 shadow-sm flex items-center gap-2; }
         .btn-soft { @apply bg-white text-coffee-800 border border-gray-200 px-6 py-2 rounded-lg font-medium transition-colors hover:bg-gray-50 active:bg-gray-100 shadow-sm flex items-center gap-2; }

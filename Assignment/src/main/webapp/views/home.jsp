@@ -13,36 +13,6 @@
           <fmt:message key="app.name" /> - PolyCoffee
         </title>
         <jsp:include page="/views/common/head.jsp" />
-        <!-- Premium Fonts -->
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-          rel="stylesheet" />
-
-        <script src="https://unpkg.com/lucide@latest"></script>
-
-        <style type="text/tailwindcss">
-          @layer theme {
-        .font-serif-majestic {
-          font-family: "Cormorant Garamond", serif;
-        }
-      }
-      @layer utilities {
-        .bg-nocturnal {
-          background-color: #0d0705;
-        }
-        .text-amber-glow {
-          @apply text-amber-500;
-          text-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
-        }
-        .glass-card-deep {
-          @apply bg-white/5 backdrop-blur-[40px] border border-white/10;
-          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.82);
-        }
-        .text-balance {
-          text-wrap: balance;
-        }
-      }
-    </style>
       </head>
 
       <body
