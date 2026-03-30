@@ -51,18 +51,18 @@
                     </style>
                 </head>
 
-                <body class="h-screen w-screen flex flex-col text-pos-text select-none">
+                <body class="h-screen w-screen flex flex-col text-slate-800 select-none bg-slate-50/50 font-sans tracking-tight">
 
                     <!-- POS Top Bar -->
                     <header
-                        class="h-14 bg-white border-b border-pos-border px-4 flex items-center justify-between shrink-0 z-10 shadow-sm relative">
+                        class="h-14 bg-white/80 backdrop-blur-xl border-b border-slate-200/60 px-6 flex items-center justify-between shrink-0 z-10 shadow-[0_4px_20px_rgb(0,0,0,0.02)] relative">
                         <div class="flex items-center gap-4">
                             <a href="${pageContext.request.contextPath}/" title="<fmt:message key='header.home'/>"
                                 class="w-10 h-10 flex items-center justify-center bg-coffee-50 text-coffee-700 rounded-lg hover:bg-coffee-100 transition-colors">
                                 <i class="bi bi-house-door-fill text-xl"></i>
                             </a>
                             <div class="h-6 w-px bg-pos-border"></div>
-                            <h1 class="font-bold text-lg flex items-center gap-2">
+                            <h1 class="font-semibold text-lg flex items-center gap-2">
                                 <i class="bi bi-display text-coffee-700"></i>
                                 <span>Smart POS</span>
                                 <span
@@ -71,32 +71,32 @@
                         </div>
                         <div class="flex items-center gap-6">
                             <!-- <div class="relative w-80 hidden md:block">
-                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
                                 <input type="text" placeholder="<fmt:message key='pos.search.placeholder'/>"
-                                    class="w-full bg-pos-bg border border-pos-border rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-500 transition-all">
+                                    class="w-full bg-slate-50/50 border border-slate-200/60 rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-500 transition-all">
                             </div> -->
 
                             <!-- Language Switcher -->
-                            <!-- <div class="flex items-center bg-pos-bg border border-pos-border rounded-md p-1">
+                            <!-- <div class="flex items-center bg-slate-50/50 border border-slate-200/60 rounded-md p-1">
                                 <a href="?lang=vi"
-                                    class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">VI</a>
+                                    class="px-2 py-0.5 text-xs font-semibold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-coffee-700' : 'text-slate-400 hover:text-slate-800'}">VI</a>
                                 <a href="?lang=en"
-                                    class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">EN</a>
+                                    class="px-2 py-0.5 text-xs font-semibold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-slate-400 hover:text-slate-800'}">EN</a>
                             </div> -->
 
                             <a href="${pageContext.request.contextPath}/auth/logout"
-                                class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.user.role == true ? 'hidden' : ''} ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">Đăng
+                                class="px-2 py-0.5 text-xs font-semibold rounded ${sessionScope.user.role == true ? 'hidden' : ''} ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-slate-400 hover:text-slate-800'}">Đăng
                                 xuất</a>
 
-                            <div class="flex items-center gap-3 border-l border-pos-border pl-6">
+                            <div class="flex items-center gap-3 border-l border-slate-200/60 pl-6">
                                 <div class="text-right hidden sm:block">
-                                    <p class="text-sm font-bold leading-tight">${sessionScope.user.fullName}</p>
-                                    <p class="text-[11px] text-pos-muted uppercase tracking-wider">
+                                    <p class="text-sm font-semibold leading-tight">${sessionScope.user.fullName}</p>
+                                    <p class="text-[11px] text-slate-400 uppercase tracking-wider">
                                         <fmt:message key='pos.bill.serve' />
                                     </p>
                                 </div>
                                 <div
-                                    class="w-9 h-9 bg-coffee-700 text-white rounded-full flex items-center justify-center font-bold shadow-sm">
+                                    class="w-9 h-9 bg-coffee-700 text-white rounded-full flex items-center justify-center font-semibold shadow-sm">
                                     ${fn:substring(sessionScope.user.fullName, 0, 1)}
                                 </div>
                             </div>
@@ -106,14 +106,14 @@
                     <!-- Notifications -->
                     <c:if test="${not empty sessionScope.message}">
                         <div
-                            class="fixed top-20 right-4 z-[100] bg-green-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-bounce font-bold flex items-center gap-3">
+                            class="fixed top-20 right-4 z-[100] bg-green-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-bounce font-semibold flex items-center gap-3">
                             <i class="bi bi-check-circle-fill"></i> ${sessionScope.message}
                             <c:remove var="message" scope="session" />
                         </div>
                     </c:if>
                     <c:if test="${not empty sessionScope.error}">
                         <div
-                            class="fixed top-20 right-4 z-[100] bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-pulse font-bold flex items-center gap-3">
+                            class="fixed top-20 right-4 z-[100] bg-red-500 text-white px-6 py-3 rounded-xl shadow-2xl animate-pulse font-semibold flex items-center gap-3">
                             <i class="bi bi-exclamation-triangle-fill"></i> ${sessionScope.error}
                             <c:remove var="error" scope="session" />
                         </div>
@@ -125,7 +125,7 @@
                         <!-- Admin Sidebar (Pro Mode) -->
                         <c:if test="${sessionScope.user.role}">
                             <div
-                                class="w-20 bg-white border-r border-[#e2e8f0] flex flex-col items-center py-8 gap-6 shrink-0 shadow-[4px_0_24px_rgba(0,0,0,0.02)] z-30">
+                                class="w-20 bg-white border-r border-slate-100 flex flex-col items-center py-8 gap-6 shrink-0 shadow-[4px_0_30px_rgb(0,0,0,0.03)] z-30">
                                 <a href="?tab=pos"
                                     class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'pos' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
                                     title="POS Dashboard">
@@ -178,23 +178,23 @@
                                 <c:when test="${activeTab == 'pos'}">
                                     <!-- Categories Bar -->
                                     <div
-                                        class="h-14 bg-white border-b border-pos-border px-4 flex items-center shrink-0 shadow-sm z-0">
+                                        class="h-16 bg-white/60 backdrop-blur-md border-b border-slate-200/50 px-6 flex items-center shrink-0 shadow-sm z-0">
                                         <div class="flex gap-2 overflow-x-auto hide-scroll pb-1 items-center h-full">
                                             <button
-                                                class="bg-coffee-700 text-white px-5 py-2 rounded-lg text-sm font-semibold whitespace-nowrap shadow-sm category-btn"
+                                                class="bg-coffee-700 text-white px-6 py-2.5 shadow-[0_4px_12px_rgba(111,78,55,0.2)] hover:shadow-[0_6px_16px_rgba(111,78,55,0.3)] transition-all rounded-lg text-sm font-semibold whitespace-nowrap shadow-sm category-btn"
                                                 data-cat-id="0">
                                                 <fmt:message key="pos.category.all" />
                                             </button>
                                             <c:forEach var="cat" items="${categories}">
                                                 <button
-                                                    class="bg-pos-bg hover:bg-coffee-50 text-pos-text hover:text-coffee-700 border border-transparent hover:border-coffee-200 px-5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors category-btn"
+                                                    class="bg-white hover:bg-coffee-50 text-slate-600 hover:text-coffee-700 border border-slate-200/80 hover:border-coffee-200 px-6 py-2.5 shadow-sm rounded-lg text-sm font-medium whitespace-nowrap transition-colors category-btn"
                                                     data-cat-id="${cat.id}">${cat.name}</button>
                                             </c:forEach>
                                         </div>
                                     </div>
 
                                     <!-- Products Grid -->
-                                    <div class="flex-grow p-4 overflow-y-auto pos-grid-scroll bg-pos-bg">
+                                    <div class="flex-grow p-4 overflow-y-auto pos-grid-scroll bg-slate-50/50">
                                         <div
                                             class="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 pb-8">
                                             <c:forEach var="d" items="${drinks}">
@@ -203,32 +203,36 @@
                                                     <c:set var="urlParams"
                                                         value="${urlParams}&billId=${currentBill.id}" />
                                                 </c:if>
-                                                <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group drink-item"
+                                                <div class="bg-white rounded-xl border border-slate-200/60 overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group drink-item"
                                                     data-cat-id="${d.category.id}" onclick="addDrinkAjax(${d.id})">
-                                                    <div class="aspect-[4/3] bg-pos-bg relative overflow-hidden">
+                                                    <div class="aspect-[4/3] bg-slate-50/50 relative overflow-hidden">
                                                         <c:choose>
                                                             <c:when test="${not empty d.image}">
                                                                 <c:set var="imgUrl"
                                                                     value="${fn:startsWith(d.image, 'http') ? d.image : pageContext.request.contextPath.concat('/uploads/').concat(d.image)}" />
-                                                                <img src="${imgUrl}"
-                                                                    class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                                                <!-- Lazy loading skeleton preview -->
+                                                                <div class="absolute inset-0 bg-slate-100 animate-pulse z-0"></div>
+                                                                <img src="${imgUrl}" style="border-radius: 1.25rem;"
+                                                                    loading="lazy"
+                                                                    onload="this.previousElementSibling.remove(); this.classList.remove('opacity-0');"
+                                                                    class="w-full h-full object-cover opacity-0 group-hover:scale-110 transition-all duration-700 relative z-10">
                                                             </c:when>
                                                             <c:otherwise>
                                                                 <div
-                                                                    class="w-full h-full flex items-center justify-center text-pos-muted text-4xl group-hover:scale-110 transition-transform duration-500">
+                                                                    class="w-full h-full flex items-center justify-center text-slate-400 text-4xl group-hover:scale-110 transition-transform duration-500">
                                                                     <i class="bi bi-cup-hot"></i>
                                                                 </div>
                                                             </c:otherwise>
                                                         </c:choose>
                                                         <!-- Price overlay -->
                                                         <div
-                                                            class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-xs font-bold px-2 py-1 rounded shadow-sm">
+                                                            class="absolute bottom-2 right-2 bg-black/75 backdrop-blur-sm text-white text-xs font-semibold px-2 py-1 rounded shadow-sm">
                                                             <fmt:formatNumber value="${d.price}" pattern="#,###" />
                                                         </div>
                                                     </div>
                                                     <div class="p-2.5 flex-grow flex flex-col justify-between">
                                                         <h3
-                                                            class="text-sm font-semibold text-pos-text line-clamp-2 leading-tight">
+                                                            class="text-sm font-semibold text-slate-800 line-clamp-2 leading-tight">
                                                             ${d.name}</h3>
                                                     </div>
                                                 </div>
@@ -237,66 +241,66 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'drinks'}">
-                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                    <div class="flex-grow flex flex-col bg-slate-50/50 overflow-hidden p-6">
                                         <div class="flex justify-between items-center mb-6">
-                                            <h2 class="text-2xl font-black text-gray-900">
+                                            <h2 class="text-2xl font-bold tracking-tight text-gray-900">
                                                 <fmt:message key="admin.drink.subtitle" />
                                             </h2>
                                             <div class="flex flex-col sm:flex-row gap-4 items-center">
                                                 <div class="relative w-64">
                                                     <i
-                                                        class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                        class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
                                                     <input type="text" id="drinkSearch" placeholder="Tìm kiếm món..."
-                                                        class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                        class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200/60 rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
                                                 </div>
                                                 <button type="button" onclick="openDrinkModal()"
-                                                    class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
+                                                    class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
                                                     <i class="bi bi-plus-lg"></i>
                                                     <fmt:message key="admin.drink.btn.add" />
                                                 </button>
                                             </div>
                                         </div>
                                         <div
-                                            class="bg-white rounded-2xl border border-pos-border shadow-sm flex-grow overflow-hidden flex flex-col">
+                                            class="bg-white rounded-2xl border border-slate-200/60 shadow-sm flex-grow overflow-hidden flex flex-col">
                                             <div class="overflow-y-auto">
                                                 <table class="w-full text-left">
                                                     <thead
-                                                        class="bg-gray-50 border-b border-pos-border sticky top-0 z-10">
+                                                        class="bg-gray-50 border-b border-slate-200/60 sticky top-0 z-10">
                                                         <tr>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                                 <fmt:message key="admin.drink.name" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                                 <fmt:message key="admin.drink.category" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-right">
                                                                 <fmt:message key="admin.drink.price" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-center">
                                                                 <fmt:message key="admin.drink.status" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-right">
                                                                 <fmt:message key="admin.drink.action" />
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="divide-y divide-pos-border">
                                                         <c:forEach var="item" items="${allDrinks}">
-                                                            <tr class="hover:bg-pos-bg transition-colors drink-row">
+                                                            <tr class="hover:bg-slate-50/50 transition-colors drink-row">
                                                                 <td class="px-6 py-4">
                                                                     <div class="flex items-center gap-3">
                                                                         <div
-                                                                            class="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-pos-border flex items-center justify-center">
+                                                                            class="w-10 h-10 rounded-lg overflow-hidden bg-gray-100 shrink-0 border border-slate-200/60 flex items-center justify-center">
                                                                             <c:choose>
                                                                                 <c:when test="${not empty item.image}">
                                                                                     <c:set var="imgUrl"
                                                                                         value="${fn:startsWith(item.image, 'http') ? item.image : pageContext.request.contextPath.concat('/uploads/').concat(item.image)}" />
-                                                                                    <img src="${imgUrl}"
+                                                                                    <img src="${imgUrl}" style="border-radius: 1.25rem;"
                                                                                         class="w-full h-full object-cover">
                                                                                 </c:when>
                                                                                 <c:otherwise>
@@ -306,19 +310,19 @@
                                                                             </c:choose>
                                                                         </div>
                                                                         <div
-                                                                            class="font-bold text-pos-text text-sm drink-name">
+                                                                            class="font-semibold text-slate-800 text-sm drink-name">
                                                                             ${item.name}</div>
                                                                     </div>
                                                                 </td>
-                                                                <td class="px-6 py-4 text-sm text-pos-muted">
+                                                                <td class="px-6 py-4 text-sm text-slate-400">
                                                                     ${item.category.name}</td>
-                                                                <td class="px-6 py-4 text-sm font-bold text-right">
+                                                                <td class="px-6 py-4 text-sm font-semibold text-right">
                                                                     <fmt:formatNumber value="${item.price}"
                                                                         pattern="#,###" />
                                                                 </td>
                                                                 <td class="px-6 py-4 text-center">
                                                                     <span
-                                                                        class="px-3 py-1 rounded-full text-[11px] font-bold ${item.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                                                        class="px-3 py-1 rounded-full text-[11px] font-semibold ${item.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
                                                                         ${item.active ? '
                                                                         <fmt:message key="admin.status.yes" />' : '
                                                                         <fmt:message key="admin.status.no" />'}
@@ -346,38 +350,39 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'categories'}">
-                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                    <div class="flex-grow flex flex-col bg-slate-50/50 overflow-hidden p-6">
                                         <div class="flex justify-between items-center mb-6">
-                                            <h2 class="text-2xl font-black text-gray-900">
+                                            <h2 class="text-2xl font-bold tracking-tight text-gray-900">
                                                 <fmt:message key="admin.category.title" />
                                             </h2>
-                                            <button type="button" onclick="openCategoryModal()"
-                                                class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100">
-                                                <i class="bi bi-plus-lg"></i>
-                                                <fmt:message key="admin.category.btn.add" />
-                                            </button>
-                                            <div class="relative w-64">
-                                                <i
-                                                    class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                <input type="text" id="categorySearch"
-                                                    placeholder="Tìm kiếm danh mục..."
-                                                    class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                            <div class="flex items-center gap-4">
+                                                <div class="relative w-64">
+                                                    <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                                    <input type="text" id="categorySearch"
+                                                        placeholder="Tìm kiếm danh mục..."
+                                                        class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200/60 rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                </div>
+                                                <button type="button" onclick="openCategoryModal()"
+                                                    class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                    <fmt:message key="admin.category.btn.add" />
+                                                </button>
                                             </div>
                                         </div>
                                         <div
                                             class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 overflow-y-auto pr-2">
                                             <c:forEach var="item" items="${categories}">
                                                 <div
-                                                    class="bg-white p-5 rounded-2xl border border-pos-border shadow-sm flex items-center justify-between group hover:border-coffee-300 transition-all category-card">
+                                                    class="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-sm flex items-center justify-between group hover:border-coffee-300 transition-all category-card">
                                                     <div class="flex items-center gap-4">
                                                         <div
                                                             class="w-12 h-12 bg-coffee-50 rounded-xl flex items-center justify-center text-coffee-700 text-xl font-black">
                                                             ${fn:substring(item.name, 0, 1)}
                                                         </div>
                                                         <div>
-                                                            <div class="font-bold text-pos-text category-name">
+                                                            <div class="font-semibold text-slate-800 category-name">
                                                                 ${item.name}</div>
-                                                            <div class="text-xs text-pos-muted">
+                                                            <div class="text-xs text-slate-400">
                                                                 <fmt:message key="admin.category.table.status" />:
                                                                 ${item.active ?
                                                                 '
@@ -400,58 +405,59 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'users'}">
-                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                    <div class="flex-grow flex flex-col bg-slate-50/50 overflow-hidden p-6">
                                         <div class="flex justify-between items-center mb-6">
-                                            <h2 class="text-2xl font-black text-gray-900">
+                                            <h2 class="text-2xl font-bold tracking-tight text-gray-900">
                                                 <fmt:message key="admin.staff.title" />
                                             </h2>
-                                            <button type="button" onclick="openStaffModal()"
-                                                class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold shadow-lg shadow-coffee-100 flex items-center gap-2">
-                                                <i class="bi bi-person-plus"></i>
-                                                <fmt:message key="admin.staff.btn.add" />
-                                            </button>
-                                            <div class="relative w-64">
-                                                <i
-                                                    class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                <input type="text" id="staffSearch" placeholder="Tìm kiếm nhân viên..."
-                                                    class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                            <div class="flex items-center gap-4">
+                                                <div class="relative w-64">
+                                                    <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                                    <input type="text" id="staffSearch" placeholder="Tìm kiếm nhân viên..."
+                                                        class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200/60 rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                </div>
+                                                <button type="button" onclick="openStaffModal()"
+                                                    class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-semibold shadow-lg shadow-coffee-100 flex items-center gap-2 active:scale-95 transition-all">
+                                                    <i class="bi bi-person-plus"></i>
+                                                    <fmt:message key="admin.staff.btn.add" />
+                                                </button>
                                             </div>
                                         </div>
                                         <div
-                                            class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
+                                            class="bg-white rounded-2xl border border-slate-200/60 flex-grow overflow-hidden flex flex-col">
                                             <div class="overflow-y-auto">
                                                 <table class="w-full text-left">
-                                                    <thead class="bg-gray-50 border-b border-pos-border sticky top-0">
+                                                    <thead class="bg-gray-50 border-b border-slate-200/60 sticky top-0">
                                                         <tr>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                                 <fmt:message key="admin.staff.name" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                                 <fmt:message key="admin.staff.email" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                                 <fmt:message key="admin.staff.role" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-center">
                                                                 <fmt:message key="admin.staff.status" />
                                                             </th>
                                                             <th
-                                                                class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                                class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-right">
                                                                 <fmt:message key="admin.staff.action" />
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody class="divide-y divide-pos-border">
                                                         <c:forEach var="item" items="${staffList}">
-                                                            <tr class="hover:bg-pos-bg staff-row">
-                                                                <td class="px-6 py-4 font-bold text-sm staff-name">
+                                                            <tr class="hover:bg-slate-50/50 staff-row">
+                                                                <td class="px-6 py-4 font-semibold text-sm staff-name">
                                                                     ${item.fullName}
                                                                 </td>
-                                                                <td class="px-6 py-4 text-sm text-pos-muted">
+                                                                <td class="px-6 py-4 text-sm text-slate-400">
                                                                     ${item.email}</td>
                                                                 <td class="px-6 py-4">
                                                                     <span
@@ -489,23 +495,23 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'bills'}">
-                                    <div class="flex-grow flex flex-col bg-pos-bg overflow-hidden p-6">
+                                    <div class="flex-grow flex flex-col bg-slate-50/50 overflow-hidden p-6">
                                         <div class="flex justify-between items-center mb-6">
-                                            <h2 class="text-2xl font-black text-gray-900">
+                                            <h2 class="text-2xl font-bold tracking-tight text-gray-900">
                                                 <fmt:message key="admin.bill.title" />
                                             </h2>
                                             <div class="flex items-center gap-4">
                                                 <div
-                                                    class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-pos-border shadow-sm">
-                                                    <span class="text-xs font-bold text-gray-500">Max: </span>
+                                                    class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-xl border border-slate-200/60 shadow-sm">
+                                                    <span class="text-xs font-semibold text-gray-500">Max: </span>
                                                     <input id="adminAmountInput" type="number" placeholder="1,000,000"
                                                         class="w-24 bg-transparent text-sm font-semibold outline-none text-right placeholder-gray-300" />
-                                                    <span class="text-xs font-bold text-gray-500">₫</span>
+                                                    <span class="text-xs font-semibold text-gray-500">₫</span>
                                                     <input id="adminAmountRange" type="range" min="0" max="1000000"
                                                         step="10000" class="w-24 accent-coffee-600" />
                                                 </div>
                                                 <button type="button"
-                                                    class="bg-coffee-600 hover:bg-coffee-700 text-white px-5 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all active:scale-95"
+                                                    class="bg-coffee-600 hover:bg-coffee-700 text-white px-6 py-2.5 shadow-[0_4px_12px_rgba(111,78,55,0.2)] hover:shadow-[0_6px_16px_rgba(111,78,55,0.3)] transition-all.5 rounded-xl font-semibold flex items-center gap-2 shadow-md shadow-coffee-200 transition-all active:scale-95"
                                                     data-bs-toggle="modal" data-bs-target="#findBillModal">
                                                     <i class="bi bi-search"></i>
                                                     <fmt:message key="admin.bill.search.btn" />
@@ -513,44 +519,44 @@
                                             </div>
                                         </div>
                                         <div
-                                            class="bg-white rounded-2xl border border-pos-border flex-grow overflow-hidden flex flex-col">
+                                            class="bg-white rounded-2xl border border-slate-200/60 flex-grow overflow-hidden flex flex-col">
                                             <table class="w-full text-left">
-                                                <thead class="bg-gray-50 border-b border-pos-border sticky top-0">
+                                                <thead class="bg-gray-50 border-b border-slate-200/60 sticky top-0">
                                                     <tr>
                                                         <th
-                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                            class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                             <fmt:message key="admin.bill.code" />
                                                         </th>
                                                         <th
-                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase">
+                                                            class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase">
                                                             <fmt:message key="admin.bill.date" />
                                                         </th>
                                                         <th
-                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                            class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-right">
                                                             <fmt:message key="admin.bill.total" />
                                                         </th>
                                                         <th
-                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-center">
+                                                            class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-center">
                                                             <fmt:message key="admin.bill.status" />
                                                         </th>
                                                         <th
-                                                            class="px-6 py-4 text-xs font-bold text-pos-muted uppercase text-right">
+                                                            class="px-6 py-4 text-xs font-semibold text-slate-400 uppercase text-right">
                                                             <fmt:message key="admin.drink.action" />
                                                         </th>
                                                     </tr>
                                                 </thead>
                                                 <tbody class="divide-y divide-pos-border">
                                                     <c:forEach var="item" items="${billHistory}">
-                                                        <tr class="hover:bg-pos-bg transition-colors admin-bill-row"
+                                                        <tr class="hover:bg-slate-50/50 transition-colors admin-bill-row"
                                                             data-total="${item.total}">
-                                                            <td class="px-6 py-4 font-mono text-xs font-bold">
+                                                            <td class="px-6 py-4 font-mono text-xs font-semibold">
                                                                 ${item.code}</td>
-                                                            <td class="px-6 py-4 text-sm text-pos-muted">
+                                                            <td class="px-6 py-4 text-sm text-slate-400">
                                                                 <fmt:formatDate value="${item.createdAt}"
                                                                     pattern="yyyy-MM-dd HH:mm" />
                                                             </td>
                                                             <td
-                                                                class="px-6 py-4 text-sm font-bold text-right text-coffee-700">
+                                                                class="px-6 py-4 text-sm font-semibold text-right text-coffee-700">
                                                                 <fmt:formatNumber value="${item.total}"
                                                                     pattern="#,###" />
                                                             </td>
@@ -558,28 +564,28 @@
                                                                 <c:choose>
                                                                     <c:when test="${item.status == 'WAITING'}">
                                                                         <span
-                                                                            class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-bold">
+                                                                            class="bg-yellow-100 text-yellow-700 px-3 py-1 rounded-full font-semibold">
                                                                             <fmt:message
                                                                                 key="admin.bill.status.waiting" />
                                                                         </span>
                                                                     </c:when>
                                                                     <c:when test="${item.status == 'PENDING'}">
                                                                         <span
-                                                                            class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-bold">
+                                                                            class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full font-semibold">
                                                                             Pending (Guest)
                                                                         </span>
                                                                     </c:when>
                                                                     <c:when
                                                                         test="${item.status == 'PAID' || item.status == 'FINISHED'}">
                                                                         <span
-                                                                            class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-bold">
+                                                                            class="bg-green-100 text-green-700 px-3 py-1 rounded-full font-semibold">
                                                                             <fmt:message
                                                                                 key="admin.bill.status.finished" />
                                                                         </span>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <span
-                                                                            class="bg-red-100 text-red-700 px-3 py-1 rounded-full font-bold">
+                                                                            class="bg-red-100 text-red-700 px-3 py-1 rounded-full font-semibold">
                                                                             <fmt:message
                                                                                 key="admin.bill.status.cancelled" />
                                                                         </span>
@@ -595,7 +601,7 @@
                                                                         <input type="hidden" name="billId"
                                                                             value="${item.id}" />
                                                                         <button type="submit"
-                                                                            class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-1.5 rounded-lg transition-colors font-bold text-xs"
+                                                                            class="bg-indigo-600 text-white hover:bg-indigo-700 px-3 py-1.5 rounded-lg transition-colors font-semibold text-xs"
                                                                             title="Accept Guest Order">
                                                                             Accept
                                                                         </button>
@@ -610,9 +616,9 @@
                                                     </c:forEach>
                                                 </tbody>
                                             </table>
-                                            <div class="p-4 bg-gray-50 border-t border-pos-border flex justify-center">
+                                            <div class="p-4 bg-gray-50 border-t border-slate-200/60 flex justify-center">
                                                 <a href="${pageContext.request.contextPath}/manager/bills"
-                                                    class="text-xs font-bold text-coffee-700 hover:underline uppercase tracking-widest flex items-center gap-2">
+                                                    class="text-xs font-semibold text-coffee-700 hover:underline uppercase tracking-widest flex items-center gap-2">
                                                     <i class="bi bi-journal-text"></i>
                                                     <fmt:message key="header.bill" /> &rarr;
                                                 </a>
@@ -625,7 +631,7 @@
                                                 <div
                                                     class="modal-content bg-white border-0 shadow-2xl rounded-3xl overflow-hidden">
                                                     <div
-                                                        class="modal-header border-b border-pos-border bg-pos-bg px-6 py-5">
+                                                        class="modal-header border-b border-slate-200/60 bg-slate-50/50 px-6 py-5">
                                                         <div>
                                                             <h5 class="text-xl font-black text-gray-900"
                                                                 id="findBillModalLabel">
@@ -633,7 +639,7 @@
                                                             </h5>
                                                         </div>
                                                         <button type="button"
-                                                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-pos-border text-pos-muted hover:text-pos-text hover:bg-gray-50 transition-colors"
+                                                            class="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-slate-200/60 text-slate-400 hover:text-slate-800 hover:bg-gray-50 transition-colors"
                                                             data-bs-dismiss="modal" aria-label="Close">
                                                             <i class="bi bi-x-lg"></i>
                                                         </button>
@@ -645,26 +651,26 @@
                                                             <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                                                                 <div class="space-y-2">
                                                                     <label for="query"
-                                                                        class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Mã
+                                                                        class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Mã
                                                                         HĐ / Tên Nhân Viên</label>
                                                                     <div class="relative">
                                                                         <i
-                                                                            class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                                            class="bi bi-search absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                                                                         <input type="text" id="query" name="query"
                                                                             placeholder="<fmt:message key='admin.bill.search.placeholder'/>"
                                                                             value="${param.query}"
-                                                                            class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all" />
+                                                                            class="w-full pl-11 pr-4 py-3 bg-slate-50/50 border border-slate-200/60 focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-slate-800 transition-all" />
                                                                     </div>
                                                                 </div>
                                                                 <div class="space-y-2">
                                                                     <label for="status"
-                                                                        class="text-xs font-bold text-pos-muted uppercase tracking-wider block">Trạng
+                                                                        class="text-xs font-semibold text-slate-400 uppercase tracking-wider block">Trạng
                                                                         Thái Giao Dịch</label>
                                                                     <div class="relative">
                                                                         <i
-                                                                            class="bi bi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                                            class="bi bi-info-circle absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
                                                                         <select name="status" id="status"
-                                                                            class="w-full pl-11 pr-4 py-3 bg-pos-bg border border-pos-border focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-pos-text transition-all cursor-pointer">
+                                                                            class="w-full pl-11 pr-4 py-3 bg-slate-50/50 border border-slate-200/60 focus:bg-white focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 rounded-xl text-sm font-semibold text-slate-800 transition-all cursor-pointer">
                                                                             <option value="ALL" ${param.status=='ALL'
                                                                                 ? 'selected' : '' }>
                                                                                 <fmt:message
@@ -694,12 +700,12 @@
                                                             </div>
                                                         </div>
                                                         <div
-                                                            class="modal-footer border-t border-pos-border bg-pos-bg px-6 py-4 flex gap-3">
+                                                            class="modal-footer border-t border-slate-200/60 bg-slate-50/50 px-6 py-4 flex gap-3">
                                                             <button type="button"
-                                                                class="px-6 py-2.5 rounded-xl font-bold bg-white border border-pos-border text-pos-muted hover:bg-gray-50 hover:text-pos-text transition-all"
+                                                                class="px-6 py-2.5 rounded-xl font-semibold bg-white border border-slate-200/60 text-slate-400 hover:bg-gray-50 hover:text-slate-800 transition-all"
                                                                 data-bs-dismiss="modal">Thoát</button>
                                                             <button type="submit"
-                                                                class="px-6 py-2.5 rounded-xl font-bold bg-coffee-600 hover:bg-coffee-700 text-white shadow-md shadow-coffee-200 transition-all flex items-center gap-2">
+                                                                class="px-6 py-2.5 rounded-xl font-semibold bg-coffee-600 hover:bg-coffee-700 text-white shadow-md shadow-coffee-200 transition-all flex items-center gap-2">
                                                                 <i class="bi bi-search text-xs"></i> Lọc Kết Quả
                                                             </button>
                                                         </div>
@@ -719,7 +725,7 @@
                                                     Tổng Quan Hệ Thống
                                                 </h1>
                                                 <p class="text-slate-500 font-medium">Báo cáo phân tích và hiệu suất kinh doanh.
-                                                    <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee
+                                                    <span class="text-coffee-600/60 ml-1 font-semibold">PolyCoffee
                                                         Intelligence</span>
                                                 </p>
                                             </div>
@@ -733,7 +739,7 @@
                                                     class="bg-white border border-slate-200 rounded-2xl px-5 py-3 flex items-center gap-3 shadow-sm">
                                                     <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse">
                                                     </div>
-                                                    <span class="text-sm font-bold text-slate-700">Đồng Bộ Real-time</span>
+                                                    <span class="text-sm font-semibold text-slate-700">Đồng Bộ Real-time</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -760,7 +766,7 @@
                                                 <p class="text-3xl font-black text-white mb-2 skeleton-text"
                                                     id="totalBillsText">${dashboard.totalBills}</p>
                                                 <p
-                                                    class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                                    class="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
                                                     Tất cả giao dịch từ trước đến nay</p>
                                             </div>
 
@@ -787,7 +793,7 @@
                                                         pattern="#,###" /> ₫
                                                 </p>
                                                 <div
-                                                    class="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                                                    class="flex items-center gap-1.5 text-xs font-semibold text-emerald-600">
                                                     <i class="bi bi-graph-up"></i>
                                                     <span>+12.5% so với hôm qua</span>
                                                 </div>
@@ -812,8 +818,8 @@
                                                     Đơn Hôm Nay</h3>
                                                 <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
                                                     id="todayOrdersText">${dashboard.todayOrders} <span
-                                                        class="text-sm font-bold text-slate-400">Đơn</span></p>
-                                                <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500">
+                                                        class="text-sm font-semibold text-slate-400">Đơn</span></p>
+                                                <div class="flex items-center gap-1.5 text-xs font-semibold text-slate-500">
                                                     <i class="bi bi-clock-history"></i>
                                                     <span>Cập nhật theo ngày</span>
                                                 </div>
@@ -886,7 +892,7 @@
                                                                 ${st.index + 1}
                                                             </div>
                                                             <div class="flex-grow min-w-0">
-                                                                <p class="text-sm font-bold text-slate-800 truncate">
+                                                                <p class="text-sm font-semibold text-slate-800 truncate">
                                                                     ${drink.drinkName}</p>
                                                                 <div class="flex items-center gap-2">
                                                                     <div
@@ -896,7 +902,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <span
-                                                                        class="text-[10px] text-slate-400 font-bold">Đã bán: ${drink.totalQuantitySold}</span>
+                                                                        class="text-[10px] text-slate-400 font-semibold">Đã bán: ${drink.totalQuantitySold}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="text-right">
@@ -913,83 +919,70 @@
                                     </div>
                                 </c:when>
                                 <c:when test="${activeTab == 'tables'}">
-                                    <div class="flex-grow flex flex-col bg-[#f8fafc] overflow-y-auto p-8 lg:p-12">
+                                    <div class="flex-grow flex flex-col bg-slate-50/50 overflow-hidden p-6">
                                         <!-- Header -->
-                                        <div
-                                            class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                            <div>
-                                                <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
-                                                    Table Management
-                                                </h1>
-                                                <p class="text-slate-500 font-medium">Coordinate your shop layout and QR
-                                                    ordering system. <span
-                                                        class="text-coffee-600/60 ml-1 font-bold">PolyCoffee
-                                                        Infrastructure</span></p>
-                                            </div>
-                                            <button
-                                                class="bg-coffee-700 hover:bg-slate-900 text-white px-8 py-4 rounded-3xl font-black flex items-center gap-3 shadow-2xl shadow-coffee-200 transition-all hover:-translate-y-1 active:scale-95 group"
-                                                data-bs-toggle="modal" data-bs-target="#addTableModal">
-                                                <div
-                                                    class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
-                                                    <i class="bi bi-plus-lg"></i>
+                                        <div class="flex justify-between items-center mb-6">
+                                            <h2 class="text-2xl font-bold tracking-tight text-gray-900">
+                                                Quản Lý Bàn
+                                            </h2>
+                                            <div class="flex items-center gap-4">
+                                                <div class="relative w-64">
+                                                    <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                                                    <input type="text" id="tableSearch" placeholder="Tìm kiếm bàn..."
+                                                        class="w-full pl-10 pr-4 py-2 bg-white border border-slate-200/60 rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
                                                 </div>
-                                                <span>New Table Entity</span>
-                                            </button>
+                                                <button
+                                                    class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all"
+                                                    data-bs-toggle="modal" data-bs-target="#addTableModal">
+                                                    <i class="bi bi-plus-lg"></i>
+                                                    <span>Thêm Bàn Mới</span>
+                                                </button>
+                                            </div>
                                         </div>
 
                                         <!-- Table Grid -->
-                                        <div
-                                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-6 overflow-y-auto pr-2">
                                             <c:forEach var="table" items="${tables}">
-                                                <div
-                                                    class="bg-white p-8 rounded-[42px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-2 transition-all group flex flex-col items-center gap-6 relative overflow-hidden">
-                                                    <!-- Status Indicator & Background Glow -->
-                                                    <div
-                                                        class="absolute -right-8 -top-8 w-32 h-32 ${table.active ? 'bg-coffee-50/50' : 'bg-red-50/50'} rounded-full transition-transform group-hover:scale-150 duration-700">
+                                                <div class="bg-white p-5 rounded-2xl border border-slate-200/60 shadow-sm hover:shadow-lg hover:border-coffee-300 transition-all group flex flex-col items-center gap-4 relative overflow-hidden table-card"
+                                                    data-table-name="${fn:escapeXml(table.tableNumber)}">
+
+                                                    <!-- Status Indicator Glow -->
+                                                    <div class="absolute -right-6 -top-6 w-24 h-24 ${table.active ? 'bg-coffee-50/50' : 'bg-red-50/50'} rounded-full transition-transform group-hover:scale-150 duration-700"></div>
+
+                                                    <!-- Status Badge -->
+                                                    <div class="self-end relative z-10">
+                                                        <span class="text-[10px] font-black uppercase tracking-wider px-2.5 py-1 rounded-full ${table.active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                                                            ${table.active ? 'Hoạt động' : 'Ẩn'}
+                                                        </span>
                                                     </div>
 
-                                                    <!-- Main Icon Circle -->
-                                                    <div
-                                                        class="w-24 h-24 rounded-[32px] ${table.active ? 'bg-coffee-50 text-coffee-700 shadow-inner ring-1 ring-coffee-100' : 'bg-red-50 text-red-400 ring-1 ring-red-100'} flex items-center justify-center text-4xl relative z-10 transition-transform group-hover:rotate-12 duration-500">
+                                                    <!-- Main Icon -->
+                                                    <div class="w-16 h-16 rounded-2xl ${table.active ? 'bg-coffee-50 text-coffee-700' : 'bg-red-50 text-red-400'} flex items-center justify-center text-2xl relative z-10 transition-transform group-hover:scale-110 duration-500">
                                                         <i class="bi bi-grid-3x3-gap"></i>
                                                     </div>
 
                                                     <!-- Table Info -->
                                                     <div class="text-center relative z-10">
-                                                        <p class="text-2xl font-black text-slate-900 mb-1">
-                                                            ${table.tableNumber}</p>
-                                                        <div class="flex items-center justify-center gap-2">
-                                                            <span
-                                                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border border-slate-100 px-3 py-1 rounded-full bg-slate-50">CODE</span>
-                                                            <span
-                                                                class="text-sm font-black text-coffee-600/60">${table.code}</span>
-                                                        </div>
+                                                        <p class="text-lg font-bold tracking-tight text-slate-900 mb-0.5">${table.tableNumber}</p>
+                                                        <span class="text-xs font-semibold text-slate-400">${table.code}</span>
                                                     </div>
 
-                                                    <!-- Actions Tooltip-style bar -->
-                                                    <div
-                                                        class="flex items-center gap-3 relative z-10 bg-slate-50/80 backdrop-blur-sm p-3 rounded-3xl border border-slate-100 mt-2">
-                                                        <button
-                                                            onclick="showQR('${table.id}', '${table.tableNumber}', '${table.code}')"
-                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-coffee-700 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action"
+                                                    <!-- Actions -->
+                                                    <div class="flex items-center gap-2 relative z-10 mt-1">
+                                                        <button onclick="showQR('${table.id}', '${table.tableNumber}', '${table.code}')"
+                                                            class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-coffee-700 hover:bg-coffee-50 transition-all rounded-lg"
                                                             title="QR Code">
-                                                            <i
-                                                                class="bi bi-qr-code text-xl group-hover/action:scale-110"></i>
+                                                            <i class="bi bi-qr-code"></i>
                                                         </button>
-                                                        <div class="w-px h-6 bg-slate-200"></div>
-                                                        <button
-                                                            onclick="editTable('${table.id}', '${table.tableNumber}', '${table.code}')"
-                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action"
-                                                            title="Edit">
-                                                            <i
-                                                                class="bi bi-pencil-square text-xl group-hover/action:scale-110"></i>
+                                                        <button onclick="editTable('${table.id}', '${table.tableNumber}', '${table.code}')"
+                                                            class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 transition-all rounded-lg"
+                                                            title="Sửa">
+                                                            <i class="bi bi-pencil-square"></i>
                                                         </button>
-                                                        <div class="w-px h-6 bg-slate-200"></div>
                                                         <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${table.id}"
-                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action"
-                                                            onclick="return confirm('Archive this table entity?')">
-                                                            <i
-                                                                class="bi bi-trash3 text-xl group-hover/action:scale-110"></i>
+                                                            class="w-9 h-9 flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all rounded-lg"
+                                                            onclick="return confirm('Xác nhận xoá bàn này?')">
+                                                            <i class="bi bi-trash3"></i>
                                                         </a>
                                                     </div>
                                                 </div>
@@ -997,16 +990,12 @@
 
                                             <!-- Empty State / Add Placeholder -->
                                             <c:if test="${empty tables}">
-                                                <div
-                                                    class="col-span-full py-20 flex flex-col items-center justify-center text-slate-300">
-                                                    <div
-                                                        class="w-24 h-24 border-4 border-dashed border-slate-200 rounded-[42px] flex items-center justify-center mb-6">
-                                                        <i class="bi bi-grid-3x3-gap text-4xl"></i>
+                                                <div class="col-span-full py-20 flex flex-col items-center justify-center text-slate-300">
+                                                    <div class="w-20 h-20 border-4 border-dashed border-slate-200 rounded-2xl flex items-center justify-center mb-4">
+                                                        <i class="bi bi-grid-3x3-gap text-3xl"></i>
                                                     </div>
-                                                    <p class="text-xl font-black tracking-tight">No tables established
-                                                        yet</p>
-                                                    <p class="text-sm font-medium">Click "New Table Entity" to begin
-                                                        shop layout</p>
+                                                    <p class="text-lg font-bold tracking-tight">Chưa có bàn nào</p>
+                                                    <p class="text-sm font-medium">Nhấn "Thêm Bàn Mới" để bắt đầu</p>
                                                 </div>
                                             </c:if>
                                         </div>
@@ -1018,20 +1007,20 @@
                         <!-- Right Side: Order/Cart or Detail View -->
                         <c:if test="${activeTab == 'pos' || (activeTab == 'bills' && not empty currentBill)}">
                             <div id="billPanel"
-                                class="w-[380px] xl:w-[420px] bg-white border-l border-pos-border flex flex-col shrink-0 relative z-20 shadow-[-5px_0_15px_-5px_rgba(0,0,0,0.05)]">
+                                class="w-[380px] xl:w-[420px] bg-white border-l border-slate-200/60 flex flex-col shrink-0 relative z-20 shadow-[-5px_0_15px_-5px_rgba(0,0,0,0.05)]">
 
                                 <!-- Cart Header -->
                                 <div
-                                    class="h-14 border-b border-pos-border px-4 flex items-center justify-between shrink-0 bg-white">
+                                    class="h-14 border-b border-slate-200/60 px-4 flex items-center justify-between shrink-0 bg-white">
                                     <div class="flex-grow flex items-center gap-2">
                                         <button
-                                            class="text-pos-text hover:text-coffee-700 bg-pos-bg p-2 rounded-lg transition-colors border border-pos-border shadow-sm">
+                                            class="text-slate-800 hover:text-coffee-700 bg-slate-50/50 p-2 rounded-lg transition-colors border border-slate-200/60 shadow-sm">
                                             <i class="bi bi-person-plus-fill text-lg"></i>
                                         </button>
                                         <div class="flex-grow">
                                             <p
-                                                class="text-center font-bold text-sm bg-pos-bg py-2 rounded-lg border border-pos-border text-pos-text cursor-pointer hover:bg-gray-200 transition-colors shadow-sm">
-                                                <i class="bi bi-search mr-1 text-pos-muted"></i>
+                                                class="text-center font-semibold text-sm bg-slate-50/50 py-2 rounded-lg border border-slate-200/60 text-slate-800 cursor-pointer hover:bg-gray-200 transition-colors shadow-sm">
+                                                <i class="bi bi-search mr-1 text-slate-400"></i>
                                                 <fmt:message key="pos.customer.retail" />
                                             </p>
                                         </div>
@@ -1040,7 +1029,7 @@
 
                                 <!-- Context Info -->
                                 <div
-                                    class="flex items-center px-4 py-2.5 border-b border-pos-border bg-gray-50 text-xs font-semibold text-pos-muted uppercase tracking-wider">
+                                    class="flex items-center px-4 py-2.5 border-b border-slate-200/60 bg-gray-50 text-xs font-semibold text-slate-400 uppercase tracking-wider">
                                     <span class="w-10">
                                         <fmt:message key="pos.table" />
                                     </span>
@@ -1066,101 +1055,70 @@
                                                 <c:forEach var="item" items="${currentBill.billDetails}"
                                                     varStatus="status">
                                                     <tr
-                                                        class="border-b border-pos-border hover:bg-pos-bg group transition-colors">
+                                                        class="border-b border-slate-200/60 hover:bg-slate-50/50 group transition-colors">
                                                         <td
-                                                            class="p-3 w-8 text-center text-pos-muted text-xs align-top pt-4 font-medium">
+                                                            class="p-3 w-8 text-center text-slate-400 text-xs align-top pt-4 font-medium">
                                                             ${status.index + 1}</td>
                                                         <td class="py-3 pr-2 align-top">
-                                                            <div class="font-bold text-pos-text leading-tight mb-1">
+                                                            <div class="font-semibold text-slate-800 leading-tight mb-1">
                                                                 ${item.drink.name}</div>
-                                                            <div class="text-[13px] text-pos-muted">
+                                                            <div class="text-[13px] text-slate-400">
                                                                 <fmt:formatNumber value="${item.price}"
                                                                     pattern="#,###" />
                                                             </div>
 
-                                                            <!-- Note Field with Quick Dropdown -->
-                                                            <div class="relative mt-2">
+                                                            <!-- Note Field -->
+                                                            <div class="mt-2">
                                                                 <c:choose>
                                                                     <c:when test="${currentBill.status == 'WAITING'}">
-                                                                        <div onclick="toggleNoteDropdown('${item.drink.id}')"
-                                                                            class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-coffee-700 font-bold' : 'text-pos-muted'} hover:text-coffee-700 cursor-pointer w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
-                                                                            <i class="bi bi-pencil-square"></i>
-                                                                            <span class="truncate max-w-[120px]">${not
-                                                                                empty
-                                                                                item.note ? item.note : '
-                                                                                <fmt:message key="pos.item.note" />'}
-                                                                            </span>
-                                                                        </div>
+                                                                        <button type="button"
+                                                                            data-drink-id="${item.drink.id}"
+                                                                            data-bill-id="${currentBill.id}"
+                                                                            data-note="${fn:escapeXml(item.note)}"
+                                                                            data-drink-name="${fn:escapeXml(item.drink.name)}"
+                                                                            onclick="openNotePanel(this.dataset.drinkId, this.dataset.billId, this.dataset.note, this.dataset.drinkName)"
+                                                                            class="note-trigger flex items-center gap-1.5 text-[11px] w-full max-w-[160px] px-2 py-1 rounded-lg border transition-all ${not empty item.note ? 'text-coffee-700 bg-coffee-50 border-coffee-200 font-semibold' : 'text-slate-400 bg-slate-50 border-slate-200/60 hover:text-coffee-700 hover:bg-coffee-50 hover:border-coffee-200'}">
+                                                                            <i class="bi bi-${not empty item.note ? 'check2-circle' : 'plus-circle'} shrink-0"></i>
+                                                                            <span class="truncate">${not empty item.note ? item.note : 'Ghi chú'}</span>
+                                                                        </button>
                                                                     </c:when>
                                                                     <c:otherwise>
-                                                                        <div
-                                                                            class="flex items-center gap-1 text-[11px] ${not empty item.note ? 'text-gray-600 font-bold' : 'text-pos-muted'} cursor-default w-max transition-all bg-gray-50 px-2 py-0.5 rounded border border-pos-border">
-                                                                            <i class="bi bi-pencil-square"></i>
-                                                                            <span class="truncate max-w-[120px]">${not
-                                                                                empty
-                                                                                item.note ? item.note : '
-                                                                                <fmt:message key="pos.item.note" />'}
-                                                                            </span>
+                                                                        <div class="flex items-center gap-1 text-[11px] w-full max-w-[160px] px-2 py-1 rounded-lg bg-gray-50 border border-slate-200/60 ${not empty item.note ? 'text-gray-600 font-semibold' : 'text-slate-300'}">
+                                                                            <i class="bi bi-chat-left-text shrink-0"></i>
+                                                                            <span class="truncate">${not empty item.note ? item.note : '—'}</span>
                                                                         </div>
                                                                     </c:otherwise>
                                                                 </c:choose>
-
-                                                                <!-- Dropdown for notes -->
-                                                                <div id="note-dropdown-${item.drink.id}"
-                                                                    class="note-dropdown hidden absolute top-full left-0 mt-1 w-48 bg-white border border-pos-border rounded-lg shadow-xl z-50 py-2">
-                                                                    <div
-                                                                        class="px-3 py-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-widest bg-gray-50 mb-1">
-                                                                        <fmt:message key="pos.item.note.select" />
-                                                                    </div>
-                                                                    <c:forEach var="n"
-                                                                        items="${['50% Sugar', '70% Sugar', '100% Sugar', 'No Ice', 'No Sugar']}">
-                                                                        <a href="javascript:void(0)"
-                                                                            onclick="updateNoteAjax(${currentBill.id}, ${item.drink.id}, '${n}')"
-                                                                            class="block px-4 py-1.5 text-xs hover:bg-coffee-50 hover:text-coffee-700 text-pos-text transition-all">
-                                                                            ${n}
-                                                                        </a>
-                                                                    </c:forEach>
-                                                                    <div
-                                                                        class="border-t border-pos-border mt-2 pt-2 px-2">
-                                                                        <input type="text"
-                                                                            onkeyup="if(event.key === 'Enter') handleCustomNoteInput(this, ${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0})"
-                                                                            placeholder="<fmt:message key='pos.item.note.placeholder' />"
-                                                                            value="${item.note}" class="w-full text-xs p-2 bg-gray-50 border
-                                                                        border-pos-border rounded-md focus:outline-none
-                                                                        focus:border-coffee-500 focus:ring-1
-                                                                        focus:ring-coffee-200 transition-all">
-                                                                    </div>
-                                                                </div>
                                                             </div>
                                                         </td>
                                                         <td class="py-3 px-1 w-[110px] align-top">
                                                             <div
-                                                                class="flex items-center bg-white border border-pos-border rounded-md shrink-0 overflow-hidden shadow-sm h-8 mt-1">
+                                                                class="flex items-center bg-white border border-slate-200/60 rounded-md shrink-0 overflow-hidden shadow-sm h-8 mt-1">
                                                                 <c:choose>
                                                                     <c:when test="${currentBill.status == 'WAITING'}">
                                                                         <button
-                                                                            class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-r border-pos-border shrink-0 active:bg-gray-200"
+                                                                            class="w-8 h-full flex items-center justify-center text-slate-800 hover:bg-gray-100 border-r border-slate-200/60 shrink-0 active:bg-gray-200"
                                                                             onclick="updateQtyAjax(${currentBill.id}, ${item.drink.id}, ${item.quantity - 1})">
                                                                             <i class="bi bi-dash"></i>
                                                                         </button>
                                                                         <input type="text" value="${item.quantity}"
                                                                             readonly
-                                                                            class="w-8 h-full text-center font-bold text-sm bg-transparent outline-none p-0 cursor-default select-none">
+                                                                            class="w-8 h-full text-center font-semibold text-sm bg-transparent outline-none p-0 cursor-default select-none">
                                                                         <button
-                                                                            class="w-8 h-full flex items-center justify-center text-pos-text hover:bg-gray-100 border-l border-pos-border shrink-0 active:bg-gray-200"
+                                                                            class="w-8 h-full flex items-center justify-center text-slate-800 hover:bg-gray-100 border-l border-slate-200/60 shrink-0 active:bg-gray-200"
                                                                             onclick="updateQtyAjax(${currentBill.id}, ${item.drink.id}, ${item.quantity + 1})">
                                                                             <i class="bi bi-plus"></i>
                                                                         </button>
                                                                     </c:when>
                                                                     <c:otherwise>
                                                                         <span
-                                                                            class="w-full text-center font-bold text-sm text-pos-muted">x${item.quantity}</span>
+                                                                            class="w-full text-center font-semibold text-sm text-slate-400">x${item.quantity}</span>
                                                                     </c:otherwise>
                                                                 </c:choose>
                                                             </div>
                                                         </td>
                                                         <td
-                                                            class="py-3 pl-2 pr-4 text-right font-bold text-pos-text w-24 align-top pt-4">
+                                                            class="py-3 pl-2 pr-4 text-right font-semibold text-slate-800 w-24 align-top pt-4">
                                                             <fmt:formatNumber value="${item.price * item.quantity}"
                                                                 pattern="#,###" />
                                                         </td>
@@ -1170,7 +1128,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div
-                                                class="h-full flex flex-col items-center justify-center text-pos-muted opacity-40">
+                                                class="h-full flex flex-col items-center justify-center text-slate-400 opacity-40">
                                                 <i class="bi bi-cart-x text-6xl mb-4 text-coffee-300"></i>
                                                 <p class="font-medium text-lg">
                                                     <fmt:message key="pos.bill.empty" />
@@ -1182,20 +1140,20 @@
 
                                 <!-- Cart Footer (Checkout) -->
                                 <div
-                                    class="border-t border-pos-border bg-white shrink-0 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
+                                    class="border-t border-slate-200/60 bg-white shrink-0 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
                                     <!-- Summary -->
-                                    <div class="px-4 py-3 space-y-2 text-sm border-b border-pos-border bg-gray-50/30">
-                                        <div class="flex justify-between items-center text-pos-text">
+                                    <div class="px-4 py-3 space-y-2 text-sm border-b border-slate-200/60 bg-gray-50/30">
+                                        <div class="flex justify-between items-center text-slate-800">
                                             <span>
                                                 <fmt:message key="pos.bill.total" /> (
                                                 <c:out value="${fn:length(currentBill.billDetails)}" />
                                                 <fmt:message key="pos.bill.items" />)
                                             </span>
-                                            <span class="font-bold text-base">
+                                            <span class="font-semibold text-base">
                                                 <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
                                             </span>
                                         </div>
-                                        <div class="flex justify-between items-center text-pos-muted">
+                                        <div class="flex justify-between items-center text-slate-400">
                                             <span>
                                                 <fmt:message key="pos.bill.discount" /> (F4)
                                             </span>
@@ -1207,7 +1165,7 @@
                                     <!-- Total & Big Buttons -->
                                     <div class="p-4 bg-white">
                                         <div class="flex justify-between items-center mb-4">
-                                            <span class="font-bold text-pos-text text-sm">
+                                            <span class="font-semibold text-slate-800 text-sm">
                                                 <fmt:message key="pos.bill.payable" />
                                             </span>
                                             <span class="text-3xl font-extrabold text-coffee-700 tracking-tight">
@@ -1223,7 +1181,7 @@
                                         <div class="grid grid-cols-5 gap-3">
                                             <!-- Extra Actions (Cancel) -->
                                             <button
-                                                class="col-span-1 border-2 border-pos-border text-pos-danger rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                class="col-span-1 border-2 border-slate-200/60 text-pos-danger rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
                                                 ${empty currentBill.billDetails ? 'disabled' : '' }
                                                 onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
                                                 title="Huỷ đơn">
@@ -1232,7 +1190,7 @@
 
                                             <!-- Print Bill Button -->
                                             <button
-                                                class="col-span-1 border-2 border-pos-border text-coffee-700 rounded-xl h-14 flex items-center justify-center font-bold text-xl hover:bg-coffee-50 hover:border-coffee-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                class="col-span-1 border-2 border-slate-200/60 text-coffee-700 rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-coffee-50 hover:border-coffee-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
                                                 ${empty currentBill.billDetails ? 'disabled' : '' }
                                                 onclick="showPrintModal()" title="In hoá đơn">
                                                 <i class="bi bi-printer"></i>
@@ -1242,7 +1200,7 @@
                                                 <c:when test="${currentBill.status == 'WAITING'}">
                                                     <!-- Pay Button -->
                                                     <button
-                                                        class="col-span-3 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
+                                                        class="col-span-3 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
                                                         ${empty currentBill.billDetails ? 'disabled' : '' }
                                                         onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
                                                         <i class="bi bi-cash-stack text-xl"></i>
@@ -1253,7 +1211,7 @@
                                                 </c:when>
                                                 <c:otherwise>
                                                     <a href="${pageContext.request.contextPath}/employee/pos"
-                                                        class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-bold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
+                                                        class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
                                                         <i class="bi bi-plus-circle text-xl"></i>
                                                         <span class="tracking-wide text-sm">New Order</span>
                                                     </a>
@@ -1294,7 +1252,7 @@
                                                         class="bi bi-tag absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
                                                     <input type="text" name="name" required
                                                         placeholder="e.g. Premium Table 04"
-                                                        class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none">
+                                                        class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-semibold text-slate-700 transition-all outline-none">
                                                 </div>
                                             </div>
 
@@ -1306,7 +1264,7 @@
                                                     <i
                                                         class="bi bi-qr-code-scan absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
                                                     <input type="text" name="code" required placeholder="e.g. TABLE-04"
-                                                        class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none uppercase">
+                                                        class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-semibold text-slate-700 transition-all outline-none uppercase">
                                                 </div>
                                             </div>
 
@@ -1341,7 +1299,7 @@
                                             <i class="bi bi-qr-code"></i>
                                         </div>
 
-                                        <h5 id="qrTableInfo" class="text-2xl font-black text-slate-900 mb-2">Table Info
+                                        <h5 id="qrTableInfo" class="text-2xl font-bold tracking-tight text-slate-900 mb-2">Table Info
                                         </h5>
                                         <p class="text-slate-400 font-medium text-sm mb-8">Generated dynamic ordering
                                             gateway</p>
@@ -1366,6 +1324,60 @@
 
                     </main>
 
+                    <!-- Note Edit Modal -->
+                    <div id="noteModal" class="fixed inset-0 z-[300] hidden flex items-end justify-center sm:items-center">
+                        <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" onclick="closeNoteModal()"></div>
+                        <div class="relative w-full max-w-[400px] bg-white rounded-t-3xl sm:rounded-3xl shadow-2xl overflow-hidden">
+                            <!-- Handle bar (mobile) -->
+                            <div class="flex justify-center pt-3 pb-1 sm:hidden">
+                                <div class="w-10 h-1 rounded-full bg-slate-200"></div>
+                            </div>
+                            <!-- Header -->
+                            <div class="px-5 py-4 flex items-center justify-between border-b border-slate-100">
+                                <div>
+                                    <h3 class="font-bold text-slate-900 text-base flex items-center gap-2">
+                                        <i class="bi bi-pencil-fill text-coffee-600 text-sm"></i>
+                                        Ghi Chú Món
+                                    </h3>
+                                    <p id="noteModalDrinkName" class="text-xs text-coffee-600 font-semibold mt-0.5 truncate max-w-[280px]"></p>
+                                </div>
+                                <button onclick="closeNoteModal()" class="w-8 h-8 rounded-xl bg-slate-100 text-slate-400 hover:text-slate-800 flex items-center justify-center transition-colors">
+                                    <i class="bi bi-x-lg text-sm"></i>
+                                </button>
+                            </div>
+                            <!-- Quick Chips -->
+                            <div class="p-5 space-y-4">
+                                <div>
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3">Chọn nhanh (có thể chọn nhiều)</p>
+                                    <div class="flex flex-wrap gap-2" id="noteChips"></div>
+                                </div>
+                                <div class="border-t border-slate-100 pt-4">
+                                    <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Ghi chú khác</p>
+                                    <div class="relative">
+                                        <input type="text" id="noteCustomInput" maxlength="80"
+                                            placeholder="Ví dụ: không hành, thêm ớt..."
+                                            class="w-full text-sm p-3 pr-9 bg-slate-50 border border-slate-200/60 rounded-xl focus:outline-none focus:border-coffee-500 focus:ring-2 focus:ring-coffee-500/10 transition-all font-medium text-slate-800 placeholder-slate-300">
+                                        <button type="button" onclick="document.getElementById('noteCustomInput').value=''"
+                                            class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors">
+                                            <i class="bi bi-x-circle-fill text-sm"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Footer -->
+                            <div class="px-5 pb-5 flex gap-3">
+                                <button onclick="clearNoteAndSave()" class="px-4 py-3 rounded-xl bg-slate-100 text-slate-500 font-semibold text-sm hover:bg-red-50 hover:text-red-500 transition-all flex items-center gap-1.5">
+                                    <i class="bi bi-trash3"></i>
+                                    Xoá
+                                </button>
+                                <button onclick="saveNote()" class="flex-1 py-3 rounded-xl bg-coffee-700 text-white font-bold text-sm hover:bg-coffee-800 shadow-lg shadow-coffee-100 active:scale-95 transition-all flex items-center justify-center gap-2">
+                                    <i class="bi bi-check2-circle"></i>
+                                    Lưu Ghi Chú
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Print Modal -->
                     <div id="printModal" class="fixed inset-0 z-[200] hidden">
                         <div class="absolute inset-0 bg-black/60 backdrop-blur-sm" onclick="hidePrintModal()"></div>
@@ -1373,7 +1385,7 @@
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] bg-white rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
                             <!-- Content already defined above in printableBill, we keep it as is for printing -->
                             <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-                                <h3 class="font-bold text-gray-800 flex items-center gap-2">
+                                <h3 class="font-semibold text-gray-800 flex items-center gap-2">
                                     <i class="bi bi-receipt"></i>
                                     <fmt:message key="admin.bill.print.preview" />
                                 </h3>
@@ -1406,7 +1418,7 @@
                                         <span>
                                             <fmt:message key="admin.bill.print.code" />:
                                         </span>
-                                        <span class="font-bold text-right">${currentBill.code}</span>
+                                        <span class="font-semibold text-right">${currentBill.code}</span>
                                     </div>
                                     <div class="flex justify-between">
                                         <span>
@@ -1427,7 +1439,7 @@
                                         <span>
                                             <fmt:message key="admin.bill.print.type" />:
                                         </span>
-                                        <span class="font-bold">
+                                        <span class="font-semibold">
                                             <fmt:message key="pos.takeaway" />
                                         </span>
                                     </div>
@@ -1454,14 +1466,14 @@
                                         <c:forEach var="item" items="${currentBill.billDetails}">
                                             <tr>
                                                 <td class="py-2">
-                                                    <div class="font-bold">${item.drink.name}</div>
+                                                    <div class="font-semibold">${item.drink.name}</div>
                                                     <c:if test="${not empty item.note}">
                                                         <div class="text-[10px] text-gray-500 italic">(${item.note})
                                                         </div>
                                                     </c:if>
                                                 </td>
                                                 <td class="text-center py-2">${item.quantity}</td>
-                                                <td class="text-right py-2 font-bold">
+                                                <td class="text-right py-2 font-semibold">
                                                     <fmt:formatNumber value="${item.price * item.quantity}"
                                                         pattern="#,###" />
                                                 </td>
@@ -1507,7 +1519,7 @@
                                     <img id="vietqr-img" src="" alt="QR Code" class="w-75 h-75 object-contain mx-auto">
                                 </div>
                                 <!-- <div class="text-center">
-                                    <p class="text-[11px] font-bold text-blue-800">
+                                    <p class="text-[11px] font-semibold text-blue-800">
                                         <fmt:message key="bank.id" />
                                     </p>
                                     <p class="text-[10px] text-gray-600">STK:
@@ -1519,7 +1531,7 @@
                                 </div> -->
 
                                 <div class="text-center mt-8 space-y-1">
-                                    <p class="text-[10px] font-bold">
+                                    <p class="text-[10px] font-semibold">
                                         <fmt:message key="admin.bill.print.thankyou" />
                                     </p>
                                     <p class="text-[9px] text-gray-400">
@@ -1531,7 +1543,7 @@
 
                             <div class="p-4 border-t border-gray-100 flex gap-3 bg-gray-50">
                                 <button onclick="printBill()"
-                                    class="flex-grow bg-coffee-700 text-white font-bold py-3 rounded-xl hover:bg-coffee-800 shadow-lg shadow-coffee-100 flex items-center justify-center gap-2">
+                                    class="flex-grow bg-coffee-700 text-white font-semibold py-3 rounded-xl hover:bg-coffee-800 shadow-lg shadow-coffee-100 flex items-center justify-center gap-2">
                                     <i class="bi bi-printer-fill"></i>
                                     <fmt:message key="admin.bill.print.btn" />
                                 </button>
@@ -1551,7 +1563,7 @@
                                         <i class="bi bi-info-square text-coffee-600"></i>
                                         Bill Details
                                     </h3>
-                                    <p class="text-[11px] text-pos-muted font-bold uppercase tracking-wider mt-0.5">
+                                    <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider mt-0.5">
                                         Reviewing order history
                                     </p>
                                 </div>
@@ -1563,14 +1575,14 @@
 
                             <div class="flex-grow overflow-y-auto p-6 space-y-6">
                                 <!-- Order Info Card -->
-                                <div class="grid grid-cols-2 gap-4 p-4 bg-pos-bg rounded-2xl border border-pos-border">
+                                <div class="grid grid-cols-2 gap-4 p-4 bg-slate-50/50 rounded-2xl border border-slate-200/60">
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">
                                             Bill Code</p>
-                                        <p class="font-mono text-sm font-bold text-coffee-700">${currentBill.code}</p>
+                                        <p class="font-mono text-sm font-semibold text-coffee-700">${currentBill.code}</p>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">
                                             Status</p>
                                         <span
                                             class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-black rounded-full uppercase">
@@ -1578,17 +1590,17 @@
                                         </span>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">
                                             Date Time</p>
-                                        <p class="text-xs font-bold text-gray-700">
+                                        <p class="text-xs font-semibold text-gray-700">
                                             <fmt:formatDate value="${currentBill.createdAt}"
                                                 pattern="yyyy-MM-dd HH:mm" />
                                         </p>
                                     </div>
                                     <div>
-                                        <p class="text-[10px] text-pos-muted font-black uppercase tracking-widest mb-1">
+                                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">
                                             Cashier</p>
-                                        <p class="text-xs font-bold text-gray-700">${sessionScope.user.fullName}</p>
+                                        <p class="text-xs font-semibold text-gray-700">${sessionScope.user.fullName}</p>
                                     </div>
                                 </div>
 
@@ -1596,18 +1608,18 @@
                                 <div>
                                     <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3 px-1">
                                         Order Items</h4>
-                                    <div class="bg-white rounded-2xl border border-pos-border overflow-hidden">
+                                    <div class="bg-white rounded-2xl border border-slate-200/60 overflow-hidden">
                                         <table class="w-full text-sm">
-                                            <thead class="bg-gray-50 border-b border-pos-border">
+                                            <thead class="bg-gray-50 border-b border-slate-200/60">
                                                 <tr>
                                                     <th
-                                                        class="text-left p-3 text-[10px] font-black uppercase text-pos-muted">
+                                                        class="text-left p-3 text-[10px] font-black uppercase text-slate-400">
                                                         Item</th>
                                                     <th
-                                                        class="text-center p-3 text-[10px] font-black uppercase text-pos-muted">
+                                                        class="text-center p-3 text-[10px] font-black uppercase text-slate-400">
                                                         Qty</th>
                                                     <th
-                                                        class="text-right p-3 text-[10px] font-black uppercase text-pos-muted">
+                                                        class="text-right p-3 text-[10px] font-black uppercase text-slate-400">
                                                         Subtotal</th>
                                                 </tr>
                                             </thead>
@@ -1615,14 +1627,14 @@
                                                 <c:forEach var="item" items="${currentBill.billDetails}">
                                                     <tr>
                                                         <td class="p-3">
-                                                            <div class="font-bold text-gray-800">${item.drink.name}
+                                                            <div class="font-semibold text-gray-800">${item.drink.name}
                                                             </div>
                                                             <c:if test="${not empty item.note}">
                                                                 <div class="text-[10px] text-coffee-600 italic mt-0.5">
                                                                     ${item.note}</div>
                                                             </c:if>
                                                         </td>
-                                                        <td class="p-3 text-center font-bold text-gray-600">
+                                                        <td class="p-3 text-center font-semibold text-gray-600">
                                                             ${item.quantity}</td>
                                                         <td class="p-3 text-right font-black text-gray-900">
                                                             <fmt:formatNumber value="${item.price * item.quantity}"
@@ -1640,20 +1652,20 @@
                                     class="p-5 bg-coffee-50 rounded-2xl border border-coffee-100 flex justify-between items-center">
                                     <span class="font-black text-coffee-700 uppercase tracking-widest text-xs">Total
                                         Amount Paid</span>
-                                    <span class="text-2xl font-black text-coffee-800">
+                                    <span class="text-2xl font-bold tracking-tight text-coffee-800">
                                         <fmt:formatNumber value="${currentBill.total}" pattern="#,###" />
-                                        <span class="text-sm font-bold ml-1">VNĐ</span>
+                                        <span class="text-sm font-semibold ml-1">VNĐ</span>
                                     </span>
                                 </div>
                             </div>
 
                             <div class="p-6 bg-gray-50 border-t border-gray-100 flex gap-3">
                                 <button onclick="hideDetailModal()"
-                                    class="flex-grow bg-white border border-pos-border text-gray-700 font-bold py-3 rounded-2xl hover:bg-gray-100 transition-colors shadow-sm">
+                                    class="flex-grow bg-white border border-slate-200/60 text-gray-700 font-semibold py-3 rounded-2xl hover:bg-gray-100 transition-colors shadow-sm">
                                     Close Window
                                 </button>
                                 <button onclick="hideDetailModal(); showPrintModal();"
-                                    class="w-14 bg-white border border-pos-border text-coffee-600 rounded-2xl flex items-center justify-center hover:bg-coffee-50 transition-colors shadow-sm"
+                                    class="w-14 bg-white border border-slate-200/60 text-coffee-600 rounded-2xl flex items-center justify-center hover:bg-coffee-50 transition-colors shadow-sm"
                                     title="Print/Pay Options">
                                     <i class="bi bi-printer-fill"></i>
                                 </button>
@@ -1719,11 +1731,11 @@
                     <div class="modal fade" id="drinkModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
-                                <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
+                                <div class="modal-header border-b border-slate-200/60 bg-slate-50/50 px-8 py-6">
                                     <h5 class="text-xl font-black text-gray-900" id="drinkModalLabel">Modify Product
                                     </h5>
                                     <button type="button"
-                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all"
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200/60 text-gray-400 hover:text-gray-900 transition-all"
                                         data-bs-dismiss="modal">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
@@ -1742,14 +1754,14 @@
                                                         Identity</label>
                                                     <input type="text" name="name" id="mDrinkName" required
                                                         placeholder="Enter drink name..."
-                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-semibold text-gray-900">
                                                 </div>
                                                 <div class="grid grid-cols-2 gap-4">
                                                     <div>
                                                         <label
                                                             class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Category</label>
                                                         <select name="categoryId" id="mDrinkCat"
-                                                            class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer"
+                                                            class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-semibold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer"
                                                             required>
                                                             <c:forEach var="cat" items="${categories}">
                                                                 <option value="${cat.id}">${cat.name}</option>
@@ -1765,7 +1777,7 @@
                                                                 placeholder="0"
                                                                 class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all font-black text-coffee-700">
                                                             <span
-                                                                class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs uppercase">VND</span>
+                                                                class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 font-semibold text-xs uppercase">VND</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1808,7 +1820,7 @@
                                                             <h4
                                                                 class="font-black text-gray-900 text-xs uppercase tracking-widest">
                                                                 Active Status</h4>
-                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Make
+                                                            <p class="text-[10px] text-slate-400 font-semibold mt-1">Make
                                                                 visible to consumers</p>
                                                         </div>
                                                         <div class="relative inline-block w-14 h-7">
@@ -1825,7 +1837,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
+                                    <div class="modal-footer border-t border-slate-200/60 bg-slate-50/50 px-8 py-6 gap-4">
                                         <button type="button"
                                             class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"
                                             data-bs-dismiss="modal">Abandon</button>
@@ -1842,11 +1854,11 @@
                     <div class="modal fade" id="categoryModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
-                                <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
+                                <div class="modal-header border-b border-slate-200/60 bg-slate-50/50 px-8 py-6">
                                     <h5 class="text-xl font-black text-gray-900" id="categoryModalLabel">Category Logic
                                     </h5>
                                     <button type="button"
-                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all"
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200/60 text-gray-400 hover:text-gray-900 transition-all"
                                         data-bs-dismiss="modal">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
@@ -1861,7 +1873,7 @@
                                                 Name</label>
                                             <input type="text" name="name" id="mCatName" required
                                                 placeholder="e.g., Espresso Series"
-                                                class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-semibold text-gray-900">
                                         </div>
                                         <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
                                             <div class="flex items-center justify-between">
@@ -1869,7 +1881,7 @@
                                                     <h4
                                                         class="font-black text-gray-900 text-xs uppercase tracking-widest">
                                                         Visibility state</h4>
-                                                    <p class="text-[10px] text-slate-400 font-bold mt-1">Show this group
+                                                    <p class="text-[10px] text-slate-400 font-semibold mt-1">Show this group
                                                         in the menu</p>
                                                 </div>
                                                 <div class="relative inline-block w-14 h-7">
@@ -1884,7 +1896,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
+                                    <div class="modal-footer border-t border-slate-200/60 bg-slate-50/50 px-8 py-6 gap-4">
                                         <button type="button"
                                             class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"
                                             data-bs-dismiss="modal">Abandon</button>
@@ -1900,11 +1912,11 @@
                     <div class="modal fade" id="staffModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
-                                <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
+                                <div class="modal-header border-b border-slate-200/60 bg-slate-50/50 px-8 py-6">
                                     <h5 class="text-xl font-black text-gray-900" id="staffModalLabel">Human Resources
                                         Portfolio</h5>
                                     <button type="button"
-                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all"
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-slate-200/60 text-gray-400 hover:text-gray-900 transition-all"
                                         data-bs-dismiss="modal">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
@@ -1921,7 +1933,7 @@
                                                         Identity</label>
                                                     <input type="text" name="fullName" id="mStaffName" required
                                                         placeholder="Full name..."
-                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-semibold text-gray-900">
                                                 </div>
                                                 <div>
                                                     <label
@@ -1929,7 +1941,7 @@
                                                         Email</label>
                                                     <input type="email" name="email" id="mStaffEmail" required
                                                         placeholder="email@polycoffee.com"
-                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-semibold text-gray-900">
                                                 </div>
                                                 <div id="mStaffPasswordRow">
                                                     <label
@@ -1937,7 +1949,7 @@
                                                         Credential</label>
                                                     <input type="password" name="password" id="mStaffPassword"
                                                         placeholder="Minimum 6 characters..."
-                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-semibold text-gray-900">
                                                 </div>
                                             </div>
                                             <div class="space-y-6">
@@ -1947,14 +1959,14 @@
                                                         Contact</label>
                                                     <input type="text" name="phone" id="mStaffPhone" required
                                                         placeholder="098xxxxxxxx"
-                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-semibold text-gray-900">
                                                 </div>
                                                 <div>
                                                     <label
                                                         class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Hierarchical
                                                         Role</label>
                                                     <select name="role" id="mStaffRole"
-                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer"
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-semibold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer"
                                                         required>
                                                         <option value="false">Staff Member</option>
                                                         <option value="true">Executive Manager</option>
@@ -1966,7 +1978,7 @@
                                                             <h4
                                                                 class="font-black text-gray-900 text-xs uppercase tracking-widest">
                                                                 Active state</h4>
-                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Grant
+                                                            <p class="text-[10px] text-slate-400 font-semibold mt-1">Grant
                                                                 system permissions</p>
                                                         </div>
                                                         <div class="relative inline-block w-14 h-7">
@@ -1983,7 +1995,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
+                                    <div class="modal-footer border-t border-slate-200/60 bg-slate-50/50 px-8 py-6 gap-4">
                                         <button type="button"
                                             class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"
                                             data-bs-dismiss="modal">Abandon</button>
@@ -1998,18 +2010,75 @@
 
 
                     <script>
-                        function toggleNoteDropdown(id) {
-                            const el = document.getElementById('note-dropdown-' + id);
-                            const isHidden = el.classList.contains('hidden');
+                        // Note Panel Logic
+                        const NOTE_PRESETS = [
+                            '50% đường', '70% đường', 'Không đường',
+                            'Không đá', 'Ít đá', 'Nhiều đá',
+                            'Ít sữa', 'Nhiều sữa', 'Không sữa',
+                            'Nóng', 'Size L', 'Đặc biệt'
+                        ];
+                        let _noteState = { billId: 0, drinkId: 0, selectedChips: [] };
 
-                            // Close all other dropdowns
-                            document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
+                        function openNotePanel(drinkId, billId, currentNote, drinkName) {
+                            _noteState = { billId, drinkId, selectedChips: [] };
+                            document.getElementById('noteModalDrinkName').textContent = drinkName || '';
 
-                            if (isHidden) {
-                                el.classList.remove('hidden');
-                                // Auto focus input
-                                setTimeout(() => el.querySelector('input').focus(), 100);
+                            const chipsEl = document.getElementById('noteChips');
+                            chipsEl.innerHTML = NOTE_PRESETS.map(n =>
+                                `<button type="button" onclick="toggleNoteChip(this,'${n}')"
+                                    class="note-chip px-3 py-1.5 rounded-lg text-xs font-semibold border border-slate-200/60 bg-white text-slate-600 hover:border-coffee-300 hover:bg-coffee-50 hover:text-coffee-700 transition-all active:scale-95">
+                                    ${n}
+                                </button>`
+                            ).join('');
+
+                            const customInput = document.getElementById('noteCustomInput');
+                            customInput.value = '';
+
+                            if (currentNote) {
+                                const parts = currentNote.split(', ');
+                                const chips = [...chipsEl.querySelectorAll('.note-chip')];
+                                const remaining = [];
+                                parts.forEach(part => {
+                                    const chip = chips.find(c => c.textContent.trim() === part);
+                                    if (chip) toggleNoteChip(chip, part);
+                                    else remaining.push(part);
+                                });
+                                customInput.value = remaining.join(', ');
                             }
+
+                            document.getElementById('noteModal').classList.remove('hidden');
+                            setTimeout(() => customInput.focus(), 200);
+                        }
+
+                        function toggleNoteChip(btn, value) {
+                            const idx = _noteState.selectedChips.indexOf(value);
+                            if (idx === -1) {
+                                _noteState.selectedChips.push(value);
+                                btn.classList.remove('bg-white', 'text-slate-600', 'border-slate-200/60');
+                                btn.classList.add('bg-coffee-700', 'text-white', 'border-coffee-700', 'shadow-sm');
+                            } else {
+                                _noteState.selectedChips.splice(idx, 1);
+                                btn.classList.add('bg-white', 'text-slate-600', 'border-slate-200/60');
+                                btn.classList.remove('bg-coffee-700', 'text-white', 'border-coffee-700', 'shadow-sm');
+                            }
+                        }
+
+                        function saveNote() {
+                            const custom = document.getElementById('noteCustomInput').value.trim();
+                            const parts = [..._noteState.selectedChips];
+                            if (custom) parts.push(custom);
+                            updateNoteAjax(_noteState.billId, _noteState.drinkId, parts.join(', '));
+                            closeNoteModal();
+                        }
+
+                        function clearNoteAndSave() {
+                            updateNoteAjax(_noteState.billId, _noteState.drinkId, '');
+                            closeNoteModal();
+                        }
+
+                        function closeNoteModal() {
+                            document.getElementById('noteModal').classList.add('hidden');
+                            _noteState = { billId: 0, drinkId: 0, selectedChips: [] };
                         }
 
                         // POS AJAX helpers - prevent full page reload on cart operations
@@ -2111,9 +2180,6 @@
                             win.document.close();
                         }
 
-                        function handleCustomNote(billId, drinkId, note) {
-                            updateNoteAjax(billId, drinkId, note);
-                        }
 
                         // Management Modals Logic
                         function openDrinkModal(data = null) {
@@ -2253,15 +2319,9 @@
                             });
                         });
 
-                        function handleCustomNoteInput(input, billId, drinkId) {
-                            handleCustomNote(billId, drinkId, input.value);
-                        }
-
-                        // Close on click outside
-                        document.addEventListener('click', function (e) {
-                            if (!e.target.closest('.relative')) {
-                                document.querySelectorAll('.note-dropdown').forEach(d => d.classList.add('hidden'));
-                            }
+                        // Close note modal on Escape key
+                        document.addEventListener('keydown', function (e) {
+                            if (e.key === 'Escape') closeNoteModal();
                         });
 
                         function showPrintModal() {
@@ -2316,11 +2376,12 @@
 
                                 // Update UI
                                 catButtons.forEach(b => {
-                                    b.classList.remove('bg-coffee-700', 'text-white', 'shadow-lg');
-                                    b.classList.add('bg-pos-bg', 'text-pos-text');
+                                    b.classList.remove('bg-coffee-700', 'text-white', 'shadow-lg', 'shadow-[0_4px_12px_rgba(111,78,55,0.2)]', 'font-semibold');
+                                    b.classList.remove('bg-slate-50/50', 'text-slate-800');
+                                    b.classList.add('bg-white', 'text-slate-600', 'font-medium');
                                 });
-                                btn.classList.add('bg-coffee-700', 'text-white', 'shadow-lg');
-                                btn.classList.remove('bg-pos-bg', 'text-pos-text');
+                                btn.classList.remove('bg-white', 'text-slate-600', 'font-medium');
+                                btn.classList.add('bg-coffee-700', 'text-white', 'shadow-lg', 'font-semibold');
 
                                 // Filter Items
                                 drinkItems.forEach(item => {
@@ -2353,6 +2414,18 @@
                                 document.querySelectorAll('.category-card').forEach(card => {
                                     const name = card.querySelector('.category-name').textContent.toLowerCase();
                                     card.style.display = name.includes(term) ? 'flex' : 'none';
+                                });
+                            });
+                        }
+
+                        // Admin Table Search
+                        const tableSearch = document.getElementById('tableSearch');
+                        if (tableSearch) {
+                            tableSearch.addEventListener('input', () => {
+                                const term = tableSearch.value.toLowerCase();
+                                document.querySelectorAll('.table-card').forEach(card => {
+                                    const name = card.getAttribute('data-table-name').toLowerCase();
+                                    card.style.display = name.includes(term) ? '' : 'none';
                                 });
                             });
                         }
@@ -2528,7 +2601,7 @@
                             if (!document.getElementById('todayRevenueText')) return;
 
                             document.getElementById('todayRevenueText').innerText = data.todayRevenue.toLocaleString() + ' ₫';
-                            document.getElementById('todayOrdersText').innerHTML = data.todayOrders + ' <span class="text-sm font-bold text-slate-400">Bills</span>';
+                            document.getElementById('todayOrdersText').innerHTML = data.todayOrders + ' <span class="text-sm font-semibold text-slate-400">Bills</span>';
                             document.getElementById('weekRevenueText').innerText = data.weekRevenue.toLocaleString() + ' ₫';
                             document.getElementById('totalBillsText').innerText = data.totalBills;
 
@@ -2557,12 +2630,12 @@
                                             ${i + 1}
                                         </div>
                                         <div class="flex-grow min-w-0">
-                                            <p class="text-sm font-bold text-slate-800 truncate">${d.drinkName}</p>
+                                            <p class="text-sm font-semibold text-slate-800 truncate">${d.drinkName}</p>
                                             <div class="flex items-center gap-2">
                                                 <div class="w-24 bg-slate-100 h-1 rounded-full overflow-hidden">
                                                     <div class="bg-coffee-400 h-full" style="width: ${d.totalQuantitySold * 10}%"></div>
                                                 </div>
-                                                <span class="text-[10px] text-slate-400 font-bold">${d.totalQuantitySold} sold</span>
+                                                <span class="text-[10px] text-slate-400 font-semibold">${d.totalQuantitySold} sold</span>
                                             </div>
                                         </div>
                                         <div class="text-right">

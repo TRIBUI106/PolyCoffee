@@ -10,7 +10,7 @@
 <html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
 
 <head>
-    <title>Guest Self Order - PolyCoffee</title>
+    <title>Tự Gọi Món - PolyCoffee</title>
     <jsp:include page="/views/common/head.jsp" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" crossorigin="anonymous">
     <!-- Lucide Icons for Premium Look -->
@@ -85,13 +85,13 @@
             </a>
             <div class="h-5 sm:h-6 w-px bg-gray-200"></div>
             <h1 class="font-bold text-xl sm:text-2xl flex items-center gap-2 text-slate-900 tracking-tight">
-                Self Order
+                Tự Gọi Món
                 <c:choose>
                     <c:when test="${not empty tableId}">
                         <span class="text-[10px] font-bold bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md uppercase tracking-widest border border-indigo-200">Table #${tableId}</span>
                     </c:when>
                     <c:otherwise>
-                        <span class="hidden sm:inline-block text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Take Away</span>
+                        <span class="hidden sm:inline-block text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Mang Đi</span>
                     </c:otherwise>
                 </c:choose>
             </h1>
@@ -99,7 +99,7 @@
         <div class="flex items-center gap-2 sm:gap-3">
             <button onclick="openPointShop()" class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-md cursor-pointer transition-all active:scale-95">
                 <i data-lucide="gift" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-50"></i>
-                <span class="text-xs sm:text-sm font-bold tracking-wide">Point Shop</span>
+                <span class="text-xs sm:text-sm font-bold tracking-wide">Cửa Hàng Điểm</span>
             </button>
             <div class="text-xs sm:text-sm font-semibold text-slate-500 flex items-center gap-2 bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-gray-100 shadow-sm hidden md:block">
                 <i data-lucide="clock" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> <span id="clock" class="tabular-nums"></span>
