@@ -2,6 +2,7 @@ package chez1s.assignment.controller;
 
 import chez1s.assignment.entity.User;
 import chez1s.assignment.service.AuthService;
+import chez1s.assignment.repository.StatisticRepository;
 import chez1s.assignment.util.AuthUtil;
 import chez1s.assignment.util.ParamUtil;
 import jakarta.servlet.ServletException;
@@ -14,6 +15,7 @@ import java.io.IOException;
 @WebServlet({"/auth/login", "/auth/logout", "/auth/profile"})
 public class AuthController extends HttpServlet {
     private final AuthService authService = new AuthService();
+    private final StatisticRepository statisticRepo = new StatisticRepository();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -29,6 +31,10 @@ public class AuthController extends HttpServlet {
             }
             req.getRequestDispatcher("/views/auth/profile.jsp").forward(req, resp);
         } else {
+            long totalBills = statisticRepo.getTotalFinishedCount(null, null);
+            long totalRevenue = statisticRepo.getTotalRevenue(null, null);
+            req.setAttribute("totalBills", totalBills);
+            req.setAttribute("totalRevenue", totalRevenue);
             req.getRequestDispatcher("/views/auth/login.jsp").forward(req, resp);
         }
     }

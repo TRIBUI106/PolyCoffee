@@ -716,9 +716,9 @@
                                             class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                                             <div>
                                                 <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
-                                                    Insights
+                                                    Tổng Quan Hệ Thống
                                                 </h1>
-                                                <p class="text-slate-500 font-medium">Business performance at a glance.
+                                                <p class="text-slate-500 font-medium">Báo cáo phân tích và hiệu suất kinh doanh.
                                                     <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee
                                                         Intelligence</span>
                                                 </p>
@@ -726,106 +726,21 @@
                                             <div class="flex items-center gap-4">
                                                 <button onclick="refreshDashboard()"
                                                     class="p-3 bg-white border border-slate-200 rounded-2xl text-slate-600 hover:text-coffee-700 hover:border-coffee-200 hover:bg-coffee-50 transition-all shadow-sm active:rotate-180 duration-500"
-                                                    title="Refresh Data">
+                                                    title="Làm Mới Dữ Liệu">
                                                     <i class="bi bi-arrow-clockwise text-xl"></i>
                                                 </button>
                                                 <div
                                                     class="bg-white border border-slate-200 rounded-2xl px-5 py-3 flex items-center gap-3 shadow-sm">
                                                     <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse">
                                                     </div>
-                                                    <span class="text-sm font-bold text-slate-700">Real-time Sync</span>
+                                                    <span class="text-sm font-bold text-slate-700">Đồng Bộ Real-time</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         <!-- Summary Cards -->
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                                            <!-- Card 1: Today Revenue -->
-                                            <div
-                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div
-                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-coffee-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
-                                                </div>
-                                                <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div
-                                                        class="w-14 h-14 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
-                                                        <i class="bi bi-currency-dollar"></i>
-                                                    </div>
-                                                    <span
-                                                        class="text-[10px] font-black text-coffee-700 bg-coffee-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Growth
-                                                        Tracking</span>
-                                                </div>
-                                                <h3
-                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
-                                                    Today Revenue</h3>
-                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
-                                                    id="todayRevenueText">
-                                                    <fmt:formatNumber value="${dashboard.todayRevenue}"
-                                                        pattern="#,###" /> ₫
-                                                </p>
-                                                <div
-                                                    class="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
-                                                    <i class="bi bi-graph-up"></i>
-                                                    <span>+12.5% from yesterday</span>
-                                                </div>
-                                            </div>
-
-                                            <!-- Card 2: Today Orders -->
-                                            <div
-                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div
-                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-blue-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
-                                                </div>
-                                                <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div
-                                                        class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
-                                                        <i class="bi bi-bag-heart"></i>
-                                                    </div>
-                                                    <span
-                                                        class="text-[10px] font-black text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Volume</span>
-                                                </div>
-                                                <h3
-                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
-                                                    Orders Count</h3>
-                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
-                                                    id="todayOrdersText">${dashboard.todayOrders} <span
-                                                        class="text-sm font-bold text-slate-400">Bills</span></p>
-                                                <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500">
-                                                    <i class="bi bi-clock-history"></i>
-                                                    <span>Last order 2m ago</span>
-                                                </div>
-                                            </div>
-
-                                            <!-- Card 3: Week Revenue -->
-                                            <div
-                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div
-                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
-                                                </div>
-                                                <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div
-                                                        class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
-                                                        <i class="bi bi-calendar-check"></i>
-                                                    </div>
-                                                    <span
-                                                        class="text-[10px] font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Weekly
-                                                        Trend</span>
-                                                </div>
-                                                <h3
-                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
-                                                    This Week</h3>
-                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
-                                                    id="weekRevenueText">
-                                                    <fmt:formatNumber value="${dashboard.weekRevenue}"
-                                                        pattern="#,###" /> ₫
-                                                </p>
-                                                <div
-                                                    class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
-                                                    <div class="bg-emerald-500 h-full w-[65%]" id="weekProgress"></div>
-                                                </div>
-                                            </div>
-
-                                            <!-- Card 4: Total Overall -->
+                                            <!-- Card 1: Total Overall (Moved to first) -->
                                             <div
                                                 class="bg-[#1e293b] p-8 rounded-[36px] shadow-2xl hover:-translate-y-1 transition-all group relative overflow-hidden">
                                                 <div
@@ -837,16 +752,99 @@
                                                         <i class="bi bi-database"></i>
                                                     </div>
                                                     <span
-                                                        class="text-[10px] font-black text-white/40 border border-white/10 px-3 py-1.5 rounded-full uppercase tracking-tighter">Lifetime</span>
+                                                        class="text-[10px] font-black text-white/40 border border-white/10 px-3 py-1.5 rounded-full uppercase tracking-tighter">Toàn Thời Gian</span>
                                                 </div>
                                                 <h3
                                                     class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
-                                                    Total Records</h3>
+                                                    Tổng Số Hóa Đơn</h3>
                                                 <p class="text-3xl font-black text-white mb-2 skeleton-text"
                                                     id="totalBillsText">${dashboard.totalBills}</p>
                                                 <p
                                                     class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
-                                                    All-time transactions</p>
+                                                    Tất cả giao dịch từ trước đến nay</p>
+                                            </div>
+
+                                            <!-- Card 2: Today Revenue -->
+                                            <div
+                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-coffee-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div
+                                                        class="w-14 h-14 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                        <i class="bi bi-currency-dollar"></i>
+                                                    </div>
+                                                    <span
+                                                        class="text-[10px] font-black text-coffee-700 bg-coffee-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Tăng Trưởng</span>
+                                                </div>
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    Doanh Thu Hôm Nay</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
+                                                    id="todayRevenueText">
+                                                    <fmt:formatNumber value="${dashboard.todayRevenue != null ? dashboard.todayRevenue : 0}"
+                                                        pattern="#,###" /> ₫
+                                                </p>
+                                                <div
+                                                    class="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                                                    <i class="bi bi-graph-up"></i>
+                                                    <span>+12.5% so với hôm qua</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card 3: Today Orders -->
+                                            <div
+                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-blue-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div
+                                                        class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                        <i class="bi bi-bag-heart"></i>
+                                                    </div>
+                                                    <span
+                                                        class="text-[10px] font-black text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Sản Lượng</span>
+                                                </div>
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    Đơn Hôm Nay</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
+                                                    id="todayOrdersText">${dashboard.todayOrders} <span
+                                                        class="text-sm font-bold text-slate-400">Đơn</span></p>
+                                                <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500">
+                                                    <i class="bi bi-clock-history"></i>
+                                                    <span>Cập nhật theo ngày</span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Card 4: Week Revenue -->
+                                            <div
+                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
+                                                <div class="flex items-center justify-between relative z-10 mb-6">
+                                                    <div
+                                                        class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                        <i class="bi bi-calendar-check"></i>
+                                                    </div>
+                                                    <span
+                                                        class="text-[10px] font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Xu Hướng Tuần</span>
+                                                </div>
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    Doanh Thu Tuần Này</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
+                                                    id="weekRevenueText">
+                                                    <fmt:formatNumber value="${dashboard.weekRevenue != null ? dashboard.weekRevenue : 0}"
+                                                        pattern="#,###" /> ₫
+                                                </p>
+                                                <div
+                                                    class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                                                    <div class="bg-emerald-500 h-full w-[65%]" id="weekProgress"></div>
+                                                </div>
                                             </div>
                                         </div>
 
@@ -856,11 +854,11 @@
                                                 class="lg:col-span-2 bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm relative overflow-hidden">
                                                 <div class="flex items-center justify-between mb-10 relative z-10">
                                                     <div>
-                                                        <h3 class="text-xl font-black text-slate-900">Revenue Analytics
+                                                        <h3 class="text-xl font-black text-slate-900">Phân Tích Doanh Thu
                                                         </h3>
                                                         <p
                                                             class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">
-                                                            Sales flow of the last 7 days</p>
+                                                            Lưu lượng bán ra trong 7 ngày gần nhất</p>
                                                     </div>
                                                 </div>
 
@@ -872,7 +870,7 @@
                                             <!-- Best Selling Drinks -->
                                             <div
                                                 class="bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm flex flex-col">
-                                                <h3 class="text-xl font-black text-slate-900 mb-8">Top Selling</h3>
+                                                <h3 class="text-xl font-black text-slate-900 mb-8">Sản Phẩm Bán Chạy</h3>
 
                                                 <div class="h-64 w-full mb-8 relative">
                                                     <canvas id="drinksChart"></canvas>
@@ -898,8 +896,7 @@
                                                                         </div>
                                                                     </div>
                                                                     <span
-                                                                        class="text-[10px] text-slate-400 font-bold">${drink.totalQuantitySold}
-                                                                        sold</span>
+                                                                        class="text-[10px] text-slate-400 font-bold">Đã bán: ${drink.totalQuantitySold}</span>
                                                                 </div>
                                                             </div>
                                                             <div class="text-right">
