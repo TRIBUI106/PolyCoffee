@@ -9,7 +9,14 @@
       "WebFetch(domain:sandbox.vnpayment.vn)",
       "WebFetch(domain:www.vietqr.io)",
       "WebFetch(domain:github.com)",
-      "WebFetch(domain:doc.vietqr.vn)"
+      "WebFetch(domain:doc.vietqr.vn)",
+      "Read(//c/Users/TRIBUI106/.claude/agents//**)",
+      "Read(//c/Users/TRIBUI106/.claude/agents/**)",
+      "Bash(for f:*)",
+      "Bash(do)",
+      "Bash(echo \"=== $f ===\")",
+      "Read(//c/Users/TRIBUI106/Desktop/Projects/FPL_JAV202/Assignment/**)",
+      "Bash(done)"
     ]
   }
 }
