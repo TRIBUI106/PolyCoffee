@@ -18,7 +18,8 @@
                     </title>
                     <jsp:include page="/views/common/head.jsp" />
                     <!-- Bootstrap CSS required for modal components -->
-                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+                    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+                        rel="stylesheet" />
                     <style>
                         body {
                             background-color: #f0f2f5;
@@ -69,19 +70,19 @@
                             </h1>
                         </div>
                         <div class="flex items-center gap-6">
-                            <div class="relative w-80 hidden md:block">
+                            <!-- <div class="relative w-80 hidden md:block">
                                 <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
                                 <input type="text" placeholder="<fmt:message key='pos.search.placeholder'/>"
                                     class="w-full bg-pos-bg border border-pos-border rounded-lg pl-10 pr-4 py-1.5 text-sm focus:outline-none focus:border-coffee-500 focus:ring-1 focus:ring-coffee-500 transition-all">
-                            </div>
+                            </div> -->
 
                             <!-- Language Switcher -->
-                            <div class="flex items-center bg-pos-bg border border-pos-border rounded-md p-1">
+                            <!-- <div class="flex items-center bg-pos-bg border border-pos-border rounded-md p-1">
                                 <a href="?lang=vi"
                                     class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'vi' || empty sessionScope.lang ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">VI</a>
                                 <a href="?lang=en"
                                     class="px-2 py-0.5 text-xs font-bold rounded ${sessionScope.lang == 'en' ? 'bg-white shadow-sm text-coffee-700' : 'text-pos-muted hover:text-pos-text'}">EN</a>
-                            </div>
+                            </div> -->
 
                             <div class="flex items-center gap-3 border-l border-pos-border pl-6">
                                 <div class="text-right hidden sm:block">
@@ -126,7 +127,7 @@
                                     title="POS Dashboard">
                                     <i class="bi bi-display-fill text-xl"></i>
                                 </a>
-                                <div class="w-10 h-px bg-slate-100 mx-auto"></div>
+                                <div class="w-10 h-px bg-slate-400 mx-auto"></div>
                                 <a href="?tab=drinks"
                                     class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'drinks' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
                                     title="Menu Catalog">
@@ -157,6 +158,12 @@
                                     class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all ${activeTab == 'stats' ? 'bg-[#6F4E37] text-white shadow-xl shadow-coffee-200 scale-110' : 'text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700'}"
                                     title="Intelligence Science">
                                     <i class="bi bi-graph-up-arrow text-lg"></i>
+                                </a>
+                                <div class="w-10 h-px bg-slate-400 mx-auto"></div>
+                                <a href="${pageContext.request.contextPath}/auth/logout"
+                                    class="w-12 h-12 flex items-center justify-center rounded-2xl transition-all text-[#94a3b8] hover:bg-coffee-50 hover:text-coffee-700"
+                                    title="Logout">
+                                    <i class="bi bi-box-arrow-right text-lg"></i>
                                 </a>
                             </div>
                         </c:if>
@@ -193,8 +200,7 @@
                                                         value="${urlParams}&billId=${currentBill.id}" />
                                                 </c:if>
                                                 <div class="bg-white rounded-xl border border-pos-border overflow-hidden hover:shadow-lg hover:border-coffee-300 transition-all cursor-pointer flex flex-col h-full active:scale-[0.98] group drink-item"
-                                                    data-cat-id="${d.category.id}"
-                                                    onclick="addDrinkAjax(${d.id})">
+                                                    data-cat-id="${d.category.id}" onclick="addDrinkAjax(${d.id})">
                                                     <div class="aspect-[4/3] bg-pos-bg relative overflow-hidden">
                                                         <c:choose>
                                                             <c:when test="${not empty d.image}">
@@ -234,9 +240,10 @@
                                             </h2>
                                             <div class="flex flex-col sm:flex-row gap-4 items-center">
                                                 <div class="relative w-64">
-                                                    <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                    <input type="text" id="drinkSearch" placeholder="Tìm kiếm món..." 
-                                                           class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                    <i
+                                                        class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                    <input type="text" id="drinkSearch" placeholder="Tìm kiếm món..."
+                                                        class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
                                                 </div>
                                                 <button type="button" onclick="openDrinkModal()"
                                                     class="bg-coffee-700 text-white px-6 py-2.5 rounded-xl font-bold flex items-center gap-2 shadow-lg shadow-coffee-100 active:scale-95 transition-all">
@@ -294,7 +301,8 @@
                                                                                 </c:otherwise>
                                                                             </c:choose>
                                                                         </div>
-                                                                        <div class="font-bold text-pos-text text-sm drink-name">
+                                                                        <div
+                                                                            class="font-bold text-pos-text text-sm drink-name">
                                                                             ${item.name}</div>
                                                                     </div>
                                                                 </td>
@@ -313,7 +321,7 @@
                                                                     </span>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-right space-x-2">
-                                                                    <button type="button" 
+                                                                    <button type="button"
                                                                         class="edit-drink-trigger text-pos-accent hover:text-blue-700 bg-blue-50 p-2 rounded-lg transition-colors"
                                                                         data-id="${item.id}"
                                                                         data-name="${fn:escapeXml(item.name)}"
@@ -345,9 +353,11 @@
                                                 <fmt:message key="admin.category.btn.add" />
                                             </button>
                                             <div class="relative w-64">
-                                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                <input type="text" id="categorySearch" placeholder="Tìm kiếm danh mục..." 
-                                                       class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                <i
+                                                    class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                <input type="text" id="categorySearch"
+                                                    placeholder="Tìm kiếm danh mục..."
+                                                    class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
                                             </div>
                                         </div>
                                         <div
@@ -361,7 +371,8 @@
                                                             ${fn:substring(item.name, 0, 1)}
                                                         </div>
                                                         <div>
-                                                            <div class="font-bold text-pos-text category-name">${item.name}</div>
+                                                            <div class="font-bold text-pos-text category-name">
+                                                                ${item.name}</div>
                                                             <div class="text-xs text-pos-muted">
                                                                 <fmt:message key="admin.category.table.status" />:
                                                                 ${item.active ?
@@ -372,10 +383,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="flex gap-2">
-                                                        <button type="button" 
+                                                        <button type="button"
                                                             class="edit-category-trigger text-pos-accent hover:bg-blue-50 p-2 rounded-lg"
-                                                            data-id="${item.id}"
-                                                            data-name="${fn:escapeXml(item.name)}"
+                                                            data-id="${item.id}" data-name="${fn:escapeXml(item.name)}"
                                                             data-active="${item.active}">
                                                             <i class="bi bi-pencil"></i>
                                                         </button>
@@ -397,9 +407,10 @@
                                                 <fmt:message key="admin.staff.btn.add" />
                                             </button>
                                             <div class="relative w-64">
-                                                <i class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
-                                                <input type="text" id="staffSearch" placeholder="Tìm kiếm nhân viên..." 
-                                                       class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
+                                                <i
+                                                    class="bi bi-search absolute left-3 top-1/2 -translate-y-1/2 text-pos-muted"></i>
+                                                <input type="text" id="staffSearch" placeholder="Tìm kiếm nhân viên..."
+                                                    class="w-full pl-10 pr-4 py-2 bg-white border border-pos-border rounded-xl text-sm focus:outline-none focus:border-coffee-500 transition-all">
                                             </div>
                                         </div>
                                         <div
@@ -433,7 +444,8 @@
                                                     <tbody class="divide-y divide-pos-border">
                                                         <c:forEach var="item" items="${staffList}">
                                                             <tr class="hover:bg-pos-bg staff-row">
-                                                                <td class="px-6 py-4 font-bold text-sm staff-name">${item.fullName}
+                                                                <td class="px-6 py-4 font-bold text-sm staff-name">
+                                                                    ${item.fullName}
                                                                 </td>
                                                                 <td class="px-6 py-4 text-sm text-pos-muted">
                                                                     ${item.email}</td>
@@ -453,7 +465,7 @@
                                                                     </div>
                                                                 </td>
                                                                 <td class="px-6 py-4 text-right">
-                                                                    <button type="button" 
+                                                                    <button type="button"
                                                                         class="edit-staff-trigger text-pos-accent hover:bg-blue-50 p-2 rounded-lg transition-colors"
                                                                         data-id="${item.id}"
                                                                         data-name="${fn:escapeXml(item.fullName)}"
@@ -696,19 +708,27 @@
                                 <c:when test="${activeTab == 'stats'}">
                                     <div class="flex-grow flex flex-col bg-[#f8fafc] overflow-y-auto p-8 lg:p-12">
                                         <!-- Dashboard Header -->
-                                        <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                        <div
+                                            class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
                                             <div>
                                                 <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
                                                     Insights
                                                 </h1>
-                                                <p class="text-slate-500 font-medium">Business performance at a glance. <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee Intelligence</span></p>
+                                                <p class="text-slate-500 font-medium">Business performance at a glance.
+                                                    <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee
+                                                        Intelligence</span>
+                                                </p>
                                             </div>
                                             <div class="flex items-center gap-4">
-                                                <button onclick="refreshDashboard()" class="p-3 bg-white border border-slate-200 rounded-2xl text-slate-600 hover:text-coffee-700 hover:border-coffee-200 hover:bg-coffee-50 transition-all shadow-sm active:rotate-180 duration-500" title="Refresh Data">
+                                                <button onclick="refreshDashboard()"
+                                                    class="p-3 bg-white border border-slate-200 rounded-2xl text-slate-600 hover:text-coffee-700 hover:border-coffee-200 hover:bg-coffee-50 transition-all shadow-sm active:rotate-180 duration-500"
+                                                    title="Refresh Data">
                                                     <i class="bi bi-arrow-clockwise text-xl"></i>
                                                 </button>
-                                                <div class="bg-white border border-slate-200 rounded-2xl px-5 py-3 flex items-center gap-3 shadow-sm">
-                                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></div>
+                                                <div
+                                                    class="bg-white border border-slate-200 rounded-2xl px-5 py-3 flex items-center gap-3 shadow-sm">
+                                                    <div class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse">
+                                                    </div>
                                                     <span class="text-sm font-bold text-slate-700">Real-time Sync</span>
                                                 </div>
                                             </div>
@@ -716,111 +736,173 @@
 
                                         <!-- Summary Cards -->
                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
-                                             <!-- Card 1: Today Revenue -->
-                                             <div class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-coffee-50/50 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                            <!-- Card 1: Today Revenue -->
+                                            <div
+                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-coffee-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
                                                 <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div class="w-14 h-14 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                    <div
+                                                        class="w-14 h-14 bg-coffee-100 text-coffee-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
                                                         <i class="bi bi-currency-dollar"></i>
                                                     </div>
-                                                    <span class="text-[10px] font-black text-coffee-700 bg-coffee-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Growth Tracking</span>
+                                                    <span
+                                                        class="text-[10px] font-black text-coffee-700 bg-coffee-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Growth
+                                                        Tracking</span>
                                                 </div>
-                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Today Revenue</h3>
-                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text" id="todayRevenueText"><fmt:formatNumber value="${dashboard.todayRevenue}" pattern="#,###" /> ₫</p>
-                                                <div class="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    Today Revenue</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
+                                                    id="todayRevenueText">
+                                                    <fmt:formatNumber value="${dashboard.todayRevenue}"
+                                                        pattern="#,###" /> ₫
+                                                </p>
+                                                <div
+                                                    class="flex items-center gap-1.5 text-xs font-bold text-emerald-600">
                                                     <i class="bi bi-graph-up"></i>
                                                     <span>+12.5% from yesterday</span>
                                                 </div>
-                                             </div>
+                                            </div>
 
-                                             <!-- Card 2: Today Orders -->
-                                             <div class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-blue-50/50 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                            <!-- Card 2: Today Orders -->
+                                            <div
+                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-blue-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-blue-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
                                                 <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                    <div
+                                                        class="w-14 h-14 bg-blue-100 text-blue-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
                                                         <i class="bi bi-bag-heart"></i>
                                                     </div>
-                                                    <span class="text-[10px] font-black text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Volume</span>
+                                                    <span
+                                                        class="text-[10px] font-black text-blue-700 bg-blue-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Volume</span>
                                                 </div>
-                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Orders Count</h3>
-                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text" id="todayOrdersText">${dashboard.todayOrders} <span class="text-sm font-bold text-slate-400">Bills</span></p>
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    Orders Count</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
+                                                    id="todayOrdersText">${dashboard.todayOrders} <span
+                                                        class="text-sm font-bold text-slate-400">Bills</span></p>
                                                 <div class="flex items-center gap-1.5 text-xs font-bold text-slate-500">
                                                     <i class="bi bi-clock-history"></i>
                                                     <span>Last order 2m ago</span>
                                                 </div>
-                                             </div>
+                                            </div>
 
-                                             <!-- Card 3: Week Revenue -->
-                                             <div class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-50/50 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                            <!-- Card 3: Week Revenue -->
+                                            <div
+                                                class="bg-white p-8 rounded-[36px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-emerald-100/40 hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-50/50 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
                                                 <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
+                                                    <div
+                                                        class="w-14 h-14 bg-emerald-100 text-emerald-700 rounded-2xl flex items-center justify-center text-2xl shadow-inner">
                                                         <i class="bi bi-calendar-check"></i>
                                                     </div>
-                                                    <span class="text-[10px] font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Weekly Trend</span>
+                                                    <span
+                                                        class="text-[10px] font-black text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full uppercase tracking-tighter">Weekly
+                                                        Trend</span>
                                                 </div>
-                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">This Week</h3>
-                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text" id="weekRevenueText"><fmt:formatNumber value="${dashboard.weekRevenue}" pattern="#,###" /> ₫</p>
-                                                <div class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    This Week</h3>
+                                                <p class="text-3xl font-black text-slate-900 mb-2 skeleton-text"
+                                                    id="weekRevenueText">
+                                                    <fmt:formatNumber value="${dashboard.weekRevenue}"
+                                                        pattern="#,###" /> ₫
+                                                </p>
+                                                <div
+                                                    class="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
                                                     <div class="bg-emerald-500 h-full w-[65%]" id="weekProgress"></div>
                                                 </div>
-                                             </div>
+                                            </div>
 
-                                             <!-- Card 4: Total Overall -->
-                                             <div class="bg-[#1e293b] p-8 rounded-[36px] shadow-2xl hover:-translate-y-1 transition-all group relative overflow-hidden">
-                                                <div class="absolute -right-6 -top-6 w-32 h-32 bg-white/5 rounded-full transition-transform group-hover:scale-125 duration-700"></div>
+                                            <!-- Card 4: Total Overall -->
+                                            <div
+                                                class="bg-[#1e293b] p-8 rounded-[36px] shadow-2xl hover:-translate-y-1 transition-all group relative overflow-hidden">
+                                                <div
+                                                    class="absolute -right-6 -top-6 w-32 h-32 bg-white/5 rounded-full transition-transform group-hover:scale-125 duration-700">
+                                                </div>
                                                 <div class="flex items-center justify-between relative z-10 mb-6">
-                                                    <div class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center text-2xl border border-white/5 shadow-2xl">
+                                                    <div
+                                                        class="w-14 h-14 bg-white/10 text-white rounded-2xl flex items-center justify-center text-2xl border border-white/5 shadow-2xl">
                                                         <i class="bi bi-database"></i>
                                                     </div>
-                                                    <span class="text-[10px] font-black text-white/40 border border-white/10 px-3 py-1.5 rounded-full uppercase tracking-tighter">Lifetime</span>
+                                                    <span
+                                                        class="text-[10px] font-black text-white/40 border border-white/10 px-3 py-1.5 rounded-full uppercase tracking-tighter">Lifetime</span>
                                                 </div>
-                                                <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">Total Records</h3>
-                                                <p class="text-3xl font-black text-white mb-2 skeleton-text" id="totalBillsText">${dashboard.totalBills}</p>
-                                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">All-time transactions</p>
-                                             </div>
+                                                <h3
+                                                    class="text-xs font-black text-slate-400 uppercase tracking-widest mb-1">
+                                                    Total Records</h3>
+                                                <p class="text-3xl font-black text-white mb-2 skeleton-text"
+                                                    id="totalBillsText">${dashboard.totalBills}</p>
+                                                <p
+                                                    class="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                                                    All-time transactions</p>
+                                            </div>
                                         </div>
 
                                         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                                             <!-- Revenue Chart -->
-                                            <div class="lg:col-span-2 bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm relative overflow-hidden">
+                                            <div
+                                                class="lg:col-span-2 bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm relative overflow-hidden">
                                                 <div class="flex items-center justify-between mb-10 relative z-10">
                                                     <div>
-                                                        <h3 class="text-xl font-black text-slate-900">Revenue Analytics</h3>
-                                                        <p class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">Sales flow of the last 7 days</p>
+                                                        <h3 class="text-xl font-black text-slate-900">Revenue Analytics
+                                                        </h3>
+                                                        <p
+                                                            class="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em]">
+                                                            Sales flow of the last 7 days</p>
                                                     </div>
                                                 </div>
-                                                
+
                                                 <div class="h-80 w-full relative">
                                                     <canvas id="revenueChart"></canvas>
                                                 </div>
                                             </div>
 
                                             <!-- Best Selling Drinks -->
-                                            <div class="bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm flex flex-col">
+                                            <div
+                                                class="bg-white p-10 rounded-[42px] border border-slate-200 shadow-sm flex flex-col">
                                                 <h3 class="text-xl font-black text-slate-900 mb-8">Top Selling</h3>
-                                                
+
                                                 <div class="h-64 w-full mb-8 relative">
                                                     <canvas id="drinksChart"></canvas>
                                                 </div>
 
                                                 <div class="space-y-4" id="topDrinksList">
-                                                    <c:forEach var="drink" items="${dashboard.topDrinks}" varStatus="st">
-                                                        <div class="flex items-center gap-4 group hover:bg-slate-50 p-2 -mx-2 rounded-xl transition-colors">
-                                                            <div class="w-9 h-9 rounded-full bg-slate-100 group-hover:bg-coffee-100 flex items-center justify-center font-black text-slate-400 group-hover:text-coffee-700 text-xs transition-colors shrink-0">
+                                                    <c:forEach var="drink" items="${dashboard.topDrinks}"
+                                                        varStatus="st">
+                                                        <div
+                                                            class="flex items-center gap-4 group hover:bg-slate-50 p-2 -mx-2 rounded-xl transition-colors">
+                                                            <div
+                                                                class="w-9 h-9 rounded-full bg-slate-100 group-hover:bg-coffee-100 flex items-center justify-center font-black text-slate-400 group-hover:text-coffee-700 text-xs transition-colors shrink-0">
                                                                 ${st.index + 1}
                                                             </div>
                                                             <div class="flex-grow min-w-0">
-                                                                <p class="text-sm font-bold text-slate-800 truncate">${drink.drinkName}</p>
+                                                                <p class="text-sm font-bold text-slate-800 truncate">
+                                                                    ${drink.drinkName}</p>
                                                                 <div class="flex items-center gap-2">
-                                                                    <div class="w-24 bg-slate-100 h-1 rounded-full overflow-hidden">
-                                                                        <div class="bg-coffee-400 h-full" style="width: ${drink.totalQuantitySold * 10}%"></div>
+                                                                    <div
+                                                                        class="w-24 bg-slate-100 h-1 rounded-full overflow-hidden">
+                                                                        <div class="bg-coffee-400 h-full"
+                                                                            style="width: ${drink.totalQuantitySold * 10}%">
+                                                                        </div>
                                                                     </div>
-                                                                    <span class="text-[10px] text-slate-400 font-bold">${drink.totalQuantitySold} sold</span>
+                                                                    <span
+                                                                        class="text-[10px] text-slate-400 font-bold">${drink.totalQuantitySold}
+                                                                        sold</span>
                                                                 </div>
                                                             </div>
                                                             <div class="text-right">
-                                                                <p class="text-xs font-black text-slate-900"><fmt:formatNumber value="${drink.totalRevenue}" pattern="#,###" />₫</p>
+                                                                <p class="text-xs font-black text-slate-900">
+                                                                    <fmt:formatNumber value="${drink.totalRevenue}"
+                                                                        pattern="#,###" />₫
+                                                                </p>
                                                             </div>
                                                         </div>
                                                     </c:forEach>
@@ -829,79 +911,106 @@
                                         </div>
                                     </div>
                                 </c:when>
-                                 <c:when test="${activeTab == 'tables'}">
-                                     <div class="flex-grow flex flex-col bg-[#f8fafc] overflow-y-auto p-8 lg:p-12">
-                                         <!-- Header -->
-                                         <div class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
-                                             <div>
-                                                 <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
-                                                     Table Management
-                                                 </h1>
-                                                 <p class="text-slate-500 font-medium">Coordinate your shop layout and QR ordering system. <span class="text-coffee-600/60 ml-1 font-bold">PolyCoffee Infrastructure</span></p>
-                                             </div>
-                                             <button class="bg-coffee-700 hover:bg-slate-900 text-white px-8 py-4 rounded-3xl font-black flex items-center gap-3 shadow-2xl shadow-coffee-200 transition-all hover:-translate-y-1 active:scale-95 group" data-bs-toggle="modal" data-bs-target="#addTableModal">
-                                                 <div class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
+                                <c:when test="${activeTab == 'tables'}">
+                                    <div class="flex-grow flex flex-col bg-[#f8fafc] overflow-y-auto p-8 lg:p-12">
+                                        <!-- Header -->
+                                        <div
+                                            class="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+                                            <div>
+                                                <h1 class="text-4xl font-black text-[#1e293b] tracking-tight mb-2">
+                                                    Table Management
+                                                </h1>
+                                                <p class="text-slate-500 font-medium">Coordinate your shop layout and QR
+                                                    ordering system. <span
+                                                        class="text-coffee-600/60 ml-1 font-bold">PolyCoffee
+                                                        Infrastructure</span></p>
+                                            </div>
+                                            <button
+                                                class="bg-coffee-700 hover:bg-slate-900 text-white px-8 py-4 rounded-3xl font-black flex items-center gap-3 shadow-2xl shadow-coffee-200 transition-all hover:-translate-y-1 active:scale-95 group"
+                                                data-bs-toggle="modal" data-bs-target="#addTableModal">
+                                                <div
+                                                    class="w-8 h-8 bg-white/10 rounded-xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
                                                     <i class="bi bi-plus-lg"></i>
-                                                 </div>
-                                                 <span>New Table Entity</span>
-                                             </button>
-                                         </div>
+                                                </div>
+                                                <span>New Table Entity</span>
+                                            </button>
+                                        </div>
 
-                                         <!-- Table Grid -->
-                                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
-                                             <c:forEach var="table" items="${tables}">
-                                                 <div class="bg-white p-8 rounded-[42px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-2 transition-all group flex flex-col items-center gap-6 relative overflow-hidden">
-                                                     <!-- Status Indicator & Background Glow -->
-                                                     <div class="absolute -right-8 -top-8 w-32 h-32 ${table.active ? 'bg-coffee-50/50' : 'bg-red-50/50'} rounded-full transition-transform group-hover:scale-150 duration-700"></div>
-                                                     
-                                                     <!-- Main Icon Circle -->
-                                                     <div class="w-24 h-24 rounded-[32px] ${table.active ? 'bg-coffee-50 text-coffee-700 shadow-inner ring-1 ring-coffee-100' : 'bg-red-50 text-red-400 ring-1 ring-red-100'} flex items-center justify-center text-4xl relative z-10 transition-transform group-hover:rotate-12 duration-500">
-                                                         <i class="bi bi-grid-3x3-gap"></i>
-                                                     </div>
+                                        <!-- Table Grid -->
+                                        <div
+                                            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-8">
+                                            <c:forEach var="table" items="${tables}">
+                                                <div
+                                                    class="bg-white p-8 rounded-[42px] border border-slate-200 shadow-sm hover:shadow-2xl hover:shadow-coffee-100/40 hover:-translate-y-2 transition-all group flex flex-col items-center gap-6 relative overflow-hidden">
+                                                    <!-- Status Indicator & Background Glow -->
+                                                    <div
+                                                        class="absolute -right-8 -top-8 w-32 h-32 ${table.active ? 'bg-coffee-50/50' : 'bg-red-50/50'} rounded-full transition-transform group-hover:scale-150 duration-700">
+                                                    </div>
 
-                                                     <!-- Table Info -->
-                                                     <div class="text-center relative z-10">
-                                                         <p class="text-2xl font-black text-slate-900 mb-1">${table.tableNumber}</p>
-                                                         <div class="flex items-center justify-center gap-2">
-                                                            <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border border-slate-100 px-3 py-1 rounded-full bg-slate-50">CODE</span>
-                                                            <span class="text-sm font-black text-coffee-600/60">${table.code}</span>
-                                                         </div>
-                                                     </div>
+                                                    <!-- Main Icon Circle -->
+                                                    <div
+                                                        class="w-24 h-24 rounded-[32px] ${table.active ? 'bg-coffee-50 text-coffee-700 shadow-inner ring-1 ring-coffee-100' : 'bg-red-50 text-red-400 ring-1 ring-red-100'} flex items-center justify-center text-4xl relative z-10 transition-transform group-hover:rotate-12 duration-500">
+                                                        <i class="bi bi-grid-3x3-gap"></i>
+                                                    </div>
 
-                                                     <!-- Actions Tooltip-style bar -->
-                                                     <div class="flex items-center gap-3 relative z-10 bg-slate-50/80 backdrop-blur-sm p-3 rounded-3xl border border-slate-100 mt-2">
-                                                         <button onclick="showQR('${table.id}', '${table.tableNumber}', '${table.code}')" 
-                                                                 class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-coffee-700 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action" title="QR Code">
-                                                             <i class="bi bi-qr-code text-xl group-hover/action:scale-110"></i>
-                                                         </button>
-                                                         <div class="w-px h-6 bg-slate-200"></div>
-                                                         <button onclick="editTable('${table.id}', '${table.tableNumber}', '${table.code}')" 
-                                                                 class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action" title="Edit">
-                                                             <i class="bi bi-pencil-square text-xl group-hover/action:scale-110"></i>
-                                                         </button>
-                                                         <div class="w-px h-6 bg-slate-200"></div>
-                                                         <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${table.id}" 
-                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action" 
+                                                    <!-- Table Info -->
+                                                    <div class="text-center relative z-10">
+                                                        <p class="text-2xl font-black text-slate-900 mb-1">
+                                                            ${table.tableNumber}</p>
+                                                        <div class="flex items-center justify-center gap-2">
+                                                            <span
+                                                                class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] border border-slate-100 px-3 py-1 rounded-full bg-slate-50">CODE</span>
+                                                            <span
+                                                                class="text-sm font-black text-coffee-600/60">${table.code}</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Actions Tooltip-style bar -->
+                                                    <div
+                                                        class="flex items-center gap-3 relative z-10 bg-slate-50/80 backdrop-blur-sm p-3 rounded-3xl border border-slate-100 mt-2">
+                                                        <button
+                                                            onclick="showQR('${table.id}', '${table.tableNumber}', '${table.code}')"
+                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-coffee-700 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action"
+                                                            title="QR Code">
+                                                            <i
+                                                                class="bi bi-qr-code text-xl group-hover/action:scale-110"></i>
+                                                        </button>
+                                                        <div class="w-px h-6 bg-slate-200"></div>
+                                                        <button
+                                                            onclick="editTable('${table.id}', '${table.tableNumber}', '${table.code}')"
+                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action"
+                                                            title="Edit">
+                                                            <i
+                                                                class="bi bi-pencil-square text-xl group-hover/action:scale-110"></i>
+                                                        </button>
+                                                        <div class="w-px h-6 bg-slate-200"></div>
+                                                        <a href="${pageContext.request.contextPath}/manager/tables/delete?id=${table.id}"
+                                                            class="w-12 h-12 flex items-center justify-center text-slate-400 hover:text-red-600 hover:bg-white hover:shadow-lg transition-all rounded-2xl group/action"
                                                             onclick="return confirm('Archive this table entity?')">
-                                                             <i class="bi bi-trash3 text-xl group-hover/action:scale-110"></i>
-                                                         </a>
-                                                     </div>
-                                                 </div>
-                                             </c:forEach>
-                                             
-                                             <!-- Empty State / Add Placeholder -->
-                                             <c:if test="${empty tables}">
-                                                 <div class="col-span-full py-20 flex flex-col items-center justify-center text-slate-300">
-                                                     <div class="w-24 h-24 border-4 border-dashed border-slate-200 rounded-[42px] flex items-center justify-center mb-6">
-                                                         <i class="bi bi-grid-3x3-gap text-4xl"></i>
-                                                     </div>
-                                                     <p class="text-xl font-black tracking-tight">No tables established yet</p>
-                                                     <p class="text-sm font-medium">Click "New Table Entity" to begin shop layout</p>
-                                                 </div>
-                                             </c:if>
-                                         </div>
-                                     </div>
-                                 </c:when>
+                                                            <i
+                                                                class="bi bi-trash3 text-xl group-hover/action:scale-110"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </c:forEach>
+
+                                            <!-- Empty State / Add Placeholder -->
+                                            <c:if test="${empty tables}">
+                                                <div
+                                                    class="col-span-full py-20 flex flex-col items-center justify-center text-slate-300">
+                                                    <div
+                                                        class="w-24 h-24 border-4 border-dashed border-slate-200 rounded-[42px] flex items-center justify-center mb-6">
+                                                        <i class="bi bi-grid-3x3-gap text-4xl"></i>
+                                                    </div>
+                                                    <p class="text-xl font-black tracking-tight">No tables established
+                                                        yet</p>
+                                                    <p class="text-sm font-medium">Click "New Table Entity" to begin
+                                                        shop layout</p>
+                                                </div>
+                                            </c:if>
+                                        </div>
+                                    </div>
+                                </c:when>
                             </c:choose>
                         </div>
 
@@ -1004,7 +1113,8 @@
                                                                     </div>
                                                                     <c:forEach var="n"
                                                                         items="${['50% Sugar', '70% Sugar', '100% Sugar', 'No Ice', 'No Sugar']}">
-                                                                        <a href="javascript:void(0)" onclick="updateNoteAjax(${currentBill.id}, ${item.drink.id}, '${n}')"
+                                                                        <a href="javascript:void(0)"
+                                                                            onclick="updateNoteAjax(${currentBill.id}, ${item.drink.id}, '${n}')"
                                                                             class="block px-4 py-1.5 text-xs hover:bg-coffee-50 hover:text-coffee-700 text-pos-text transition-all">
                                                                             ${n}
                                                                         </a>
@@ -1012,10 +1122,9 @@
                                                                     <div
                                                                         class="border-t border-pos-border mt-2 pt-2 px-2">
                                                                         <input type="text"
-                                                                             onkeyup="if(event.key === 'Enter') handleCustomNoteInput(this, ${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0})"
+                                                                            onkeyup="if(event.key === 'Enter') handleCustomNoteInput(this, ${not empty currentBill.id ? currentBill.id : 0}, ${not empty item.drink.id ? item.drink.id : 0})"
                                                                             placeholder="<fmt:message key='pos.item.note.placeholder' />"
-                                                                        value="${item.note}"
-                                                                        class="w-full text-xs p-2 bg-gray-50 border
+                                                                            value="${item.note}" class="w-full text-xs p-2 bg-gray-50 border
                                                                         border-pos-border rounded-md focus:outline-none
                                                                         focus:border-coffee-500 focus:ring-1
                                                                         focus:ring-coffee-200 transition-all">
@@ -1154,85 +1263,105 @@
                                 </div>
                         </c:if>
 
-                    <!-- Create/Edit Table Modal -->
-                    <div class="modal fade" id="addTableModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content bg-white border-0 shadow-2xl rounded-[42px] overflow-hidden">
-                                <div class="p-10">
-                                    <div class="flex justify-between items-center mb-8">
-                                        <div>
-                                            <h5 class="text-3xl font-black text-slate-900 tracking-tight">Table Entity</h5>
-                                            <p class="text-slate-400 font-medium text-sm mt-1">Configure layout parameters</p>
-                                        </div>
-                                        <button type="button" class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors" data-bs-dismiss="modal">
-                                            <i class="bi bi-x-lg"></i>
-                                        </button>
-                                    </div>
-
-                                    <form action="${pageContext.request.contextPath}/manager/tables/save" method="POST" class="space-y-6">
-                                        <div class="space-y-2">
-                                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Visible Name</label>
-                                            <div class="relative">
-                                                <i class="bi bi-tag absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
-                                                <input type="text" name="name" required placeholder="e.g. Premium Table 04" 
-                                                       class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none">
+                        <!-- Create/Edit Table Modal -->
+                        <div class="modal fade" id="addTableModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content bg-white border-0 shadow-2xl rounded-[42px] overflow-hidden">
+                                    <div class="p-10">
+                                        <div class="flex justify-between items-center mb-8">
+                                            <div>
+                                                <h5 class="text-3xl font-black text-slate-900 tracking-tight">Table
+                                                    Entity</h5>
+                                                <p class="text-slate-400 font-medium text-sm mt-1">Configure layout
+                                                    parameters</p>
                                             </div>
-                                        </div>
-                                        
-                                        <div class="space-y-2">
-                                            <label class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Entity Code</label>
-                                            <div class="relative">
-                                                <i class="bi bi-qr-code-scan absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
-                                                <input type="text" name="code" required placeholder="e.g. TABLE-04" 
-                                                       class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none uppercase">
-                                            </div>
+                                            <button type="button"
+                                                class="w-12 h-12 flex items-center justify-center rounded-2xl bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors"
+                                                data-bs-dismiss="modal">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
                                         </div>
 
-                                        <div class="flex gap-4 pt-4">
-                                            <button type="button" data-bs-dismiss="modal" 
+                                        <form action="${pageContext.request.contextPath}/manager/tables/save"
+                                            method="POST" class="space-y-6">
+                                            <div class="space-y-2">
+                                                <label
+                                                    class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Visible
+                                                    Name</label>
+                                                <div class="relative">
+                                                    <i
+                                                        class="bi bi-tag absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
+                                                    <input type="text" name="name" required
+                                                        placeholder="e.g. Premium Table 04"
+                                                        class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none">
+                                                </div>
+                                            </div>
+
+                                            <div class="space-y-2">
+                                                <label
+                                                    class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Entity
+                                                    Code</label>
+                                                <div class="relative">
+                                                    <i
+                                                        class="bi bi-qr-code-scan absolute left-5 top-1/2 -translate-y-1/2 text-coffee-600/40 text-lg"></i>
+                                                    <input type="text" name="code" required placeholder="e.g. TABLE-04"
+                                                        class="w-full pl-14 pr-6 py-4 bg-slate-50 border border-slate-100 focus:bg-white focus:ring-4 focus:ring-coffee-100 focus:border-coffee-300 rounded-[24px] text-sm font-bold text-slate-700 transition-all outline-none uppercase">
+                                                </div>
+                                            </div>
+
+                                            <div class="flex gap-4 pt-4">
+                                                <button type="button" data-bs-dismiss="modal"
                                                     class="flex-1 py-4 bg-slate-50 text-slate-400 font-black rounded-3xl hover:bg-slate-100 transition-all">Discard</button>
-                                            <button type="submit" 
-                                                    class="flex-1 py-4 bg-coffee-700 text-white font-black rounded-3xl shadow-xl shadow-coffee-100 hover:bg-slate-900 transition-all active:scale-95">Save Entity</button>
-                                        </div>
-                                    </form>
+                                                <button type="submit"
+                                                    class="flex-1 py-4 bg-coffee-700 text-white font-black rounded-3xl shadow-xl shadow-coffee-100 hover:bg-slate-900 transition-all active:scale-95">Save
+                                                    Entity</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- QR Display Modal -->
-                    <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered">
-                            <div class="modal-content bg-white border-0 shadow-2xl rounded-[42px] overflow-hidden">
-                                <div class="p-10 text-center">
-                                    <div class="flex justify-end mb-2">
-                                        <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors" data-bs-dismiss="modal">
-                                            <i class="bi bi-x-lg"></i>
-                                        </button>
-                                    </div>
-                                    
-                                    <div class="w-20 h-20 bg-coffee-50 text-coffee-700 rounded-[28px] flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
-                                        <i class="bi bi-qr-code"></i>
-                                    </div>
-                                    
-                                    <h5 id="qrTableInfo" class="text-2xl font-black text-slate-900 mb-2">Table Info</h5>
-                                    <p class="text-slate-400 font-medium text-sm mb-8">Generated dynamic ordering gateway</p>
-                                    
-                                    <div class="bg-slate-50 p-8 rounded-[42px] border border-slate-100 mb-8 flex justify-center group overflow-hidden" id="printableQR">
-                                        <img id="qrImage" src="" alt="QR" class="w-48 h-48 rounded-2xl shadow-sm group-hover:scale-105 transition-transform duration-500 bg-white p-2">
-                                    </div>
-                                    
-                                    <div class="flex gap-4">
-                                        <button onclick="printQR()" 
+                        <!-- QR Display Modal -->
+                        <div class="modal fade" id="qrModal" tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content bg-white border-0 shadow-2xl rounded-[42px] overflow-hidden">
+                                    <div class="p-10 text-center">
+                                        <div class="flex justify-end mb-2">
+                                            <button type="button"
+                                                class="w-10 h-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:text-slate-900 transition-colors"
+                                                data-bs-dismiss="modal">
+                                                <i class="bi bi-x-lg"></i>
+                                            </button>
+                                        </div>
+
+                                        <div
+                                            class="w-20 h-20 bg-coffee-50 text-coffee-700 rounded-[28px] flex items-center justify-center text-3xl mx-auto mb-6 shadow-inner">
+                                            <i class="bi bi-qr-code"></i>
+                                        </div>
+
+                                        <h5 id="qrTableInfo" class="text-2xl font-black text-slate-900 mb-2">Table Info
+                                        </h5>
+                                        <p class="text-slate-400 font-medium text-sm mb-8">Generated dynamic ordering
+                                            gateway</p>
+
+                                        <div class="bg-slate-50 p-8 rounded-[42px] border border-slate-100 mb-8 flex justify-center group overflow-hidden"
+                                            id="printableQR">
+                                            <img id="qrImage" src="" alt="QR"
+                                                class="w-48 h-48 rounded-2xl shadow-sm group-hover:scale-105 transition-transform duration-500 bg-white p-2">
+                                        </div>
+
+                                        <div class="flex gap-4">
+                                            <button onclick="printQR()"
                                                 class="flex-1 py-4 bg-coffee-700 text-white font-black rounded-3xl shadow-xl shadow-coffee-100 hover:bg-slate-900 transition-all active:scale-95 flex items-center justify-center gap-2">
-                                            <i class="bi bi-printer-fill"></i>
-                                            Print Label
-                                        </button>
+                                                <i class="bi bi-printer-fill"></i>
+                                                Print Label
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
                     </main>
 
@@ -1373,8 +1502,7 @@
                                 <p class="text-[14px] uppercase font-black text-gray-400 tracking-widest text-center">
                                     <fmt:message key="admin.bill.print.qr_label" />
                                 </p>
-                                <div
-                                    class="flex flex-col items-center gap-3 bg-white py-2">
+                                <div class="flex flex-col items-center gap-3 bg-white py-2">
                                     <img id="vietqr-img" src="" alt="QR Code" class="w-75 h-75 object-contain mx-auto">
                                 </div>
                                 <!-- <div class="text-center">
@@ -1584,78 +1712,112 @@
                             display: none !important;
                         }
                     </style>
-                    
+
                     <!-- Management Modals -->
                     <!-- Drink Modal -->
                     <div class="modal fade" id="drinkModal" tabindex="-1" aria-hidden="true">
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
                                 <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
-                                    <h5 class="text-xl font-black text-gray-900" id="drinkModalLabel">Modify Product</h5>
-                                    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all" data-bs-dismiss="modal">
+                                    <h5 class="text-xl font-black text-gray-900" id="drinkModalLabel">Modify Product
+                                    </h5>
+                                    <button type="button"
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all"
+                                        data-bs-dismiss="modal">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
-                                <form id="drinkModalForm" action="${pageContext.request.contextPath}/manager/drinks/save" method="post" enctype="multipart/form-data">
+                                <form id="drinkModalForm"
+                                    action="${pageContext.request.contextPath}/manager/drinks/save" method="post"
+                                    enctype="multipart/form-data">
                                     <input type="hidden" name="id" id="mDrinkId">
                                     <div class="modal-body p-8 lg:p-10">
                                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                                             <!-- Info -->
                                             <div class="space-y-6">
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Product Identity</label>
-                                                    <input type="text" name="name" id="mDrinkName" required placeholder="Enter drink name..."
-                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Product
+                                                        Identity</label>
+                                                    <input type="text" name="name" id="mDrinkName" required
+                                                        placeholder="Enter drink name..."
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
                                                 </div>
                                                 <div class="grid grid-cols-2 gap-4">
                                                     <div>
-                                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Category</label>
-                                                        <select name="categoryId" id="mDrinkCat" class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer" required>
+                                                        <label
+                                                            class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Category</label>
+                                                        <select name="categoryId" id="mDrinkCat"
+                                                            class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer"
+                                                            required>
                                                             <c:forEach var="cat" items="${categories}">
                                                                 <option value="${cat.id}">${cat.name}</option>
                                                             </c:forEach>
                                                         </select>
                                                     </div>
                                                     <div>
-                                                        <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Market Price</label>
+                                                        <label
+                                                            class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Market
+                                                            Price</label>
                                                         <div class="relative">
-                                                            <input type="number" name="price" id="mDrinkPrice" required placeholder="0"
-                                                                   class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all font-black text-coffee-700">
-                                                            <span class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs uppercase">VND</span>
+                                                            <input type="number" name="price" id="mDrinkPrice" required
+                                                                placeholder="0"
+                                                                class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all font-black text-coffee-700">
+                                                            <span
+                                                                class="absolute right-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-xs uppercase">VND</span>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Product Essence</label>
-                                                    <textarea name="description" id="mDrinkDesc" class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all min-h-[120px] font-medium text-gray-600 resize-none" placeholder="Describe this masterpiece..."></textarea>
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Product
+                                                        Essence</label>
+                                                    <textarea name="description" id="mDrinkDesc"
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none focus:border-coffee-500 focus:bg-white transition-all min-h-[120px] font-medium text-gray-600 resize-none"
+                                                        placeholder="Describe this masterpiece..."></textarea>
                                                 </div>
                                             </div>
                                             <!-- Media -->
                                             <div class="space-y-6">
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Visual Asset</label>
-                                                    <div onclick="document.getElementById('mDrinkImgInput').click()" 
-                                                         class="relative border-4 border-dashed border-slate-100 rounded-[32px] p-2 flex flex-col items-center justify-center min-h-[240px] bg-slate-50 hover:bg-white hover:border-coffee-200 transition-all cursor-pointer group overflow-hidden">
-                                                        <input type="file" name="image" id="mDrinkImgInput" onchange="previewDrinkImage(this)" class="hidden" accept="image/*">
-                                                        <img id="mDrinkImgPreview" src="" class="hidden w-full h-[240px] rounded-[28px] object-cover absolute inset-0">
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Visual
+                                                        Asset</label>
+                                                    <div onclick="document.getElementById('mDrinkImgInput').click()"
+                                                        class="relative border-4 border-dashed border-slate-100 rounded-[32px] p-2 flex flex-col items-center justify-center min-h-[240px] bg-slate-50 hover:bg-white hover:border-coffee-200 transition-all cursor-pointer group overflow-hidden">
+                                                        <input type="file" name="image" id="mDrinkImgInput"
+                                                            onchange="previewDrinkImage(this)" class="hidden"
+                                                            accept="image/*">
+                                                        <img id="mDrinkImgPreview" src=""
+                                                            class="hidden w-full h-[240px] rounded-[28px] object-cover absolute inset-0">
                                                         <div id="mDrinkImgPlaceholder" class="text-center">
-                                                            <div class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-slate-300 shadow-sm mb-4 mx-auto group-hover:scale-110 group-hover:bg-coffee-50 group-hover:text-coffee-600 transition-all">
+                                                            <div
+                                                                class="w-16 h-16 bg-white rounded-3xl flex items-center justify-center text-slate-300 shadow-sm mb-4 mx-auto group-hover:scale-110 group-hover:bg-coffee-50 group-hover:text-coffee-600 transition-all">
                                                                 <i class="bi bi-camera text-2xl"></i>
                                                             </div>
-                                                            <p class="font-black text-slate-400 text-xs uppercase tracking-widest">Capture Visual</p>
+                                                            <p
+                                                                class="font-black text-slate-400 text-xs uppercase tracking-widest">
+                                                                Capture Visual</p>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
                                                     <div class="flex items-center justify-between">
                                                         <div>
-                                                            <h4 class="font-black text-gray-900 text-xs uppercase tracking-widest">Active Status</h4>
-                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Make visible to consumers</p>
+                                                            <h4
+                                                                class="font-black text-gray-900 text-xs uppercase tracking-widest">
+                                                                Active Status</h4>
+                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Make
+                                                                visible to consumers</p>
                                                         </div>
                                                         <div class="relative inline-block w-14 h-7">
-                                                            <input type="checkbox" name="active" value="1" id="mDrinkActive" class="peer hidden" checked>
-                                                            <label for="mDrinkActive" class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
-                                                            <div class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5"></div>
+                                                            <input type="checkbox" name="active" value="1"
+                                                                id="mDrinkActive" class="peer hidden" checked>
+                                                            <label for="mDrinkActive"
+                                                                class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
+                                                            <div
+                                                                class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1663,8 +1825,12 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
-                                        <button type="button" class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all" data-bs-dismiss="modal">Abandon</button>
-                                        <button type="submit" class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Commit Changes</button>
+                                        <button type="button"
+                                            class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                                            data-bs-dismiss="modal">Abandon</button>
+                                        <button type="submit"
+                                            class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Commit
+                                            Changes</button>
                                     </div>
                                 </form>
                             </div>
@@ -1676,36 +1842,53 @@
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
                                 <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
-                                    <h5 class="text-xl font-black text-gray-900" id="categoryModalLabel">Category Logic</h5>
-                                    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all" data-bs-dismiss="modal">
+                                    <h5 class="text-xl font-black text-gray-900" id="categoryModalLabel">Category Logic
+                                    </h5>
+                                    <button type="button"
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all"
+                                        data-bs-dismiss="modal">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
-                                <form id="categoryModalForm" action="${pageContext.request.contextPath}/manager/categories/save" method="post">
+                                <form id="categoryModalForm"
+                                    action="${pageContext.request.contextPath}/manager/categories/save" method="post">
                                     <input type="hidden" name="id" id="mCatId">
                                     <div class="modal-body p-8 lg:p-10 space-y-8">
                                         <div>
-                                            <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Classification Name</label>
-                                            <input type="text" name="name" id="mCatName" required placeholder="e.g., Espresso Series"
-                                                   class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                            <label
+                                                class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Classification
+                                                Name</label>
+                                            <input type="text" name="name" id="mCatName" required
+                                                placeholder="e.g., Espresso Series"
+                                                class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
                                         </div>
                                         <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
                                             <div class="flex items-center justify-between">
                                                 <div>
-                                                    <h4 class="font-black text-gray-900 text-xs uppercase tracking-widest">Visibility state</h4>
-                                                    <p class="text-[10px] text-slate-400 font-bold mt-1">Show this group in the menu</p>
+                                                    <h4
+                                                        class="font-black text-gray-900 text-xs uppercase tracking-widest">
+                                                        Visibility state</h4>
+                                                    <p class="text-[10px] text-slate-400 font-bold mt-1">Show this group
+                                                        in the menu</p>
                                                 </div>
                                                 <div class="relative inline-block w-14 h-7">
-                                                    <input type="checkbox" name="active" value="1" id="mCatActive" class="peer hidden" checked>
-                                                    <label for="mCatActive" class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
-                                                    <div class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5"></div>
+                                                    <input type="checkbox" name="active" value="1" id="mCatActive"
+                                                        class="peer hidden" checked>
+                                                    <label for="mCatActive"
+                                                        class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
+                                                    <div
+                                                        class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
-                                        <button type="button" class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all" data-bs-dismiss="modal">Abandon</button>
-                                        <button type="submit" class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Synchronize</button>
+                                        <button type="button"
+                                            class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                                            data-bs-dismiss="modal">Abandon</button>
+                                        <button type="submit"
+                                            class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Synchronize</button>
                                     </div>
                                 </form>
                             </div>
@@ -1717,41 +1900,61 @@
                         <div class="modal-dialog modal-lg modal-dialog-centered">
                             <div class="modal-content border-0 shadow-2xl rounded-[32px] overflow-hidden">
                                 <div class="modal-header border-b border-pos-border bg-pos-bg px-8 py-6">
-                                    <h5 class="text-xl font-black text-gray-900" id="staffModalLabel">Human Resources Portfolio</h5>
-                                    <button type="button" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all" data-bs-dismiss="modal">
+                                    <h5 class="text-xl font-black text-gray-900" id="staffModalLabel">Human Resources
+                                        Portfolio</h5>
+                                    <button type="button"
+                                        class="w-10 h-10 flex items-center justify-center rounded-xl bg-white border border-pos-border text-gray-400 hover:text-gray-900 transition-all"
+                                        data-bs-dismiss="modal">
                                         <i class="bi bi-x-lg"></i>
                                     </button>
                                 </div>
-                                <form id="staffModalForm" action="${pageContext.request.contextPath}/manager/staff/save" method="post">
+                                <form id="staffModalForm" action="${pageContext.request.contextPath}/manager/staff/save"
+                                    method="post">
                                     <input type="hidden" name="id" id="mStaffId">
                                     <div class="modal-body p-8 lg:p-10">
                                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                                             <div class="space-y-6">
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Legal Identity</label>
-                                                    <input type="text" name="fullName" id="mStaffName" required placeholder="Full name..."
-                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Legal
+                                                        Identity</label>
+                                                    <input type="text" name="fullName" id="mStaffName" required
+                                                        placeholder="Full name..."
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
                                                 </div>
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Secure Email</label>
-                                                    <input type="email" name="email" id="mStaffEmail" required placeholder="email@polycoffee.com"
-                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Secure
+                                                        Email</label>
+                                                    <input type="email" name="email" id="mStaffEmail" required
+                                                        placeholder="email@polycoffee.com"
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
                                                 </div>
                                                 <div id="mStaffPasswordRow">
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Access Credential</label>
-                                                    <input type="password" name="password" id="mStaffPassword" placeholder="Minimum 6 characters..."
-                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Access
+                                                        Credential</label>
+                                                    <input type="password" name="password" id="mStaffPassword"
+                                                        placeholder="Minimum 6 characters..."
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
                                                 </div>
                                             </div>
                                             <div class="space-y-6">
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Network Contact</label>
-                                                    <input type="text" name="phone" id="mStaffPhone" required placeholder="098xxxxxxxx"
-                                                           class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Network
+                                                        Contact</label>
+                                                    <input type="text" name="phone" id="mStaffPhone" required
+                                                        placeholder="098xxxxxxxx"
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl focus:ring-4 focus:ring-coffee-500/10 focus:border-coffee-500 focus:bg-white outline-none transition-all font-bold text-gray-900">
                                                 </div>
                                                 <div>
-                                                    <label class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Hierarchical Role</label>
-                                                    <select name="role" id="mStaffRole" class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer" required>
+                                                    <label
+                                                        class="block text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2.5">Hierarchical
+                                                        Role</label>
+                                                    <select name="role" id="mStaffRole"
+                                                        class="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-2xl outline-none appearance-none font-bold text-gray-900 focus:border-coffee-500 focus:bg-white transition-all cursor-pointer"
+                                                        required>
                                                         <option value="false">Staff Member</option>
                                                         <option value="true">Executive Manager</option>
                                                     </select>
@@ -1759,13 +1962,20 @@
                                                 <div class="bg-slate-50 p-6 rounded-[28px] border border-slate-100">
                                                     <div class="flex items-center justify-between">
                                                         <div>
-                                                            <h4 class="font-black text-gray-900 text-xs uppercase tracking-widest">Active state</h4>
-                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Grant system permissions</p>
+                                                            <h4
+                                                                class="font-black text-gray-900 text-xs uppercase tracking-widest">
+                                                                Active state</h4>
+                                                            <p class="text-[10px] text-slate-400 font-bold mt-1">Grant
+                                                                system permissions</p>
                                                         </div>
                                                         <div class="relative inline-block w-14 h-7">
-                                                            <input type="checkbox" name="active" value="1" id="mStaffActive" class="peer hidden" checked>
-                                                            <label for="mStaffActive" class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
-                                                            <div class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5"></div>
+                                                            <input type="checkbox" name="active" value="1"
+                                                                id="mStaffActive" class="peer hidden" checked>
+                                                            <label for="mStaffActive"
+                                                                class="block w-full h-full bg-slate-200 rounded-full transition-all peer-checked:bg-coffee-600 cursor-pointer"></label>
+                                                            <div
+                                                                class="absolute w-5 h-5 bg-white rounded-full top-1 left-1 pointer-events-none transition-all peer-checked:translate-x-7 shadow-lg shadow-black/5">
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -1773,8 +1983,12 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer border-t border-pos-border bg-pos-bg px-8 py-6 gap-4">
-                                        <button type="button" class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all" data-bs-dismiss="modal">Abandon</button>
-                                        <button type="submit" class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Grant Clearance</button>
+                                        <button type="button"
+                                            class="px-8 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-white border border-slate-200 text-slate-400 hover:bg-slate-50 hover:text-slate-900 transition-all"
+                                            data-bs-dismiss="modal">Abandon</button>
+                                        <button type="submit"
+                                            class="px-10 py-4 rounded-2xl font-black text-xs uppercase tracking-widest bg-coffee-700 text-white shadow-xl shadow-coffee-200 hover:bg-coffee-800 transition-all">Grant
+                                            Clearance</button>
                                     </div>
                                 </form>
                             </div>
@@ -1799,7 +2013,7 @@
 
                         // POS AJAX helpers - prevent full page reload on cart operations
                         const _posCtxPath = '${pageContext.request.contextPath}';
-                        let _currentBillId = ${not empty currentBill ? currentBill.id : 0};
+                        let _currentBillId = ${ not empty currentBill ?currentBill.id: 0};
 
                         async function _refreshBillPanel(url) {
                             try {
@@ -1813,7 +2027,7 @@
                                     const match = resp.url.match(/[?&]billId=(\d+)/);
                                     if (match) _currentBillId = parseInt(match[1]);
                                 }
-                            } catch(e) {
+                            } catch (e) {
                                 console.error('POS AJAX error:', e);
                                 window.location.href = url;
                             }
@@ -1905,12 +2119,12 @@
                             const modal = new bootstrap.Modal(document.getElementById('drinkModal'));
                             const form = document.getElementById('drinkModalForm');
                             const label = document.getElementById('drinkModalLabel');
-                            
+
                             // Reset form
                             form.reset();
                             document.getElementById('mDrinkImgPreview').classList.add('hidden');
                             document.getElementById('mDrinkImgPlaceholder').classList.remove('hidden');
-                            
+
                             if (data) {
                                 label.innerText = 'Edit Product: ' + data.name;
                                 document.getElementById('mDrinkId').value = data.id;
@@ -1919,7 +2133,7 @@
                                 document.getElementById('mDrinkPrice').value = data.price;
                                 document.getElementById('mDrinkDesc').value = data.desc;
                                 document.getElementById('mDrinkActive').checked = data.active === 'true';
-                                
+
                                 if (data.img) {
                                     const imgUrl = data.img.startsWith('http') ? data.img : '${pageContext.request.contextPath}/uploads/' + data.img;
                                     document.getElementById('mDrinkImgPreview').src = imgUrl;
@@ -1931,14 +2145,14 @@
                                 document.getElementById('mDrinkId').value = '';
                                 document.getElementById('mDrinkActive').checked = true;
                             }
-                            
+
                             modal.show();
                         }
 
                         function previewDrinkImage(input) {
                             if (input.files && input.files[0]) {
                                 const reader = new FileReader();
-                                reader.onload = function(e) {
+                                reader.onload = function (e) {
                                     document.getElementById('mDrinkImgPreview').src = e.target.result;
                                     document.getElementById('mDrinkImgPreview').classList.remove('hidden');
                                     document.getElementById('mDrinkImgPlaceholder').classList.add('hidden');
@@ -1951,9 +2165,9 @@
                             const modal = new bootstrap.Modal(document.getElementById('categoryModal'));
                             const form = document.getElementById('categoryModalForm');
                             const label = document.getElementById('categoryModalLabel');
-                            
+
                             form.reset();
-                            
+
                             if (data) {
                                 label.innerText = 'Update Category: ' + data.name;
                                 document.getElementById('mCatId').value = data.id;
@@ -1964,7 +2178,7 @@
                                 document.getElementById('mCatId').value = '';
                                 document.getElementById('mCatActive').checked = true;
                             }
-                            
+
                             modal.show();
                         }
 
@@ -1972,9 +2186,9 @@
                             const modal = new bootstrap.Modal(document.getElementById('staffModal'));
                             const form = document.getElementById('staffModalForm');
                             const label = document.getElementById('staffModalLabel');
-                            
+
                             form.reset();
-                            
+
                             if (data) {
                                 label.innerText = 'Manage Identity: ' + data.name;
                                 document.getElementById('mStaffId').value = data.id;
@@ -1992,7 +2206,7 @@
                                 document.getElementById('mStaffPasswordRow').classList.remove('hidden');
                                 document.getElementById('mStaffPassword').required = true;
                             }
-                            
+
                             modal.show();
                         }
 
@@ -2000,10 +2214,10 @@
                         document.addEventListener('click', (e) => {
                             const drinkBtn = e.target.closest('.edit-drink-trigger');
                             if (drinkBtn) openDrinkModal(drinkBtn.dataset);
-                            
+
                             const catBtn = e.target.closest('.edit-category-trigger');
                             if (catBtn) openCategoryModal(catBtn.dataset);
-                            
+
                             const staffBtn = e.target.closest('.edit-staff-trigger');
                             if (staffBtn) openStaffModal(staffBtn.dataset);
                         });
@@ -2017,7 +2231,7 @@
                                     offset: 50
                                 });
                             }
-                            
+
                             // Modal Entrance Animations
                             const managementModals = ['drinkModal', 'categoryModal', 'staffModal', 'addTableModal', 'qrModal'];
                             managementModals.forEach(id => {
@@ -2037,7 +2251,7 @@
                                 }
                             });
                         });
-                        
+
                         function handleCustomNoteInput(input, billId, drinkId) {
                             handleCustomNote(billId, drinkId, input.value);
                         }
@@ -2091,32 +2305,32 @@
                             }
                         }
 
-                            // Employee POS Category Filtering
-                            const catButtons = document.querySelectorAll('.category-btn');
-                            const drinkItems = document.querySelectorAll('.drink-item');
+                        // Employee POS Category Filtering
+                        const catButtons = document.querySelectorAll('.category-btn');
+                        const drinkItems = document.querySelectorAll('.drink-item');
 
-                            catButtons.forEach(btn => {
-                                btn.addEventListener('click', () => {
-                                    const catId = btn.getAttribute('data-cat-id');
-                                    
-                                    // Update UI
-                                    catButtons.forEach(b => {
-                                        b.classList.remove('bg-coffee-700', 'text-white', 'shadow-lg');
-                                        b.classList.add('bg-pos-bg', 'text-pos-text');
-                                    });
-                                    btn.classList.add('bg-coffee-700', 'text-white', 'shadow-lg');
-                                    btn.classList.remove('bg-pos-bg', 'text-pos-text');
+                        catButtons.forEach(btn => {
+                            btn.addEventListener('click', () => {
+                                const catId = btn.getAttribute('data-cat-id');
 
-                                    // Filter Items
-                                    drinkItems.forEach(item => {
-                                        if (catId === '0' || item.getAttribute('data-cat-id') === catId) {
-                                            item.style.display = 'flex';
-                                        } else {
-                                            item.style.display = 'none';
-                                        }
-                                    });
+                                // Update UI
+                                catButtons.forEach(b => {
+                                    b.classList.remove('bg-coffee-700', 'text-white', 'shadow-lg');
+                                    b.classList.add('bg-pos-bg', 'text-pos-text');
+                                });
+                                btn.classList.add('bg-coffee-700', 'text-white', 'shadow-lg');
+                                btn.classList.remove('bg-pos-bg', 'text-pos-text');
+
+                                // Filter Items
+                                drinkItems.forEach(item => {
+                                    if (catId === '0' || item.getAttribute('data-cat-id') === catId) {
+                                        item.style.display = 'flex';
+                                    } else {
+                                        item.style.display = 'none';
+                                    }
                                 });
                             });
+                        });
 
                         // Admin Staff Search
                         const staffSearch = document.getElementById('staffSearch');
@@ -2241,7 +2455,7 @@
                                 options: {
                                     responsive: true,
                                     maintainAspectRatio: false,
-                                    plugins: { 
+                                    plugins: {
                                         legend: { display: false },
                                         tooltip: {
                                             backgroundColor: '#1e293b',
@@ -2267,7 +2481,7 @@
                                         },
                                         x: {
                                             grid: { display: false },
-                                            ticks: { 
+                                            ticks: {
                                                 font: { weight: 'bold', size: 11 },
                                                 color: '#94a3b8'
                                             }
@@ -2381,15 +2595,15 @@
                                 // Extract and normalize data from JSTL
                                 const revDataRaw = [
                                     <c:forEach var="day" items="${dashboard.revenueByDay}" varStatus="st">
-                                        { revenueDate: "${day.revenueDate}", totalRevenue: ${day.totalRevenue} }${!st.last ? ',' : ''}
+                                        {revenueDate: "${day.revenueDate}", totalRevenue: ${day.totalRevenue} }${!st.last ? ',' : ''}
                                     </c:forEach>
                                 ];
                                 const drkDataRaw = [
                                     <c:forEach var="drink" items="${dashboard.topDrinks}" varStatus="st">
-                                        { drinkName: "${drink.drinkName}", totalQuantitySold: ${drink.totalQuantitySold}, totalRevenue: ${drink.totalRevenue} }${!st.last ? ',' : ''}
+                                        {drinkName: "${drink.drinkName}", totalQuantitySold: ${drink.totalQuantitySold}, totalRevenue: ${drink.totalRevenue} }${!st.last ? ',' : ''}
                                     </c:forEach>
                                 ];
-                                
+
                                 initCharts({
                                     revenueByDay: revDataRaw,
                                     topDrinks: drkDataRaw
