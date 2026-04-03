@@ -22,6 +22,21 @@ public class BillRepository extends BaseRepository<Bill, Integer> {
         }
     }
 
+    public Bill findByIdWithDetails(Integer id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return em.createQuery(
+                "SELECT DISTINCT b FROM Bill b LEFT JOIN FETCH b.billDetails bd LEFT JOIN FETCH bd.drink WHERE b.id = :id",
+                Bill.class)
+                .setParameter("id", id)
+                .getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        } finally {
+            em.close();
+        }
+    }
+
     public Bill findByIdAndUserId(Integer id, Integer userId) {
         EntityManager em = JpaUtil.getEntityManager();
         try {

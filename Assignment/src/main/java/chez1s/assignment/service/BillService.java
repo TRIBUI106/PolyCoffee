@@ -37,6 +37,10 @@ public class BillService {
         return billRepo.findById(id);
     }
 
+    public Bill getBillWithDetails(Integer id) {
+        return billRepo.findByIdWithDetails(id);
+    }
+
     /**
      * Creates a new bill or adds a drink to an existing waiting bill.
      */
@@ -245,6 +249,25 @@ public class BillService {
             
             trans.commit();
             return bill;
+        } catch (Exception e) {
+            if (trans.isActive()) trans.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    public void updateStatus(Integer billId, String status) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction trans = em.getTransaction();
+        try {
+            trans.begin();
+            Bill bill = em.find(Bill.class, billId);
+            if (bill != null) {
+                bill.setStatus(BillStatus.valueOf(status));
+                em.merge(bill);
+            }
+            trans.commit();
         } catch (Exception e) {
             if (trans.isActive()) trans.rollback();
             throw e;

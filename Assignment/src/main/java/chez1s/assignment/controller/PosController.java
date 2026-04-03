@@ -116,7 +116,9 @@ public class PosController extends HttpServlet {
         }
         
         if (billId > 0) {
-            Bill currentBill = billService.getBill(billId, user.getId());
+            Bill currentBill = user.isRole()
+                ? billService.getBillWithDetails(billId)
+                : billService.getBill(billId, user.getId());
             if (currentBill != null) {
                 req.setAttribute("currentBill", currentBill);
             }
