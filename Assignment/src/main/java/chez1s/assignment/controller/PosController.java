@@ -64,7 +64,12 @@ public class PosController extends HttpServlet {
 
         if (uri.contains("/checkout")) {
             if (billId > 0) billService.checkout(billId);
-            resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + billId + "&checkout=true");
+            String from = ParamUtil.getString(req, "from");
+            if ("bills".equals(from)) {
+                resp.sendRedirect(req.getContextPath() + "/employee/pos");
+            } else {
+                resp.sendRedirect(req.getContextPath() + "/employee/pos?billId=" + billId + "&checkout=true");
+            }
             return;
         }
 
@@ -125,5 +130,22 @@ public class PosController extends HttpServlet {
         }
         
         req.getRequestDispatcher("/views/pos/view.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = AuthUtil.getUser(req);
+        if (user == null || !user.isRole()) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        Integer billId = ParamUtil.getInt(req, "billId");
+        String status = ParamUtil.getString(req, "status");
+        if (billId > 0 && !status.isEmpty()) {
+            try {
+                billService.updateStatus(billId, status);
+            } catch (IllegalArgumentException ignored) {}
+        }
+        resp.sendRedirect(req.getContextPath() + "/employee/pos?tab=bills&billId=" + billId);
     }
 }

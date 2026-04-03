@@ -1139,8 +1139,7 @@
                                 </div>
 
                                 <!-- Cart Footer (Checkout) -->
-                                <div
-                                    class="border-t border-slate-200/60 bg-white shrink-0 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
+                                <div class="border-t border-slate-200/60 bg-white shrink-0 shadow-[0_-5px_15px_-5px_rgba(0,0,0,0.05)]">
                                     <!-- Summary -->
                                     <div class="px-4 py-3 space-y-2 text-sm border-b border-slate-200/60 bg-gray-50/30">
                                         <div class="flex justify-between items-center text-slate-800">
@@ -1154,70 +1153,131 @@
                                             </span>
                                         </div>
                                         <div class="flex justify-between items-center text-slate-400">
-                                            <span>
-                                                <fmt:message key="pos.bill.discount" /> (F4)
-                                            </span>
-                                            <span
-                                                class="cursor-pointer border-b border-dashed border-pos-muted">0</span>
+                                            <span><fmt:message key="pos.bill.discount" /> (F4)</span>
+                                            <span class="cursor-pointer border-b border-dashed border-pos-muted">0</span>
                                         </div>
                                     </div>
 
-                                    <!-- Total & Big Buttons -->
+                                    <!-- Total & Action Buttons -->
                                     <div class="p-4 bg-white">
                                         <div class="flex justify-between items-center mb-4">
                                             <span class="font-semibold text-slate-800 text-sm">
                                                 <fmt:message key="pos.bill.payable" />
                                             </span>
                                             <span class="text-3xl font-extrabold text-coffee-700 tracking-tight">
-                                                <fmt:formatNumber
-                                                    value="${currentBill.total != null ? currentBill.total : 0}"
-                                                    pattern="#,###" />
+                                                <fmt:formatNumber value="${currentBill.total != null ? currentBill.total : 0}" pattern="#,###" />
                                             </span>
                                         </div>
 
                                         <fmt:message key="pos.bill.confirm.cancel" var="msgCancel" />
                                         <fmt:message key="pos.bill.confirm.checkout" var="msgCheckout" />
 
-                                        <div class="grid grid-cols-5 gap-3">
-                                            <!-- Extra Actions (Cancel) -->
-                                            <button
-                                                class="col-span-1 border-2 border-slate-200/60 text-pos-danger rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
-                                                ${empty currentBill.billDetails ? 'disabled' : '' }
-                                                onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
-                                                title="Huỷ đơn">
-                                                <i class="bi bi-trash3"></i>
-                                            </button>
-
-                                            <!-- Print Bill Button -->
-                                            <button
-                                                class="col-span-1 border-2 border-slate-200/60 text-coffee-700 rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-coffee-50 hover:border-coffee-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
-                                                ${empty currentBill.billDetails ? 'disabled' : '' }
-                                                onclick="showPrintModal()" title="In hoá đơn">
-                                                <i class="bi bi-printer"></i>
-                                            </button>
-
-                                            <c:choose>
-                                                <c:when test="${currentBill.status == 'WAITING'}">
-                                                    <!-- Pay Button -->
+                                        <c:choose>
+                                            <%-- ===== BILLS TAB: status-aware actions ===== --%>
+                                            <c:when test="${activeTab == 'bills'}">
+                                                <c:choose>
+                                                    <%-- WAITING / PENDING: edit status + pay --%>
+                                                    <c:when test="${currentBill.status == 'WAITING' || currentBill.status == 'PENDING'}">
+                                                        <form method="post" action="${pageContext.request.contextPath}/employee/pos"
+                                                            class="flex items-center gap-2 mb-3">
+                                                            <input type="hidden" name="billId" value="${currentBill.id}" />
+                                                            <select name="status"
+                                                                class="flex-grow px-3 py-2.5 bg-gray-50 border border-slate-200/60 rounded-xl text-sm font-semibold text-slate-700 focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-all cursor-pointer">
+                                                                <option value="WAITING" ${currentBill.status == 'WAITING' ? 'selected' : ''}>Chờ Thanh Toán</option>
+                                                                <option value="PENDING" ${currentBill.status == 'PENDING' ? 'selected' : ''}>Chờ Xác Nhận</option>
+                                                                <option value="FINISHED">Hoàn Thành</option>
+                                                                <option value="CANCELLED">Đã Hủy</option>
+                                                            </select>
+                                                            <button type="submit"
+                                                                class="px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-bold transition-colors active:scale-95 shrink-0"
+                                                                title="Lưu trạng thái">
+                                                                <i class="bi bi-check-lg"></i>
+                                                            </button>
+                                                        </form>
+                                                        <div class="grid grid-cols-5 gap-3">
+                                                            <button
+                                                                class="col-span-1 border-2 border-slate-200/60 text-pos-danger rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                                ${empty currentBill.billDetails ? 'disabled' : ''}
+                                                                onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
+                                                                title="Huỷ đơn">
+                                                                <i class="bi bi-trash3"></i>
+                                                            </button>
+                                                            <button
+                                                                class="col-span-1 border-2 border-slate-200/60 text-coffee-700 rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-coffee-50 hover:border-coffee-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                                ${empty currentBill.billDetails ? 'disabled' : ''}
+                                                                onclick="showPrintModal()" title="In hoá đơn">
+                                                                <i class="bi bi-printer"></i>
+                                                            </button>
+                                                            <button
+                                                                class="col-span-3 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
+                                                                ${empty currentBill.billDetails ? 'disabled' : ''}
+                                                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}&from=bills'">
+                                                                <i class="bi bi-cash-stack text-xl"></i>
+                                                                <span class="tracking-wide text-sm"><fmt:message key="pos.bill.checkout" /></span>
+                                                            </button>
+                                                        </div>
+                                                    </c:when>
+                                                    <%-- PAID / FINISHED: view + print only --%>
+                                                    <c:when test="${currentBill.status == 'PAID' || currentBill.status == 'FINISHED'}">
+                                                        <div class="flex items-center justify-center gap-2 py-3 mb-3 bg-green-50 rounded-xl border border-green-100">
+                                                            <i class="bi bi-check-circle-fill text-green-600 text-lg"></i>
+                                                            <span class="font-bold text-green-700 text-sm">Đã Thanh Toán</span>
+                                                        </div>
+                                                        <button
+                                                            class="w-full border-2 border-slate-200/60 text-coffee-700 rounded-xl h-12 flex items-center justify-center gap-2 font-semibold hover:bg-coffee-50 hover:border-coffee-200 transition-colors active:scale-95"
+                                                            onclick="showPrintModal()">
+                                                            <i class="bi bi-printer text-lg"></i>
+                                                            <span class="text-sm">In Hoá Đơn</span>
+                                                        </button>
+                                                    </c:when>
+                                                    <%-- CANCELLED: view only, no actions --%>
+                                                    <c:otherwise>
+                                                        <div class="flex items-center justify-center gap-2 py-4 bg-red-50 rounded-xl border border-red-100">
+                                                            <i class="bi bi-x-circle-fill text-red-500 text-lg"></i>
+                                                            <span class="font-bold text-red-600 text-sm">Đơn Đã Bị Hủy</span>
+                                                        </div>
+                                                    </c:otherwise>
+                                                </c:choose>
+                                            </c:when>
+                                            <%-- ===== POS TAB: original behaviour ===== --%>
+                                            <c:otherwise>
+                                                <div class="grid grid-cols-5 gap-3">
                                                     <button
-                                                        class="col-span-3 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
-                                                        ${empty currentBill.billDetails ? 'disabled' : '' }
-                                                        onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
-                                                        <i class="bi bi-cash-stack text-xl"></i>
-                                                        <span class="tracking-wide text-sm">
-                                                            <fmt:message key="pos.bill.checkout" /> (F9)
-                                                        </span>
+                                                        class="col-span-1 border-2 border-slate-200/60 text-pos-danger rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-red-50 hover:border-red-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                        ${empty currentBill.billDetails ? 'disabled' : ''}
+                                                        onclick="if(confirm('${msgCancel}')) location.href='${pageContext.request.contextPath}/employee/pos/cancel?billId=${currentBill.id}'"
+                                                        title="Huỷ đơn">
+                                                        <i class="bi bi-trash3"></i>
                                                     </button>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <a href="${pageContext.request.contextPath}/employee/pos"
-                                                        class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
-                                                        <i class="bi bi-plus-circle text-xl"></i>
-                                                        <span class="tracking-wide text-sm">New Order</span>
-                                                    </a>
-                                                </c:otherwise>
-                                            </c:choose>
-                                        </div>
+                                                    <button
+                                                        class="col-span-1 border-2 border-slate-200/60 text-coffee-700 rounded-xl h-14 flex items-center justify-center font-semibold text-xl hover:bg-coffee-50 hover:border-coffee-200 transition-colors ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}"
+                                                        ${empty currentBill.billDetails ? 'disabled' : ''}
+                                                        onclick="showPrintModal()" title="In hoá đơn">
+                                                        <i class="bi bi-printer"></i>
+                                                    </button>
+                                                    <c:choose>
+                                                        <c:when test="${currentBill.status == 'WAITING'}">
+                                                            <button
+                                                                class="col-span-3 bg-[#10b981] hover:bg-[#059669] rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(16,185,129,0.39)] transition-all ${empty currentBill.billDetails ? 'opacity-50 cursor-not-allowed shadow-none hover:bg-[#10b981]' : 'hover:-translate-y-0.5 active:translate-y-0 active:scale-95'}"
+                                                                ${empty currentBill.billDetails ? 'disabled' : ''}
+                                                                onclick="if(confirm('${msgCheckout}')) location.href='${pageContext.request.contextPath}/employee/pos/checkout?billId=${currentBill.id}'">
+                                                                <i class="bi bi-cash-stack text-xl"></i>
+                                                                <span class="tracking-wide text-sm">
+                                                                    <fmt:message key="pos.bill.checkout" /> (F9)
+                                                                </span>
+                                                            </button>
+                                                        </c:when>
+                                                        <c:otherwise>
+                                                            <a href="${pageContext.request.contextPath}/employee/pos"
+                                                                class="col-span-3 bg-blue-600 hover:bg-blue-700 rounded-xl h-14 flex items-center justify-center gap-2 text-white font-semibold text-lg shadow-[0_4px_14px_0_rgba(37,99,235,0.39)] transition-all active:scale-95">
+                                                                <i class="bi bi-plus-circle text-xl"></i>
+                                                                <span class="tracking-wide text-sm">New Order</span>
+                                                            </a>
+                                                        </c:otherwise>
+                                                    </c:choose>
+                                                </div>
+                                            </c:otherwise>
+                                        </c:choose>
                                     </div>
                                 </div>
                         </c:if>
