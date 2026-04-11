@@ -35,7 +35,7 @@
 
         <c:if test="${not empty requestScope['jakarta.servlet.error.message']}">
             <div class="mt-12 p-6 bg-red-50 border border-red-100 rounded-xl text-left">
-                <p class="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-2">Technical Insight</p>
+                <p class="text-[10px] uppercase tracking-widest text-red-400 font-bold mb-2">Chi Tiết Lỗi</p>
                 <div class="text-xs text-red-600/70 border-l-2 border-red-200 pl-4 font-mono">
                     ${requestScope['jakarta.servlet.error.message']}
                 </div>

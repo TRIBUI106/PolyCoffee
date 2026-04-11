@@ -10,7 +10,7 @@
 <html lang="${empty sessionScope.lang ? 'vi' : sessionScope.lang}">
 
 <head>
-    <title>Guest Self Order - PolyCoffee</title>
+    <title>Tự Gọi Món - PolyCoffee</title>
     <jsp:include page="/views/common/head.jsp" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" crossorigin="anonymous">
     <!-- Lucide Icons for Premium Look -->
@@ -85,14 +85,21 @@
             </a>
             <div class="h-5 sm:h-6 w-px bg-gray-200"></div>
             <h1 class="font-bold text-xl sm:text-2xl flex items-center gap-2 text-slate-900 tracking-tight">
-                Self Order
-                <span class="hidden sm:inline-block text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Guest</span>
+                Tự Gọi Món
+                <c:choose>
+                    <c:when test="${not empty tableId}">
+                        <span class="text-[10px] font-bold bg-indigo-100 text-indigo-700 px-2 py-1 rounded-md uppercase tracking-widest border border-indigo-200">Table #${tableId}</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="hidden sm:inline-block text-[10px] font-bold bg-slate-100 text-slate-600 px-2 py-1 rounded-md uppercase tracking-widest border border-slate-200">Mang Đi</span>
+                    </c:otherwise>
+                </c:choose>
             </h1>
         </div>
         <div class="flex items-center gap-2 sm:gap-3">
             <button onclick="openPointShop()" class="flex items-center gap-2 bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl shadow-md cursor-pointer transition-all active:scale-95">
                 <i data-lucide="gift" class="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-50"></i>
-                <span class="text-xs sm:text-sm font-bold tracking-wide">Point Shop</span>
+                <span class="text-xs sm:text-sm font-bold tracking-wide">Cửa Hàng Điểm</span>
             </button>
             <div class="text-xs sm:text-sm font-semibold text-slate-500 flex items-center gap-2 bg-white px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl border border-gray-100 shadow-sm hidden md:block">
                 <i data-lucide="clock" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i> <span id="clock" class="tabular-nums"></span>
@@ -288,7 +295,7 @@
                 </h3>
                 
                 <!-- Catalog Grid -->
-                <div id="shopCatalogGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div id="shopCatalogGrid" class="grid grid-cols-1 gap-4">
                     <div class="col-span-2 text-center py-8 text-slate-400 flex flex-col items-center">
                         <i data-lucide="loader" class="w-8 h-8 animate-spin"></i>
                         <p class="mt-2 font-medium">Đang tải...</p>
@@ -317,6 +324,10 @@
             // Initial render
             renderCart();
         });
+
+        const _selfOrderCtx = '${pageContext.request.contextPath}';
+        let currentShopPhone = '';
+        let currentShopPoints = 0;
 
         const cartState = {
             items: [],
@@ -658,8 +669,8 @@
                             <div class="absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50/50 rounded-full z-10 hidden sm:block border-r border-slate-100"></div>
                             <div class="absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 bg-slate-50/50 rounded-full z-10 hidden sm:block border-l border-slate-100"></div>
                             
-                            <div class="bg-white rounded-3xl border border-slate-100 p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between shadow-sm hover:shadow-2xl hover:shadow-coffee-500/10 transition-all duration-500 gap-2 relative overflow-hidden">
-                                <div class="flex items-center gap-5 p-4 flex-grow bg-slate-50/30 rounded-2xl group-hover:bg-white transition-colors duration-500">
+                            <div class="bg-white rounded-3xl border border-slate-100 p-1.5 flex flex-col sm:flex-row items-stretch sm:items-center justify-between shadow-sm hover:shadow-2xl hover:shadow-coffee-500/10 transition-all duration-500 gap-2 relative">
+                                <div class="flex items-center gap-5 p-4 flex-grow min-w-0 bg-slate-50/30 rounded-2xl group-hover:bg-white transition-colors duration-500">
                                     <div class="relative">
                                         <div class="bg-gradient-to-br from-coffee-600 to-coffee-800 text-white p-4 rounded-2xl shadow-lg shadow-coffee-200 group-hover:rotate-12 transition-transform duration-500">
                                             <i data-lucide="ticket" class="w-7 h-7"></i>
@@ -676,7 +687,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="flex items-center gap-3 p-4 sm:border-l border-dashed border-slate-200 sm:ml-2">
+                                <div class="flex items-center gap-3 p-4 sm:border-l border-dashed border-slate-200 sm:ml-2 shrink-0">
                                     <div class="flex items-center bg-slate-100/50 hover:bg-slate-100 p-1 rounded-xl transition-colors">
                                         <button onclick="changeVoucherQty(\${v.id}, -1)" class="w-8 h-8 flex items-center justify-center text-slate-400 hover:text-coffee-600 transition-colors active:scale-75">
                                             <i data-lucide="minus" class="w-3.5 h-3.5"></i>
@@ -719,7 +730,7 @@
             if (!p) return;
             document.getElementById('shopPointError').classList.add('hidden');
             
-            fetch('/Assignment/guest/pointshop/status?phone=' + p)
+            fetch(_selfOrderCtx + '/guest/pointshop/status?phone=' + p)
             .then(r => r.json())
             .then(data => {
                 if (data.success) {

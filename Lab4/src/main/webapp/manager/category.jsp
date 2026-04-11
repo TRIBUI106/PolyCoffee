@@ -141,6 +141,12 @@
 
 <h2>Quản lý danh mục</h2>
 
+<c:if test="${not empty errorMessage}">
+    <div style="background-color: #ffcccc; color: #cc0000; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+        ${errorMessage}
+    </div>
+</c:if>
+
 <form action="category" method="post">
     <input type="hidden" name="id" value="<%= category != null ? category.getId() : "" %>">
     <input type="hidden" name="action" value="<%= category != null ? "update" : "add" %>">
@@ -149,7 +155,9 @@
     <input type="text" name="name" id="name"
            value="<%= category != null ? category.getName() : "" %>"
            placeholder="Nhập tên danh mục..."
-           required>
+           required
+           oninvalid="this.setCustomValidity('Vui lòng không để trống tên danh mục!')"
+           oninput="this.setCustomValidity('')">
 
     <button type="submit">
         <%= category != null ? "Cập nhật" : "Thêm mới" %>

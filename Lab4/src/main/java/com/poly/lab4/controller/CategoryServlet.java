@@ -41,17 +41,26 @@ public class CategoryServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
 
         String action = req.getParameter("action");
+        String name = req.getParameter("name");
+        // --- BƯỚC KIỂM TRA (VALIDATION) ---
+        if (("add".equals(action) || "update".equals(action)) && (name == null || name.trim().isEmpty())) {
+            req.setAttribute("errorMessage", "⚠️ Tên danh mục không được để trống!");
 
-        switch (action){
-
+            req.getRequestDispatcher("/manager/category.jsp").forward(req, resp);
+            return;
+        }
+        // --- LUỒNG XỬ LÝ CHÍNH ---
+        switch (action) {
             case "add":
-                add(req,resp);
+                add(req, resp);
                 break;
-
             case "update":
-                update(req,resp);
+                update(req, resp);
+                break;
+            case "delete":
                 break;
         }
     }
@@ -68,8 +77,13 @@ public class CategoryServlet extends HttpServlet {
     }
 
     private void add(HttpServletRequest req, HttpServletResponse resp)
-            throws IOException {
+            throws IOException, ServletException {
+        String name = req.getParameter("name");
+        if (name == null || name.trim().isEmpty()) {
+            req.setAttribute("error", "Vui lòng nhập tên danh mục!");
 
+            req.getRequestDispatcher("/manager/category.jsp").forward(req,resp);
+        }
         Category c = new Category();
 
         c.setName(req.getParameter("name"));

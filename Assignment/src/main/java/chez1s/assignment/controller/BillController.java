@@ -40,4 +40,19 @@ public class BillController extends HttpServlet {
         
         req.getRequestDispatcher("/views/bills/list.jsp").forward(req, resp);
     }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        User user = AuthUtil.getUser(req);
+        if (!user.isRole()) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        Integer billId = ParamUtil.getInt(req, "billId");
+        String status = req.getParameter("status");
+        if (billId > 0 && status != null && !status.isEmpty()) {
+            billService.updateStatus(billId, status);
+        }
+        resp.sendRedirect(req.getContextPath() + "/manager/bills?id=" + billId);
+    }
 }

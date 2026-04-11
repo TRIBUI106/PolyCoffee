@@ -34,7 +34,7 @@
 
         <div class="mt-12 text-left bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
             <div class="bg-gray-50 px-6 py-3 border-b border-gray-200 flex justify-between items-center">
-                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Exception Journal</span>
+                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Nhật Ký Ngoại Lệ</span>
                 <span class="text-[10px] bg-gray-200 px-2 py-0.5 rounded text-gray-500 font-mono">PolyCoffee Core</span>
             </div>
             <div class="p-6 max-h-[240px] overflow-auto">
@@ -47,7 +47,7 @@
                     </pre>
                 </c:if>
                 <c:if test="${empty exception}">
-                    <p class="text-gray-400 italic text-sm">No explicit stack traces were captured for this event.</p>
+                    <p class="text-gray-400 italic text-sm">Không có stack trace nào được ghi lại cho sự kiện này.</p>
                 </c:if>
             </div>
         </div>

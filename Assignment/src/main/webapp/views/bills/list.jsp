@@ -79,9 +79,17 @@
                                             </span>
                                         </td>
                                         <td class="px-8 py-5 text-right">
-                                            <a href="?id=${b.id}" class="w-9 h-9 inline-flex items-center justify-center rounded-lg bg-white text-gray-600 hover:bg-coffee-600 hover:text-white hover:border-coffee-600 shadow-sm border border-gray-200 transition-all">
-                                                <i class="bi bi-eye"></i>
-                                            </a>
+                                            <div class="inline-flex items-center gap-2">
+                                                <a href="?id=${b.id}" class="w-9 h-9 inline-flex items-center justify-center rounded-lg bg-white text-gray-600 hover:bg-coffee-600 hover:text-white hover:border-coffee-600 shadow-sm border border-gray-200 transition-all">
+                                                    <i class="bi bi-eye"></i>
+                                                </a>
+                                                <c:if test="${sessionScope.user.role}">
+                                                    <button onclick="openEditModal('${b.id}', '${b.code}', '${b.status}')"
+                                                        class="w-9 h-9 inline-flex items-center justify-center rounded-lg bg-white text-gray-600 hover:bg-amber-500 hover:text-white hover:border-amber-500 shadow-sm border border-gray-200 transition-all">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                </c:if>
+                                            </div>
                                         </td>
                                     </tr>
                                 </c:forEach>
@@ -162,5 +170,65 @@
     </main>
 
     <jsp:include page="../common/footer.jsp" />
+
+    <!-- Edit Bill Modal -->
+    <div id="editBillModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md mx-4">
+            <div class="flex items-center justify-between mb-6 pb-4 border-b border-gray-100">
+                <div>
+                    <h2 class="text-lg font-bold text-gray-900"><fmt:message key="admin.bill.edit.title"/></h2>
+                    <p id="editBillCode" class="text-[10px] font-bold text-gray-400 tracking-widest uppercase"></p>
+                </div>
+                <button onclick="closeEditModal()" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-gray-100 text-gray-400 hover:text-gray-600 transition-colors">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
+            <form method="post" action="${pageContext.request.contextPath}/manager/bills">
+                <input type="hidden" name="billId" id="editBillId">
+                <div class="mb-6">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2">
+                        <fmt:message key="admin.bill.edit.status"/>
+                    </label>
+                    <select name="status" id="editBillStatus"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 focus:ring-2 focus:ring-coffee-500 focus:border-coffee-500 transition-all cursor-pointer">
+                        <option value="WAITING"><fmt:message key="admin.bill.status.waiting"/></option>
+                        <option value="FINISHED"><fmt:message key="admin.bill.status.finished"/></option>
+                        <option value="CANCELLED"><fmt:message key="admin.bill.status.cancelled"/></option>
+                    </select>
+                </div>
+                <div class="flex gap-3">
+                    <button type="button" onclick="closeEditModal()"
+                        class="flex-1 py-3 border border-gray-200 rounded-xl text-sm font-semibold text-gray-600 hover:bg-gray-50 transition-colors">
+                        <fmt:message key="admin.bill.edit.cancel"/>
+                    </button>
+                    <button type="submit"
+                        class="flex-1 py-3 bg-coffee-600 hover:bg-coffee-700 text-white rounded-xl text-sm font-bold transition-colors shadow-md shadow-coffee-200">
+                        <fmt:message key="admin.bill.edit.save"/>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openEditModal(billId, billCode, billStatus) {
+            document.getElementById('editBillId').value = billId;
+            document.getElementById('editBillCode').textContent = billCode;
+            document.getElementById('editBillStatus').value = billStatus;
+            const modal = document.getElementById('editBillModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeEditModal() {
+            const modal = document.getElementById('editBillModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('editBillModal').addEventListener('click', function (e) {
+            if (e.target === this) closeEditModal();
+        });
+    </script>
 </body>
 </html>
