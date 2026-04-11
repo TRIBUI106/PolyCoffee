@@ -16,7 +16,11 @@
       "Bash(do)",
       "Bash(echo \"=== $f ===\")",
       "Read(//c/Users/TRIBUI106/Desktop/Projects/FPL_JAV202/Assignment/**)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(./mvnw test:*)",
+      "Bash(find src/test -name '*.java' -exec basename {} \\\\;)",
+      "Bash(grep -c '@Test' src/test/java/chez1s/assignment/service/*.java src/test/java/chez1s/assignment/controller/*.java src/test/java/chez1s/assignment/filter/*.java src/test/java/chez1s/assignment/util/*.java src/test/java/chez1s/assignment/entity/*.java src/test/java/chez1s/assignment/dto/*.java src/test/java/chez1s/assignment/security/*.java)",
+      "Bash(awk -F: '{sum+=$2} END {print \"Total @Test methods:\", sum}')"
     ]
   }
 }
